@@ -1,6 +1,5 @@
 <?php
 session_start();
-//$_SESSION['uid'] = null;
 $_SESSION = array();
 ?>
 
@@ -29,15 +28,5 @@ $_SESSION = array();
     <a href="./gz_logon_1.php">ログオンはこちらから</a>
     <p></p>
     <a href="./gz.php">ログオンせずに利用(閲覧のみ可能)</a>
-<!--
-    <p>ログオンしてください</p>
-    <form action="gz_logon2.php" method="post">
-        ユーザ名
-        <input type="text" name="user" size="30" value="<?php print $gu; ?>"><br>
-        パスワード
-        <input type="password" name="pass" size="30">
-        <input type="submit" value="送信">
-    </form>
--->
 </body>
 </html>

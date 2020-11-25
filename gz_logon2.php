@@ -57,14 +57,6 @@ session_start();
             // メアド確認済み
             //------------------------------------
             if( user.emailVerified ) {
-//                showMessage('Login Complete!', `${user.displayName}さんがログインしました`);
-//                info.innerHTML = `ログインが完了しました`
-//                                + '<ul>'
-//                                +   `<li>${user.email}</li>`
-//                                +   `<li>${user.uid}</li>`
-//                                + '<ul>';
-//                                + "<a href='done2.php'>移動！！！</a>";
-
                 // 取得したアカウント情報をphpへ送信
                 let request = new XMLHttpRequest();
                 //確認
@@ -104,7 +96,7 @@ session_start();
                 // メアド未確認
                 //------------------------------------  
                 actionCodeSettings = {
-                    url: `http://localhost/done.php`
+                    url: `http://localhost/kiso/gz_logon2.php`
                 };
 
                 user.sendEmailVerification(actionCodeSettings)

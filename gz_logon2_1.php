@@ -14,48 +14,43 @@ session_start();
         <input type="text" name="nick" size="10" required><br>
         <input type="submit" value="決定">
     </form>
-    
-    
-    
-    
-    
 <?php
-    // データベース確認
-    $a = "test";
-//    print "<p>{$_SESSION['uid']}</p>";
-    
-    require_once("db_init.php");
-    $sql = "SELECT * FROM `table2.1` WHERE id = '" . $_SESSION['uid'] . "'";
-    $sth = $db->query($sql);
-    $sth->execute();
-    $count = $sth->rowCount();
-    
-//    print "<p>{$count}</p>";
-    if ($count > 0) {
-        // ニックネーム登録済み 
-        print "<p>登録済み</p>";
-        
-        
-        $r = $sth->fetch();
-        // セッションにデータベースのニックネームを格納
-        $_SESSION['nick'] = $r['nick'];
+    if (isset($_SESSION['uid'])) {
+        // データベース
+        require_once("db_init.php");
+        $sql = "SELECT * FROM `table2.1` WHERE id = '" . $_SESSION['uid'] . "'";
+        $sth = $db->query($sql);
+        $sth->execute();
+        $count = $sth->rowCount();
+
+        if ($count > 0) {
+            // ニックネーム登録済み 
+            print "<p>登録済み</p>";
+
+            // sqlの結果を変数へ
+            $r = $sth->fetch();
+            // セッションにデータベースのニックネームを格納
+            $_SESSION['nick'] = $r['nick'];
 ?>
-        <script>
-            // ニックネーム項目非表示
-            nickname.style.display = "none";
-            // 自動的に画面遷移
-            location.href = "./gz.php";
-        </script>
+            <script>
+                // ニックネーム項目非表示
+                nickname.style.display = "none";
+                // 自動的に画面遷移
+                location.href = "./gz.php";
+            </script>
 <?php
+        } else {
+            // ニックネーム未登録
+            print "<p>未登録</p>";
+?>
+            <script>
+                // ニックネーム項目表示
+                nickname.style.display = "block";
+            </script>
+<?php
+        }
     } else {
-        // ニックネーム未登録
-        print "<p>未登録</p>";
-?>
-        <script>
-            // ニックネーム項目表示
-            nickname.style.display = "block";
-        </script>
-<?php
+        print "<p>ログインが必要なページです</p>";
     }
       
 ?>
