@@ -2,7 +2,7 @@
 session_start();
 $u = htmlspecialchars($_POST['myn'], ENT_QUOTES);
 $b = htmlspecialchars($_POST['myb'], ENT_QUOTES);
-if (isset($_SESSION['us']) && $_SESSION['us'] != null && $_SESSION['tm'] >= time()-300) {
+if (isset($_SESSION['uid']) && isset($_SESSION['nick']) && isset($_SESSION['tm'])) {
     $_SESSION['tm']= time();
 ?>
 
@@ -26,8 +26,8 @@ if (isset($_SESSION['us']) && $_SESSION['us'] != null && $_SESSION['tm'] >= time
             <A HREF='gz.php'>一覧表示に戻る</A></P>";
 } else {
     session_destroy();
-    print "<p>ちゃんとログオンしてね!<BR>
-            <A HREF='gz_logon.php'></A></P>";
+    print "<P>ちゃんとログオンしてね！<BR>
+            <A HREF='gz_logon.php'>ログオン</A></P>";
 }
 ?>
 
