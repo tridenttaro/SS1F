@@ -34,8 +34,8 @@ if (isset($_SESSION['uid']) && isset($_SESSION['nick']) && isset($_SESSION['tm']
 
 <?php
 }else{
-     session_destroy();
-     print "<P>アップロードにはログオンが必要です<BR>
+    session_destroy();
+    print "<P>アップロードにはログオンが必要です<BR>
             <A HREF='gz_logon.php'>ログオン</A></P>";
 }
 ?>

@@ -12,7 +12,7 @@ session_start();
 <BODY style='background-color:khaki'>
 
 <?php
-if (isset($_SESSION["us"]) && $_SESSION["us"] != null && $_SESSION['tm']>=time()-300) {
+if (isset($_SESSION['uid']) && isset($_SESSION['nick']) && isset($_SESSION['tm'])) {
     $_SESSION['tm'] = time();
     $file = $_FILES['myf'];
 
@@ -65,9 +65,9 @@ if (isset($_SESSION["us"]) && $_SESSION["us"] != null && $_SESSION['tm']>=time()
     }
     
 }else{
-   session_destroy();
-   print "<P>ちゃんとログオンしてね！<BR>
-          <A HREF='gz_logon.php'>ログオン</A></P>";
+    session_destroy();
+    print "<P>アップロードにはログオンが必要です<BR>
+            <A HREF='gz_logon.php'>ログオン</A></P>";
 }
 ?>
 
