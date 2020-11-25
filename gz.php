@@ -20,12 +20,12 @@ if (isset($_SESSION['uid']) && isset($_SESSION['nick']) && isset($_SESSION['tm']
 <html lang="ja">
 <head>
     <meta http-equiv="content-type" content="text/html;charset=UTF-8">    
-    <title>たび写真館</title>
+    <title>ソリューションシェア</title>
     <link rel="stylesheet" href="gz_style_file.css" type="text/css">
 </head>
 <body>
     <div id="ue">
-        <p class="title">たび写真館</p>
+        <p class="title">ソリューションシェア</p>
     </div>
     <div id="main">
         <p id="message"></p>
@@ -61,10 +61,15 @@ if (isset($_SESSION['uid']) && isset($_SESSION['nick']) && isset($_SESSION['tm']
         }
         print "</p></div>";  
     }
-    print "</div><div id='hidari'>
-            <a href='gz_up.php'>画像をアップロードするときはここ</a>
-            <p><a href='gz_logon.php' id='logout' style='display:none;'>ログオフ</a></p></div>";     
-    
+    print "</div>
+            <div id='hidari'>
+                <a href='gz_up.php'>画像をアップロードするときはここ</a>
+                    <p>
+                        <a href='gz_logon.php' id='logout' style='display:none;'>ログオフ</a>
+                        <a href='gz_logon.php' id='login' style='display:none;'>ログイン</a>
+                    </p>
+            </div>";     
+     
         
     
     if (isset($uid) && isset($nick) && isset($_SESSION['tm'])) {
@@ -81,6 +86,8 @@ if (isset($_SESSION['uid']) && isset($_SESSION['nick']) && isset($_SESSION['tm']
             message.innerHTML = 'こんにちは' + '<?php print $nick ?>' + 'さん。'; 
             // ログアウトボタンを表示
             logout.style.display = "block";
+            // ログインボタンを非表示
+            login.style.display = "none";
         </script>       
 <?php
     } else if(isset($_SESSION['tm'])) {
@@ -95,6 +102,10 @@ if (isset($_SESSION['uid']) && isset($_SESSION['nick']) && isset($_SESSION['tm']
 ?>
         <script>
             message.innerHTML = 'こんにちは名無しさん。';
+            // ログアウトボタンを非表示
+            logout.style.display = "none";
+            // ログインボタンを表示
+            login.style.display = "block";
         </script>
 <?php
     }
