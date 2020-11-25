@@ -26,9 +26,9 @@ $_SESSION = array();
     print "<p>ご来場ありがとうございます！</p>";
 ?>
 
-    <a href="./gz_logon_1.php">ログインはこちらから</a>
+    <a href="./gz_logon_1.php">ログオンはこちらから</a>
     <p></p>
-    <a href="./gz.php">ログインせずに利用</a>
+    <a href="./gz.php">ログオンせずに利用(閲覧のみ可能)</a>
 <!--
     <p>ログオンしてください</p>
     <form action="gz_logon2.php" method="post">
