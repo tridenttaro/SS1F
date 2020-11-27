@@ -9,7 +9,7 @@ if (isset($_SESSION['uid']) && isset($_SESSION['nick']) && isset($_SESSION['tm']
 <HTML lang="ja">
 <HEAD>
     <META HTTP-EQUIV='Content-Type' CONTENT='text/html;charset=UTF-8'>
-    <TITLE>ソリューションシェア　管理画面</TITLE>
+    <TITLE style="color:white">ソリューションシェア　管理画面</TITLE>
 </HEAD>
 <BODY style="background-color:black">
     
