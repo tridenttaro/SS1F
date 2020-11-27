@@ -14,14 +14,14 @@ $u = $_GET['sn'];
     
     
 <?php
-if (isset($_SESSION['us']) && $_SESSION['us'] != null && $_SESSION['tm'] >= time()-300){
+if (isset($_SESSION['uid']) && isset($_SESSION['nick']) && isset($_SESSION['tm'])){
     $_SESSION['tm'] = time();
 ?>    
     <P><?php print $u; ?>番の画像に対するコメントをどうぞ！</P>
 
     <FORM ACTION = "gz_com_set.php" METHOD="post">
         名前<BR>
-        <INPUT TYPE = "text" NAME = "myn" VALUE = "<?php print $_SESSION['us']; ?>"><BR>
+        <INPUT TYPE = "text" NAME = "myn" VALUE = "<?php print $_SESSION['nick']; ?>"><BR>
         コメント<BR>
         <TEXTAREA NAME = "myc" ROWS = "10" COLS = "70"></TEXTAREA><BR>
         <INPUT TYPE = "hidden" NAME = "myb" VALUE = "<?php print $u; ?>">

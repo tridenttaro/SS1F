@@ -15,7 +15,7 @@ $b = htmlspecialchars($_POST['myb'], ENT_QUOTES);
 <BODY STYLE='background-color:Lightblue'>
 
 <?php
-if (isset($_SESSION['us']) && $_SESSION['us'] != null && $_SESSION['tm'] >= time()-300){
+if (isset($_SESSION['uid']) && isset($_SESSION['nick']) && isset($_SESSION['tm'])){
     $_SESSION['tm'] = time();
 ?>
 
@@ -33,9 +33,8 @@ if (isset($_SESSION['us']) && $_SESSION['us'] != null && $_SESSION['tm'] >= time
     $ps->bindParam(':v_d', $ima);
     $ps->execute();
 }else{
-    
     session_destroy();
-    print "<P>ちゃんとログオンしてね! <BR>
+    print "<P>ちゃんとログオンしてね！<BR>
             <A HREF='gz_logon.php'>ログオン</A></P>";
 }
 ?>
