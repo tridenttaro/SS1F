@@ -20,9 +20,9 @@ if (isset($_SESSION['uid']) && isset($_SESSION['nick']) && isset($_SESSION['tm']
         && ($file['type']=='image/jpeg' || $file['type']=='image/pjpeg' || $file['type']=='image/png')
         && (strtolower(mb_strrchr($file['name'],'.',FALSE)) == ".jpg")) {
 
-        if ($file['size'] > 1024*1024){
+        if ($file['size'] > 1024*1024*300){
             unlink($file['tmp_name']);
-            print "<P>アップするファイルのサイズは１MB以下にしてください<BR>
+            print "<P>アップするファイルのサイズは300MB以下にしてください<BR>
             <A HREF='gz_up.php'>アップに戻る</A></P>";
             
         }else{
