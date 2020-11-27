@@ -10,7 +10,7 @@ session_start();
 </HEAD>
     
 <BODY style='background-color:lightblue'>
-    <h1><?php $_SESSION['nick'] ?>さんのマイページ</h1>
+    <h1><?php echo $_SESSION['nick'] ?>さんのマイページ</h1>
 
 <?php
     if (isset($_SESSION['uid']) && isset($_SESSION['nick']) && isset($_SESSION['tm'])) {
