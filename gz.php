@@ -88,6 +88,8 @@ if (isset($_SESSION['uid']) && isset($_SESSION['nick']) && isset($_SESSION['tm']
             message.innerHTML = 'こんにちは' + '<?php print $nick ?>' + 'さん。'; 
             // ログアウトボタンを表示
             logout.style.display = "block";
+            // マイページボタンを表示
+            mypage.style.display = "block";
             // ログインボタンを非表示
             login.style.display = "none";
         </script>       
@@ -106,6 +108,8 @@ if (isset($_SESSION['uid']) && isset($_SESSION['nick']) && isset($_SESSION['tm']
             message.innerHTML = 'こんにちは名無しさん。';
             // ログアウトボタンを非表示
             logout.style.display = "none";
+            // マイページボタンを非表示
+            mypage.style.display = "none";
             // ログインボタンを表示
             login.style.display = "block";
         </script>
