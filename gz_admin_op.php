@@ -9,9 +9,9 @@ if (isset($_SESSION['uid']) && isset($_SESSION['nick']) && isset($_SESSION['tm']
 <HTML lang="ja">
 <HEAD>
     <META HTTP-EQUIV='Content-Type' CONTENT='text/html;charset=UTF-8'>
-    <TITLE style="color:white">ソリューションシェア　管理画面</TITLE>
+    <TITLE>ソリューションシェア　管理画面</TITLE>
 </HEAD>
-<BODY style="background-color:black">
+<BODY style="background-color:blue">
     
 <?php
     require_once("db_init.php");

@@ -10,10 +10,10 @@ if (isset($_SESSION['uid']) && isset($_SESSION['nick']) && isset($_SESSION['tm']
 <HTML lang="ja">
 <HEAD>
     <META HTTP-EQUIV='Content-Type' CONTENT='text/html;charset=UTF-8'>
-    <TITLE style="color:white">ソリューションシェア　管理画面</TITLE>
+    <TITLE>ソリューションシェア　管理画面</TITLE>
     <LINK REL='stylesheet' HREF='gz_style_file.css' TYPE='text/css'>
 </HEAD>
-<BODY style="background-color:black">
+<BODY style="background-color:blue">
     <P>ここは管理者のページです</P>
     <P><A HREF="gz_logon.php">ログオフ</A></P>
     <FORM ACTION="gz_admin_op.php" METHOD="post">
