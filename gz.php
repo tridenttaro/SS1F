@@ -65,7 +65,9 @@ if (isset($_SESSION['uid']) && isset($_SESSION['nick']) && isset($_SESSION['tm']
             <div id='hidari'>
                 <a href='gz_up.php'>画像をアップロードするときはここ</a>
                 <p>
+                    <a href='gz_mypage.php' id='mypage' style='display:none;'>マイページ</a>
                     <a href='gz_logon.php' id='logout' style='display:none;'>ログオフ</a>
+
                     <a href='gz_logon.php' id='login' style='display:none;'>ログオン</a>
                 </p>
             </div>";     
