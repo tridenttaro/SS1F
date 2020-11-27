@@ -31,7 +31,20 @@ session_start();
             $r = $sth->fetch();
             // セッションにデータベースのニックネームを格納
             $_SESSION['nick'] = $r['nick'];
+
+            // 管理者アカウントの場合
+            if ($_SESSION['uid'] == '7XISOdlnLKNpr0bcDhGv5UMxXgq1') {
 ?>
+                <script>
+                    // ニックネーム項目非表示
+                    nickname.style.display = "none";
+                    // 自動的に画面遷移
+                    location.href = "./gz_admin.php";
+                </script>
+<?php
+            }
+?>
+
             <script>
                 // ニックネーム項目非表示
                 nickname.style.display = "none";

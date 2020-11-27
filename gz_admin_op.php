@@ -1,7 +1,7 @@
 <?php
 error_reporting ("E_ALL & -E_NOTICE");
 session_start();
-if (isset($_SESSION['us']) && $_SESSION['us'] != null && $_SESSION['tm'] >= time() - 300) {
+if (isset($_SESSION['uid']) && isset($_SESSION['nick']) && isset($_SESSION['tm'])) {
     $_SESSION['tm'] = time();
 ?>
 
@@ -9,7 +9,7 @@ if (isset($_SESSION['us']) && $_SESSION['us'] != null && $_SESSION['tm'] >= time
 <HTML lang="ja">
 <HEAD>
     <META HTTP-EQUIV='Content-Type' CONTENT='text/html;charset=UTF-8'>
-    <TITLE>たび写真館管理画面</TITLE>
+    <TITLE>ソリューションシェア　管理画面</TITLE>
 </HEAD>
 <BODY>
     
@@ -29,7 +29,7 @@ if (isset($_SESSION['us']) && $_SESSION['us'] != null && $_SESSION['tm'] >= time
 } else {
     session_destroy();
     print "<P>ちゃんとログオンしてね！<BR>
-    <A HREF='gz_logon.php'>ログオン</A></P>";
+            <A HREF='gz_logon.php'>ログオン</A></P>";
 }
 ?>
     

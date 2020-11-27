@@ -1,6 +1,6 @@
 <?php
 session_start();
-if (isset($_SESSION['us']) && $_SESSION['us'] != null && $_SESSION['tm'] >= time() - 300) {
+if (isset($_SESSION['uid']) && isset($_SESSION['nick']) && isset($_SESSION['tm'])) {
     $_SESSION['tm'] = time();
     setcookie ("gz_user", $_SESSION['us'], time()+60*60*24*365);
     setcookie ("gz_date", date('Y円m月d日H時i分s秒'), time()+60*60*24*365);
@@ -10,12 +10,12 @@ if (isset($_SESSION['us']) && $_SESSION['us'] != null && $_SESSION['tm'] >= time
 <HTML lang="ja">
 <HEAD>
     <META HTTP-EQUIV='Content-Type' CONTENT='text/html;charset=UTF-8'>
-    <TITLE>たび写真館　管理画面</TITLE>
+    <TITLE>ソリューションシェア　管理画面</TITLE>
     <LINK REL='stylesheet' HREF='gz_style_file.css' TYPE='text/css'>
 </HEAD>
 <BODY>
     <P>ここは管理者のページです</P>
-    <P><A HREF="gz_logoff.php">ログオフ</A></P>
+    <P><A HREF="gz_logon.php">ログオフ</A></P>
     <FORM ACTION="gz_admin_op.php" METHOD="post">
 <?php
         require_once("db_init.php");
@@ -60,7 +60,7 @@ if (isset($_SESSION['us']) && $_SESSION['us'] != null && $_SESSION['tm'] >= time
     </FORM>
 
     <P><A HREF = 'gz_up.php'>画像をアップロードするときはここ</A></P>
-    <P><A HREF = 'gz_logoff.php'>ログオフ</A></P>
+    <P><A HREF = 'gz_logon.php'>ログオフ</A></P>
 
 <?php
 } else {
