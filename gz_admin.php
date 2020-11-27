@@ -2,7 +2,7 @@
 session_start();
 if (isset($_SESSION['uid']) && isset($_SESSION['nick']) && isset($_SESSION['tm'])) {
     $_SESSION['tm'] = time();
-    setcookie ("gz_user", $_SESSION['us'], time()+60*60*24*365);
+    setcookie ("gz_user", $_SESSION['uid'], time()+60*60*24*365);
     setcookie ("gz_date", date('Y円m月d日H時i分s秒'), time()+60*60*24*365);
 ?>
 
