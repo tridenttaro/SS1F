@@ -10,6 +10,9 @@ session_start();
 </HEAD>
     
 <BODY style='background-color:lightblue'>
+    <div id="ue">
+        <p class="title">ソリューションシェア</p>
+    </div>
     <h1><?php echo $_SESSION['nick'] ?>さんのマイページ</h1>
 
 <?php
