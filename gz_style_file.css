@@ -13,3 +13,6 @@ table {border: none; margin: 1em; }
         background-color: #99cc99}
 #box {width: 30em; background-color: lightblue; margin: 1em;
         padding: 1em;}
+
+/* 追加 */
+p.title2 {font-size: 200%}

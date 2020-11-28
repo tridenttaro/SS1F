@@ -10,23 +10,34 @@ session_start();
     <link rel="stylesheet" href="gz_style_file.css" type="text/css">
 </HEAD>
     
-<BODY style='background-color:lightblue'>
+<BODY style="background-color:beige">
     <div id="ue">
         <p class="title">ソリューションシェア</p>
     </div>
-    <h1><?php echo $_SESSION['nick'] ?>さんのマイページ</h1>
-
+    <div id='main'>
 <?php
-    if (isset($_SESSION['uid']) && isset($_SESSION['nick']) && isset($_SESSION['tm'])) {
-    $_SESSION['tm'] = time();
-
-    
-    }else{
-    session_destroy();
-    print "<P>アップロードにはログオンが必要です<BR>
-            <A HREF='gz_logon.php'>ログオン</A></P>";
-    }
+        if (isset($_SESSION['uid']) && isset($_SESSION['nick']) && isset($_SESSION['tm'])) {
+            $_SESSION['tm'] = time();
 ?>
+            <h1><?php echo $_SESSION['nick'] ?>さんのマイページ</h1>
 
+            <a href="gz_iine_list.php">イイネ一覧</a><br><br>
+            <a href="">ニックネーム変更</a>
+    </div>
+    <div id='hidari'>
+        <p>
+            <a href='gz.php' id='toppage'>トップページ</a><br><br>
+            <a href='gz_logon.php' id='logout'>ログオフ</a>
+        </p>
+    </div>
+    
+ <?php   
+        }else{
+            session_destroy();
+            print "<P>アップロードにはログオンが必要です<BR>
+                    <A HREF='gz_logon.php'>ログオン</A></P>";
+        }
+?>
+    
 </BODY>
 </HTML>

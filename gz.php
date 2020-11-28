@@ -32,48 +32,48 @@ if (isset($_SESSION['uid']) && isset($_SESSION['nick']) && isset($_SESSION['tm']
         <p class="iine">(よかったら<u>イイネ！</u>を押してください)</p>
     
 <?php
-    require_once("db_init.php");
-    $ps = $db->query("SELECT * FROM table1 WHERE ope=1 ORDER BY ban DESC");
-    while ($r = $ps->fetch()) {
-        $tg = $r['gaz'];
-        $tb = $r['ban'];
-        $ii = null;
-        $ps_ii = $db->query("SELECT DISTINCT * FROM table4 WHERE ban = $tb");
-        $coun_iine = 0;
-        while ($r_ii = $ps_ii->fetch()) {
-            $ii = $ii . " " . $r_ii['nam'];
-            $coun_iine++;
+        require_once("db_init.php");
+        $ps = $db->query("SELECT * FROM table1 WHERE ope=1 ORDER BY ban DESC");
+        while ($r = $ps->fetch()) {
+            $tg = $r['gaz'];
+            $tb = $r['ban'];
+            $ii = null;
+            $ps_ii = $db->query("SELECT DISTINCT * FROM table4 WHERE ban = $tb");
+            $coun_iine = 0;
+            while ($r_ii = $ps_ii->fetch()) {
+                $ii = $ii . " " . $r_ii['nam'];
+                $coun_iine++;
+            }
+            print "<DIV ID='box'>{$r['ban']}【投稿者:{$r['nam']}】{$r['dat']}
+                <p class='iine'><a href=gz_iine.php?tran_b=$tb>イイネ!</a>
+                ($coun_iine):$ii" . "</p><br>" . nl2br($r['mes']) .
+                "<br><a href='./gz_img/$tg' TARGET='_blank'>
+                <img src='./gz_img/thumb_$tg'></a><br>
+                <p class='com'><a href='gz_com.php?sn=$tb'>
+                コメントするときはここをクリック</a></p>";
+            $ps_com = $db->query("SELECT * FROM table3 WHERE ban = $tb");
+            $coun = 1;
+            while ($r_com = $ps_com->fetch()) {
+                print "<p class='com'>●投稿コメント{$coun}<br>
+                    【{$r_com['nam']}さんのメッセージ】{$r_com['dat']}<br>"
+                    . nl2br($r_com['com']) . "</p>";
+                $coun++;
+            }
+            print "</p></div>";  
         }
-        print "<DIV ID='box'>{$r['ban']}【投稿者:{$r['nam']}】{$r['dat']}
-            <p class='iine'><a href=gz_iine.php?tran_b=$tb>イイネ!</a>
-            ($coun_iine):$ii" . "</p><br>" . nl2br($r['mes']) .
-            "<br><a href='./gz_img/$tg' TARGET='_blank'>
-            <img src='./gz_img/thumb_$tg'></a><br>
-            <p class='com'><a href='gz_com.php?sn=$tb'>
-            コメントするときはここをクリック</a></p>";
-        $ps_com = $db->query("SELECT * FROM table3 WHERE ban = $tb");
-        $coun = 1;
-        while ($r_com = $ps_com->fetch()) {
-            print "<p class='com'>●投稿コメント{$coun}<br>
-                【{$r_com['nam']}さんのメッセージ】{$r_com['dat']}<br>"
-                . nl2br($r_com['com']) . "</p>";
-            $coun++;
-        }
-        print "</p></div>";  
-    }
-    print "</div>
-            <div id='hidari'>
-                <a href='gz_up.php'>画像をアップロードするときはここ</a>
-                <p>
-                    <a href='gz_mypage.php' id='mypage' style='display:none;'>マイページ</a>
-                    <a href='gz_logon.php' id='logout' style='display:none;'>ログオフ</a>
+?>
+    </div>
+    <div id='hidari'>
+        <a href='gz_up.php'>画像をアップロードするときはここ</a>
+        <p>
+            <a href='gz_mypage.php' id='mypage' style='display:none;'>マイページ</a><br>
+            <a href='gz_logon.php' id='logout' style='display:none;'>ログオフ</a>
 
-                    <a href='gz_logon.php' id='login' style='display:none;'>ログオン</a>
-                </p>
-            </div>";     
+            <a href='gz_logon.php' id='login' style='display:none;'>ログオン</a>
+        </p>
+    </div>
      
-        
-    
+<?php
     if (isset($uid) && isset($nick) && isset($_SESSION['tm'])) {
         // データベースに追加
         require_once("db_init.php");
@@ -92,15 +92,7 @@ if (isset($_SESSION['uid']) && isset($_SESSION['nick']) && isset($_SESSION['tm']
             mypage.style.display = "block";
             // ログインボタンを非表示
             login.style.display = "none";
-        </script>       
-<?php
-    } else if(isset($_SESSION['tm'])) {
-?>
-        <script>
-            // ニックネームを表示
-            message.innerHTML = 'セッションの有効期限が切れています。<br>ログインしなおしてください' + 
-                                "<a href='gz_logon.php'>ログインはこちら</a>"; 
-        </script>   
+        </script>
 <?php
     } else {
 ?>
@@ -115,14 +107,7 @@ if (isset($_SESSION['uid']) && isset($_SESSION['nick']) && isset($_SESSION['tm']
         </script>
 <?php
     }
-?>  
-        
-    <script>
-        logout.addEventListener("click", ()=>{
-              
-        });
-    </script>
-    
+?> 
 </body>
 
 </html>
