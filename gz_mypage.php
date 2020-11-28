@@ -7,6 +7,7 @@ session_start();
 <HEAD>
     <META HTTP EQUIV='Content-Type' CONTENT='text/html;charset=UTF-8'>
     <TITLE>マイページ</TITLE>
+    <link rel="stylesheet" href="gz_style_file.css" type="text/css">
 </HEAD>
     
 <BODY style='background-color:lightblue'>
