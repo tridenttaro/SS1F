@@ -2,8 +2,6 @@
 session_start();
 $u = htmlspecialchars($_POST['myn'], ENT_QUOTES);
 $b = htmlspecialchars($_POST['myb'], ENT_QUOTES);
-if (isset($_SESSION['uid']) && isset($_SESSION['nick']) && isset($_SESSION['tm'])) {
-    $_SESSION['tm']= time();
 ?>
 
 <!DOCTYPE html>
@@ -16,9 +14,12 @@ if (isset($_SESSION['uid']) && isset($_SESSION['nick']) && isset($_SESSION['tm']
 <BODY STYLE='background-color:lightblue'>
 
 <?php
+if (isset($_SESSION['uid']) && isset($_SESSION['nick']) && isset($_SESSION['tm'])) {
+    $_SESSION['tm']= time();
     require_once("db_init.php");
 
-    $ps = $db->prepare("INSERT INTO table4 (ban, nam) VALUES (:v_b, :v_n)");
+    $ps = $db->prepare("INSERT INTO table4 (id, ban, nam) VALUES (:v_i, :v_b, :v_n)");
+    $ps->bindParam(':v_i', $_SESSION['uid']);
     $ps->bindParam(':v_b', $b);
     $ps->bindParam(':v_n', $u);
     $ps->execute();
@@ -27,6 +28,7 @@ if (isset($_SESSION['uid']) && isset($_SESSION['nick']) && isset($_SESSION['tm']
 } else {
     session_destroy();
     print "<P>ちゃんとログオンしてね！<BR>
+            <A HREF='gz.php'>トップページ</A><BR><BR>
             <A HREF='gz_logon.php'>ログオン</A></P>";
 }
 ?>

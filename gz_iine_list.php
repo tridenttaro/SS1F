@@ -24,11 +24,11 @@ session_start();
 
 
 <?php
-            $nick = $_SESSION['nick'];
+            $id = $_SESSION['uid'];
             require_once("db_init.php");
             $ps = $db->query("SELECT * FROM table1 WHERE ope=1 ORDER BY ban DESC");
             while ($r = $ps->fetch()) {
-                $ps2 = $db->query("SELECT ban FROM table4 WHERE nam = '$nick'");
+                $ps2 = $db->query("SELECT ban FROM table4 WHERE id = '$id'");
                 while ($r2 = $ps2->fetch()) {
                     if ($r['ban'] == $r2['ban']) {
 

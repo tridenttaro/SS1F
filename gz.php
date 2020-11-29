@@ -1,18 +1,14 @@
 <?php
 session_start();
 
-if (isset($_POST['nick'])) {
-    $_SESSION['nick'] = $_POST['nick'];
+if (isset($_POST['nick']) && $_POST['nick'] != "") {
+    $_SESSION['nick'] = htmlspecialchars($_POST['nick'], ENT_QUOTES, 'UTF-8');
 }
 if (isset($_SESSION['uid']) && isset($_SESSION['nick']) && isset($_SESSION['tm'])) {
     $_SESSION['tm'] = time();
-    $uid = htmlspecialchars($_SESSION['uid'], ENT_QUOTES);
-    $nick = htmlspecialchars($_SESSION['nick'], ENT_QUOTES);
+    
     setcookie("gz_user", $_SESSION['uid'], time()+60*60*24*365);
     setcookie("gz_date", date('Y年m月d日H字i分s秒'), time()+60*60*24*365);
-} else {
-    $uid = null;
-    $nick = null;
 }
 ?>
     
@@ -67,6 +63,7 @@ if (isset($_SESSION['uid']) && isset($_SESSION['nick']) && isset($_SESSION['tm']
         <a href='gz_up.php'>画像をアップロードするときはここ</a>
         <p>
             <a href='gz_mypage.php' id='mypage' style='display:none;'>マイページ</a><br>
+            <a href='gz_admin.php' id='admin' style='display:none;'>管理者ページ</a><br><br>
             <a href='gz_logon.php' id='logout' style='display:none;'>ログオフ</a>
 
             <a href='gz_logon.php' id='login' style='display:none;'>ログオン</a>
@@ -74,26 +71,36 @@ if (isset($_SESSION['uid']) && isset($_SESSION['nick']) && isset($_SESSION['tm']
     </div>
      
 <?php
-    if (isset($uid) && isset($nick) && isset($_SESSION['tm'])) {
+    if (isset($_SESSION['uid']) && isset($_SESSION['nick']) && isset($_SESSION['tm'])) {
+        $_SESSION['tm'] = time();
+        setcookie("gz_user", $_SESSION['uid'], time()+60*60*24*365);
+        setcookie("gz_date", date('Y年m月d日H字i分s秒'), time()+60*60*24*365);
+
         // データベースに追加
         require_once("db_init.php");
-
         $ps = $db->prepare("INSERT INTO `table2.1`(`id`, `nick`) VALUES (:v_i, :v_n)");
-        $ps->bindParam(':v_i', $uid);
-        $ps->bindParam(':v_n', $nick);
+        $ps->bindParam(':v_i', $_SESSION['uid']);
+        $ps->bindParam(':v_n', $_SESSION['nick']);
         $ps->execute();
 ?>
         <script>
             // ニックネームを表示
-            message.innerHTML = 'こんにちは' + '<?php print $nick ?>' + 'さん。'; 
+            message.innerHTML = 'こんにちは' + '<?php print $_SESSION['nick'] ?>' + 'さん。'; 
             // ログアウトボタンを表示
             logout.style.display = "block";
             // マイページボタンを表示
             mypage.style.display = "block";
-            // ログインボタンを非表示
-            login.style.display = "none";
         </script>
 <?php
+        // 管理者アカウントの場合
+        if ($_SESSION['uid'] == '7XISOdlnLKNpr0bcDhGv5UMxXgq1') {
+?>
+            <script>
+                // 管理者ページボタンを表示
+                admin.style.display = "block";
+            </script>
+<?php
+        }
     } else {
 ?>
         <script>
@@ -102,8 +109,6 @@ if (isset($_SESSION['uid']) && isset($_SESSION['nick']) && isset($_SESSION['tm']
             logout.style.display = "none";
             // マイページボタンを非表示
             mypage.style.display = "none";
-            // ログインボタンを表示
-            login.style.display = "block";
         </script>
 <?php
     }

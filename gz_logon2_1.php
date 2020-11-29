@@ -10,7 +10,7 @@ session_start();
 </head>
 <body style="background-color:lightblue;">
     <form action="gz.php" method="post" id="nickname" style="display:none;">
-        <p>ニックネームを決めてください</p>
+        <p>ニックネームを設定してください</p>
         <input type="text" name="nick" size="10" required><br>
         <input type="submit" value="決定">
     </form>

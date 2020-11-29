@@ -3,7 +3,7 @@ session_start();
 
 
 if(isset($_POST['name'])) {
-    $uid = $_POST['name'];
+    $uid = htmlspecialchars($_POST['name'], ENT_QUOTES, 'UTF-8');
 } else {
     $uid = null;
 }

@@ -6,7 +6,7 @@ session_start();
 <HTML lang="ja">
 <HEAD>
     <META HTTP EQUIV='Content-Type' CONTENT='text/html;charset=UTF-8'>
-    <TITLE>マイページ</TITLE>
+    <TITLE>名前変更</TITLE>
     <link rel="stylesheet" href="gz_style_file.css" type="text/css">
 </HEAD>
     
@@ -19,10 +19,19 @@ session_start();
         if (isset($_SESSION['uid']) && isset($_SESSION['nick']) && isset($_SESSION['tm'])) {
             $_SESSION['tm'] = time();
 ?>
-            <h1><?php echo $_SESSION['nick'] ?>さんのマイページ</h1>
+            <h1>ニックネームの変更</h1>
+            <h3>現在のニックネーム「<?php echo $_SESSION['nick'] ?>」</h3>
 
-            <a href="gz_iine_list.php">イイネ一覧</a><br><br>
-            <a href="gz_rename.php">ニックネーム変更</a>
+            <form action="gz_rename_set.php" method="post">
+                <p>
+                    <label>ニックネーム</label>
+                    <input type="text" name="nick">
+                </p>
+
+                <input type="submit" value="編集する">
+            </form>
+
+            
     </div>
     <div id='hidari'>
         <p>

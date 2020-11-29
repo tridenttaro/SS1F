@@ -14,58 +14,65 @@ if (isset($_SESSION['uid']) && isset($_SESSION['nick']) && isset($_SESSION['tm']
     <LINK REL='stylesheet' HREF='gz_style_file.css' TYPE='text/css'>
 </HEAD>
 <BODY style="background-color:gray">
-    <P>ここは管理者のページです</P>
-    <P><A HREF="gz_logon.php">ログオフ</A></P>
-    <FORM ACTION="gz_admin_op.php" METHOD="post">
+    <div id="ue">
+        <p class="title">ソリューションシェア　管理画面</p>
+    </div>
+    <div id="main">
+        <p id="message"></p>
+        <P>ここは管理者のページです</P>
+        <FORM ACTION="gz_admin_op.php" METHOD="post">
 <?php
-        require_once("db_init.php");
-        $ps = $db->query("SELECT * FROM table1 ORDER BY ban DESC");
-        while ($r = $ps->fetch()) {
-            $tg = $r['gaz'];
-            $tb = $r['ban'];
-            $to = $r['ope'];
-            $ii = null;
-            $ps_ii = $db->query("SELECT DISTINCT * FROM table4 WHERE ban = $tb");
-            $coun_iine = 0;
-            while ($r_ii = $ps_ii->fetch()) {
-                $ii = $ii . " " . $r_ii['nam'];
-                $coun_iine++;
+            require_once("db_init.php");
+            $ps = $db->query("SELECT * FROM table1 ORDER BY ban DESC");
+            while ($r = $ps->fetch()) {
+                $tg = $r['gaz'];
+                $tb = $r['ban'];
+                $to = $r['ope'];
+                $ii = null;
+                $ps_ii = $db->query("SELECT DISTINCT * FROM table4 WHERE ban = $tb");
+                $coun_iine = 0;
+                while ($r_ii = $ps_ii->fetch()) {
+                    $ii = $ii . " " . $r_ii['nam'];
+                    $coun_iine++;
+                }
+                print "<DIV ID='box'>対象" . $r['ban'] . 
+                        "<INPUT TYPE = checkbox NAME = check[] VALUE = $tb";
+                if ($to == 0) print " CHECKED = checked";
+
+                print ">非公開<BR>
+                    {$r['ban']}【投稿者:{$r['nam']}】{$r['dat']}
+                    <BR>" . nl2br($r['mes']) . "<BR><A HREF = './gz_img/$tg' TARGET = '_blank'>
+                    <IMG SRC='./gz_img/thumb_$tg'></A><BR>";
+
+
+                $ps_com = $db->query("SELECT * FROM table3 WHERE ban = $tb");
+                $coun = 1;
+                while ($r_com = $ps_com->fetch()) {
+                    print "<P CLASS='com'>●投稿コメント{$coun}<BR>
+                            【{$r_com['nam']}さんのメッセージ】{$r_com['dat']}<BR>"
+                            . nl2br($r_com['com']) . "</P>";
+                    $coun++;
+                }
+                print "</P></DIV>";
             }
-            print "<DIV ID='box'>対象" . $r['ban'] . 
-                    "<INPUT TYPE = checkbox NAME = check[] VALUE = $tb";
-            if ($to == 0) print " CHECKED = checked";
-
-            print ">非公開<BR>
-                {$r['ban']}【投稿者:{$r['nam']}】{$r['dat']}
-                <P CLASS='iine'><A HREF=gz_iine.php?tran_b=$tb>イイネ！</A>
-                ($coun_iine):$ii" . "</P><BR>" . nl2br($r['mes'])
-                ."<BR><A HREF = './gz_img/$tg' TARGET = '_blank'>
-                <IMG SRC='./gz_img/thumb_$tg'></A><BR>
-                <P CLASS = 'com'><A HREF = 'gz_com.php?sn=$tb'>
-                コメントするときはここをクリック</A></P>";
-
-
-            $ps_com = $db->query("SELECT * FROM table3 WHERE ban = $tb");
-            $coun = 1;
-            while ($r_com = $ps_com->fetch()) {
-                print "<P CLASS='com'>●投稿コメント{$coun}<BR>
-                        【{$r_com['nam']}さんのメッセージ】{$r_com['dat']}<BR>"
-                        . nl2br($r_com['com']) . "</P>";
-                $coun++;
-            }
-            print "</P></DIV>";
-        }
 ?>
-        <INPUT TYPE = "submit" VALUE='公開・非公開の送信'>
-    </FORM>
+            <INPUT TYPE = "submit" VALUE='公開・非公開の送信'>
+        </FORM>
+    </div>
 
-    <P><A HREF = 'gz_up.php'>画像をアップロードするときはここ</A></P>
-    <P><A HREF = 'gz_logon.php'>ログオフ</A></P>
+    <div id='hidari'>
+        <p>
+            <a href='gz_mypage.php'>マイページ</a><br>
+            <p><a href = 'gz.php'>通常画面へ(トップページ)</a></p><br><br>
+            <a href='gz_logon.php'>ログオフ</a>
+        </p>
+    </div>
 
 <?php
 } else {
     session_destroy();
     print "<P>ちゃんとログオンしてね！<BR>
+            <A HREF='gz.php'>トップページ</A><BR><BR>
             <A HREF='gz_logon.php'>ログオン</A></P>";
 }
 ?>

@@ -2,7 +2,7 @@ body {margin:0;}
 p.title {color: yellow; font-size:300%}
 p.title_pink {color: deeppink; font-size:300%;margin:0}
 p.iine {color:red; margin:0; padding:0; font-size: 80%}
-        p.com {margin:0; padding: 0; font-size: 70%}
+p.com {margin:0; padding: 0; font-size: 70%}
 td {background-color: lightblue}
 table {border: none; margin: 1em; }
 #ue {margin:0 0 0 0; height:7em; overflow:auto;
@@ -12,7 +12,15 @@ table {border: none; margin: 1em; }
 #main {margin: 0 0 0 6em; height: 100%; overflow: auto;
         background-color: #99cc99}
 #box {width: 30em; background-color: lightblue; margin: 1em;
-        padding: 1em;}
+        padding: 1em}
 
 /* 追加 */
 p.title2 {font-size: 200%}
+#uead {margin:0 0 0 0; height:7em; overflow:auto;
+        background-color: cornflowerblue}
+#hidariad {margin: 7em 0 0 0; width: 6em; position: absolute;
+        min-height: 100%; left: 0; top: 0; background-color: indianred}
+#mainad {margin: 0 0 0 6em; height: 100%; overflow: auto;
+        background-color: slategray}
+#boxad {width: 30em; background-color: lightseagreen; margin: 1em;
+        padding: 1em}

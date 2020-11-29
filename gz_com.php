@@ -28,11 +28,11 @@ if (isset($_SESSION['uid']) && isset($_SESSION['nick']) && isset($_SESSION['tm']
         <INPUT TYPE = "submit" VALUE = "送信">
     </FORM>
     <P><A HREF = gz.php>一覧表示に戻る</A></P>
-
 <?php
 } else {
     session_destroy();
     print "<P>ちゃんとログオンしてね！<BR>
+            <A HREF='gz.php'>トップページ</A><BR><BR>
             <A HREF='gz_logon.php'>ログオン</A></P>";
 }
 ?>
