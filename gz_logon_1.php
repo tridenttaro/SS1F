@@ -16,11 +16,11 @@ session_start();
     <h1>ログイン画面</h1>
     <div id="firebaseui-auth-container"></div>
 
-    <script src="https://www.gstatic.com/firebasejs/7.24.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/7.24.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.1.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.1.1/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/ui/3.5.2/firebase-ui-auth__ja.js"></script>
-    <script src="./config.js"></script>
-    <script>
+    <script src="./js/config.js"></script>
+    <script language="javascript" type="text/javascript">
         //----------------------------------------------
         // Firebase UIの設定
         //----------------------------------------------
@@ -41,8 +41,8 @@ session_start();
 
         };
 
-            var ui = new firebaseui.auth.AuthUI(firebase.auth());
-            ui.start('#firebaseui-auth-container', uiConfig);
+        var ui = new firebaseui.auth.AuthUI(firebase.auth());
+        ui.start('#firebaseui-auth-container', uiConfig);
     </script>
     
     

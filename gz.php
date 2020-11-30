@@ -1,6 +1,11 @@
 <?php
 session_start();
 
+if (isset($_POST["action"]) && $_POST["action"] == "logoff") {
+    $_SESSION = array();
+    session_destroy();
+}
+
 if (isset($_POST['nick']) && $_POST['nick'] != "") {
     $_SESSION['nick'] = htmlspecialchars($_POST['nick'], ENT_QUOTES, 'UTF-8');
 }
@@ -60,13 +65,19 @@ if (isset($_SESSION['uid']) && isset($_SESSION['nick']) && isset($_SESSION['tm']
 ?>
     </div>
     <div id='hidari'>
-        <a href='gz_up.php'>画像をアップロードするときはここ</a>
+        <br>
+        <a href='gz_logon.php' id='logon' style='display:none;'>ログイン</a>
         <p>
-            <a href='gz_mypage.php' id='mypage' style='display:none;'>マイページ</a><br>
-            <a href='gz_admin.php' id='admin' style='display:none;'>管理者ページ</a><br><br>
-            <a href='gz_logon.php' id='logout' style='display:none;'>ログオフ</a>
+            <a href='gz_up.php' id='upload' style='display:none;'>アップロードはここ</a><br><br>
+            <a href='gz_mypage.php' id='mypage' style='display:none;'>マイページ</a><br><br>
+            <a href='gz_admin.php' id='admin' style='display:none;'>管理者ページ</a><br>
+            
+            <form method="post" id='logoff' style='display:none;'>
+                <button type="submit" name="action" value="logoff" 
+                    onclick="return confirm('ログオフします。よろしいですか?')">ログオフ</button>
+            </form>
 
-            <a href='gz_logon.php' id='login' style='display:none;'>ログオン</a>
+            
         </p>
     </div>
      
@@ -84,16 +95,18 @@ if (isset($_SESSION['uid']) && isset($_SESSION['nick']) && isset($_SESSION['tm']
         $ps->execute();
 ?>
         <script>
-            // ニックネームを表示
+            // ログインしている場合の挨拶
             message.innerHTML = 'こんにちは' + '<?php print $_SESSION['nick'] ?>' + 'さん。'; 
+            // アップロードボタンを表示
+            upload.style.display = "block";
             // ログアウトボタンを表示
-            logout.style.display = "block";
+            logoff.style.display = "block";
             // マイページボタンを表示
             mypage.style.display = "block";
         </script>
 <?php
         // 管理者アカウントの場合
-        if ($_SESSION['uid'] == '7XISOdlnLKNpr0bcDhGv5UMxXgq1') {
+        if ($_SESSION['uid'] == 'fkisRnWQAXfzG8cVY0M8k1a91dD2') {
 ?>
             <script>
                 // 管理者ページボタンを表示
@@ -104,11 +117,10 @@ if (isset($_SESSION['uid']) && isset($_SESSION['nick']) && isset($_SESSION['tm']
     } else {
 ?>
         <script>
+            // ログインしていない場合のあいさつ
             message.innerHTML = 'こんにちは名無しさん。';
-            // ログアウトボタンを非表示
-            logout.style.display = "none";
-            // マイページボタンを非表示
-            mypage.style.display = "none";
+            // ログオンボタン非表示
+            logon.style.display = "block";
         </script>
 <?php
     }

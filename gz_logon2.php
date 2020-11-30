@@ -16,9 +16,9 @@ session_start();
         <button type="button" id="logout" style="display:none;">ログアウト</button>
     </form>
     
-    <script src="https://www.gstatic.com/firebasejs/7.24.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/7.24.0/firebase-auth.js"></script>
-    <script src="./config.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.1.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.1.1/firebase-auth.js"></script>
+    <script src="./js/config.js"></script>
     
     <script language="javascript" type="text/javascript">
         
@@ -96,7 +96,7 @@ session_start();
                 // メアド未確認
                 //------------------------------------  
                 actionCodeSettings = {
-                    url: `http://localhost/SS1F/gz_logon2.php`
+                    url: `http://localhost/SS1Ftest/gz_logon2.php`
                 };
 
                 user.sendEmailVerification(actionCodeSettings)

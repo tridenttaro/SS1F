@@ -33,7 +33,7 @@ session_start();
             $_SESSION['nick'] = $r['nick'];
 
             // 管理者アカウントの場合
-            if ($_SESSION['uid'] == '7XISOdlnLKNpr0bcDhGv5UMxXgq1') {
+            if ($_SESSION['uid'] == 'fkisRnWQAXfzG8cVY0M8k1a91dD2') {
 ?>
                 <script>
                     // ニックネーム項目非表示
