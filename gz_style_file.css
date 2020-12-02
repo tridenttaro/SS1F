@@ -1,6 +1,7 @@
 body {margin:0;}
 p.title {color: yellow; font-size:300%}
 p.title_pink {color: deeppink; font-size:300%;margin:0}
+a.thread_title {color: darkslateblue; margin:0; padding:0; font-size: 120%}
 p.iine {color:red; margin:0; padding:0; font-size: 80%}
 p.com {margin:0; padding: 0; font-size: 70%}
 td {background-color: lightblue}

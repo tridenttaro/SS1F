@@ -1,6 +1,5 @@
 <?php
 session_start();
-$b = $_GET['tran_b'];
 ?>
 
 <!DOCTYPE html>
@@ -12,24 +11,30 @@ $b = $_GET['tran_b'];
 
 <BODY STYLE = 'background-color:Lightblue'>
 <?php
-if (isset($_SESSION['uid']) && isset($_SESSION['nick']) && isset($_SESSION['tm'])) {
-    $_SESSION['tm'] = time();
+if (isset($_GET['tran_b'])) {
+    if (isset($_SESSION['uid']) && isset($_SESSION['nick']) && isset($_SESSION['tm'])) {
+        $_SESSION['tm'] = time();
+    
+        $b = $_GET['tran_b'];
 ?>
-    <P><?php print $b;?>番の投稿に<U>イイネ！</U>と言いました</P>
-    名前を入力してください<BR>
-    <FORM ACTION="gz_iine_set.php" METHOD="post">
-        名前<BR>
-        <INPUT TYPE = "text" NAME = "myn" VALUE = "<?php print $_SESSION['nick']; ?>"><BR>
-        <INPUT TYPE = "hidden" NAME = "myb" VALUE="<?php print $b; ?>">
-        <INPUT TYPE="submit" VALUE="送信">
-    </FORM>
+        <P><?php print $b;?>番の投稿に<U>イイネ！</U>と言いました</P>
+        名前を入力してください<BR>
+        <FORM ACTION="gz_iine_set.php" METHOD="post">
+            名前<BR>
+            <INPUT TYPE = "text" NAME = "myn" VALUE = "<?php print $_SESSION['nick']; ?>"><BR>
+            <INPUT TYPE = "hidden" NAME = "myb" VALUE="<?php print $b; ?>">
+            <INPUT TYPE="submit" VALUE="送信">
+        </FORM>
 
 <?php
+    } else {
+        session_destroy();
+        print "<P>ちゃんとログオンしてね！<BR>
+                <A HREF='gz.php'>トップページ</A><BR><BR>
+                <A HREF='gz_logon.php'>ログオン</A></P>";
+    }
 } else {
-    session_destroy();
-    print "<P>ちゃんとログオンしてね！<BR>
-            <A HREF='gz.php'>トップページ</A><BR><BR>
-            <A HREF='gz_logon.php'>ログオン</A></P>";
+    print "<P>正しい画面から遷移してください</P>";
 }
 ?>
 

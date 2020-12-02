@@ -6,12 +6,12 @@ session_start();
 <html lang="ja">
 <head>
     <meta charset="utf-8">
-    <title>ログイン画面</title>
+    <title>ログオン画面</title>
 </head>
 <body style="background-color:lightblue;">
     <form action="gz.php" method="post" id="nickname" style="display:none;">
         <p>ニックネームを設定してください</p>
-        <input type="text" name="nick" size="10" required><br>
+        <input type="text" name="nick" maxlength='16' required><br>
         <input type="submit" value="決定">
     </form>
 <?php
@@ -64,7 +64,7 @@ session_start();
 <?php
         }
     } else {
-        print "<p>ログインが必要なページです</p>";
+        print "<p>ログオンが必要なページです</p>";
     }
       
 ?>

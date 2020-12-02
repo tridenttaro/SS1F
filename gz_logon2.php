@@ -6,14 +6,14 @@ session_start();
 <html lang="ja">
 <head>
     <meta charset="utf-8">
-    <title>ログイン画面</title>
+    <title>ログオン画面</title>
 </head>
 <body style="background-color:lightblue;">
     <h1>...Please wait</h1>
     <div id="info"></div>
     <div id="info2"></div>
     <form>
-        <button type="button" id="logout" style="display:none;">ログアウト</button>
+        <button type="button" id="logout" style="display:none;">ログオフ</button>
     </form>
     
     <script src="https://www.gstatic.com/firebasejs/8.1.1/firebase-app.js"></script>
@@ -40,12 +40,12 @@ session_start();
          
             
             //------------------------------------
-            // 未ログイン状態で訪れた場合
+            // 未ログオン状態で訪れた場合
             //------------------------------------
             if(user === null){
-                showMessage('Not Login', 'ログインが必要な画面です');
-                info2.innerHTML = "<a href='gz_logon.php'>ログインはこちら</a>";
-                // ログアウトボタンを非表示
+                showMessage('Not Login', 'ログオンが必要な画面です');
+                info2.innerHTML = "<a href='gz_logon.php'>ログオンはこちら</a>";
+                // ログオフボタンを非表示
                 logout.style.display = "none";
                 // ニックネーム項目非表示
                 nickname.style.display = "none";
@@ -69,26 +69,26 @@ session_start();
                 
                 request.send(encodeFormData({name: uid}));
                 
-                // ログアウトボタンを表示
+                // ログオフボタンを表示
                 logout.style.display = "block";
                 
                 // 自動的に画面遷移
                 location.href = "./gz_logon2_1.php";
                 
                 //----------------------------------
-                // ログアウト
+                // ログオフ
                 //----------------------------------
                 logout.addEventListener("click", ()=>{
                     firebase.auth().signOut()
                     .then(()=>{
-                        console.log("ログアウトしました");
+                        console.log("ログオフしました");
                         <?php
                         session_destroy();
                         ?>
                         
                     })
                     .catch( (error)=>{
-                        console.log(`ログアウト時にエラーが発生しました (${error})`);
+                        console.log(`ログオフ時にエラーが発生しました (${error})`);
                     });
                 });
             } else {

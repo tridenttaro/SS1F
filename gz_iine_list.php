@@ -1,5 +1,16 @@
 <?php
 session_start();
+
+if (isset($_POST["action"]) && $_POST["action"] == "logoff") {
+    $_SESSION = array();
+    session_destroy();
+?>
+    <script> 
+        // 自動的に画面遷移
+        location.href = "./gz.php";
+    </script>
+<?php
+}
 ?>
 
 <!DOCTYPE html>
@@ -38,15 +49,9 @@ session_start();
                         $tb = $r['thread_number'];
                         $ii = null;
 ?>
-                        <DIV ID='box'>
-                            <p> 
-                                <?=print $r['thread_number'] . "【投稿者:" . $r['thread_nick'] . "】" . $r['date'];?>
-                                <br>
-                                <?=nl2br($r['text']);?><br>
-                                <a href='./gz_img/<?=$tg?>' TARGET='_blank'>
-                                    <img src='./gz_img/thumb_<?=$tg?>'>
-                                </a><br>
-                            </p>
+                        <div id='box'>
+                                <?=print $r['thread_number'] . "【投稿者:" . $r['thread_nick'] . "】" . $r['date'];?><br>
+                                <a href='gz_thread.php?tran_b=<?=$tb?>' class='thread_title'><?= $r['title'] ?></a><br>
                         </div>
 <?php  
                     }
@@ -57,7 +62,10 @@ session_start();
         <div id='hidari'>
             <p>
                 <a href='gz.php' id='toppage'>トップページ</a><br><br>
-                <a href='gz_logon.php' id='logout'>ログオフ</a>
+                <form method="post" id='logoff'>
+                    <button type="submit" name="action" value="logoff" 
+                        onclick="return confirm('ログオフします。よろしいですか?')">ログオフ</button>
+                </form>
             </p>
         </div>
 <?php

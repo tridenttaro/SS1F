@@ -9,12 +9,6 @@ if (isset($_POST["action"]) && $_POST["action"] == "logoff") {
 if (isset($_POST['nick']) && $_POST['nick'] != "") {
     $_SESSION['nick'] = htmlspecialchars($_POST['nick'], ENT_QUOTES, 'UTF-8');
 }
-if (isset($_SESSION['uid']) && isset($_SESSION['nick']) && isset($_SESSION['tm'])) {
-    $_SESSION['tm'] = time();
-    
-    setcookie("gz_user", $_SESSION['uid'], time()+60*60*24*365);
-    setcookie("gz_date", date('Y年m月d日H字i分s秒'), time()+60*60*24*365);
-}
 ?>
     
 <!DOCTYPE html>
@@ -33,6 +27,7 @@ if (isset($_SESSION['uid']) && isset($_SESSION['nick']) && isset($_SESSION['tm']
         <p class="iine">(よかったら<u>イイネ！</u>を押してください)</p>
     
 <?php
+        // データベース設定
         require_once("db_init.php");
         $ps = $webdb->query("SELECT * FROM `threads` WHERE `ope` = 1 ORDER BY `thread_number` DESC");
         while ($r = $ps->fetch()) {
@@ -45,28 +40,17 @@ if (isset($_SESSION['uid']) && isset($_SESSION['nick']) && isset($_SESSION['tm']
                 $ii = $ii . " " . $r_ii['fav_nick'];
                 $coun_iine++;
             }
-            print "<DIV ID='box'>{$r['thread_number']}【投稿者:{$r['thread_nick']}】{$r['date']}
-                <p class='iine'><a href=gz_iine.php?tran_b=$tb>イイネ!</a>
-                ($coun_iine):$ii" . "</p><br>" . nl2br($r['text']) .
-                "<br><a href='./gz_img/$tg' TARGET='_blank'>
-                <img src='./gz_img/thumb_$tg'></a><br>
-                <p class='com'><a href='gz_com.php?sn=$tb'>
-                コメントするときはここをクリック</a></p>";
-            $ps_com = $webdb->query("SELECT * FROM `comments` WHERE `thread_number` = $tb");
-            $coun = 1;
-            while ($r_com = $ps_com->fetch()) {
-                print "<p class='com'>●投稿コメント{$coun}<br>
-                    【{$r_com['com_nick']}さんのメッセージ】{$r_com['date']}<br>"
-                    . nl2br($r_com['text']) . "</p>";
-                $coun++;
-            }
-            print "</p></div>";  
+?>
+            <div id='box'>
+                <?=print $r['thread_number'] . "【投稿者:" . $r['thread_nick'] . "】" . $r['date'];?><br>
+                <a href='gz_thread.php?tran_b=<?=$tb?>' class='thread_title'><?= $r['title'] ?></a><br>
+            </div>
+<?php            
         }
 ?>
     </div>
     <div id='hidari'>
-        <br>
-        <a href='gz_logon.php' id='logon' style='display:none;'>ログイン</a>
+        <a href='gz_logon.php' id='logon' style='display:none;'>ログオン</a>
         <p>
             <a href='gz_up.php' id='upload' style='display:none;'>アップロードはここ</a><br><br>
             <a href='gz_mypage.php' id='mypage' style='display:none;'>マイページ</a><br><br>
@@ -95,11 +79,11 @@ if (isset($_SESSION['uid']) && isset($_SESSION['nick']) && isset($_SESSION['tm']
         $ps->execute();
 ?>
         <script>
-            // ログインしている場合の挨拶
+            // ログオンしている場合の挨拶
             message.innerHTML = 'こんにちは' + '<?php print $_SESSION['nick'] ?>' + 'さん。'; 
             // アップロードボタンを表示
             upload.style.display = "block";
-            // ログアウトボタンを表示
+            // ログオフボタンを表示
             logoff.style.display = "block";
             // マイページボタンを表示
             mypage.style.display = "block";
@@ -117,7 +101,7 @@ if (isset($_SESSION['uid']) && isset($_SESSION['nick']) && isset($_SESSION['tm']
     } else {
 ?>
         <script>
-            // ログインしていない場合のあいさつ
+            // ログオンしていない場合のあいさつ
             message.innerHTML = 'こんにちは名無しさん。';
             // ログオンボタン非表示
             logon.style.display = "block";

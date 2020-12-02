@@ -1,5 +1,17 @@
 <?php
 session_start();
+
+if (isset($_POST["action"]) && $_POST["action"] == "logoff") {
+    $_SESSION = array();
+    session_destroy();
+?>
+    <script> 
+        // 自動的に画面遷移
+        location.href = "./gz.php";
+    </script>
+<?php
+}
+
 if (isset($_SESSION['uid']) && isset($_SESSION['nick']) && isset($_SESSION['tm'])) {
     $_SESSION['tm'] = time();
     setcookie ("gz_user", $_SESSION['uid'], time()+60*60*24*365);
@@ -36,25 +48,14 @@ if (isset($_SESSION['uid']) && isset($_SESSION['nick']) && isset($_SESSION['tm']
                     $ii = $ii . " " . $r_ii['fav_nick'];
                     $coun_iine++;
                 }
-                print "<DIV ID='box'>対象" . $r['thread_nick'] . 
-                        "<INPUT TYPE = checkbox NAME = check[] VALUE = $tb";
-                if ($to == 0) print " CHECKED = checked";
-
-                print ">非公開<BR>
-                    {$r['thread_number']}【投稿者:{$r['thread_nick']}】{$r['date']}
-                    <BR>" . nl2br($r['text']) . "<BR><A HREF = './gz_img/$tg' TARGET = '_blank'>
-                    <IMG SRC='./gz_img/thumb_$tg'></A><BR>";
-
-
-                $ps_com = $webdb->query("SELECT * FROM `comments` WHERE `thread_number` = $tb");
-                $coun = 1;
-                while ($r_com = $ps_com->fetch()) {
-                    print "<P CLASS='com'>●投稿コメント{$coun}<BR>
-                            【{$r_com['com_nick']}さんのメッセージ】{$r_com['date']}<BR>"
-                            . nl2br($r_com['text']) . "</P>";
-                    $coun++;
-                }
-                print "</P></DIV>";
+?>
+                <div id='box'>
+                    非公開：<INPUT TYPE = checkbox NAME = check[] VALUE = <?=$tb?> <?php if ($to == 0) { print "CHECKED = checked";} ?> ><br>
+                    <?=$r['thread_number']?>【投稿者:<?=$r['thread_nick']?>】<?=$r['date']?><br>
+                    <a href='gz_thread.php?tran_b=<?=$tb?>' class='thread_title'><?= $r['title'] ?></a><br>
+                </div>
+<?php
+                
             }
 ?>
             <INPUT TYPE = "submit" VALUE='公開・非公開の送信'>
@@ -65,7 +66,10 @@ if (isset($_SESSION['uid']) && isset($_SESSION['nick']) && isset($_SESSION['tm']
         <p>
             <a href='gz_mypage.php'>マイページ</a><br><br>
             <p><a href = 'gz.php'>通常画面へ(トップページ)</a></p><br><br>
-            <a href='gz_logon.php'>ログオフ</a>
+            <form method="post" id='logoff'>
+                <button type="submit" name="action" value="logoff" 
+                    onclick="return confirm('ログオフします。よろしいですか?')">ログオフ</button>
+            </form>
         </p>
     </div>
 

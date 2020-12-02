@@ -21,8 +21,12 @@ if (isset($_SESSION['uid']) && isset($_SESSION['nick']) && isset($_SESSION['tm']
           METHOD = 'post'>
         名前<BR>
         <INPUT TYPE='text' NAME='myn' VALUE="<?php print $_SESSION['nick']; ?>"><BR>
-        メッセージ<BR>
-        <TEXTAREA NAME='mym' ROWS='10' COLS='70'></TEXTAREA><BR>
+        タイトル<BR>
+        <INPUT TYPE='text' NAME='myt' MAXLENGTH='30' 
+            PLACEHOLDER='タイトル：最大３０文字' required><BR>
+        本文<BR>
+        <TEXTAREA NAME='mym' ROWS='10' COLS='70' MAXLENGTH='2040' 
+            PLACEHOLDER='本文：最大２０４０文字' required></TEXTAREA><BR>
         <INPUT TYPE = 'file' NAME='myf'>
         <P>送信できるのは1MBまでのJPEG画像だけです！<BR>
             また展開後のメモリ消費が多い場合アップロードできません。<BR>
