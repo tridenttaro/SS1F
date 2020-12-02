@@ -50,9 +50,10 @@ if (isset($_SESSION['uid']) && isset($_SESSION['nick']) && isset($_SESSION['tm']
             //データベースに追加
             require_once("db_init.php");
 
-            $ps = $db->prepare("INSERT INTO table1 (nam,mes,ope,gaz,dat)
-                                VALUES (:v_n,:v_m,1,:v_g,:v_d)");
-		    $ps->bindParam(':v_n', $my_nam);
+            $ps = $webdb->prepare("INSERT INTO `threads` (`uid`,`thread_nick`,`text`,`ope`,`image`,`date`)
+                                VALUES (:v_u,:v_n,:v_m,1,:v_g,:v_d)");
+            $ps->bindParam(':v_u', $_SESSION['uid']);
+            $ps->bindParam(':v_n', $my_nam);
             $ps->bindParam(':v_m', $my_mes);
             $ps->bindParam(':v_g', $fn);
             $ps->bindParam(':v_d', $ima);
@@ -66,7 +67,8 @@ if (isset($_SESSION['uid']) && isset($_SESSION['nick']) && isset($_SESSION['tm']
     
 }else{
     session_destroy();
-    print "<P>アップロードにはログオンが必要です<BR>
+    print "<P>ちゃんとログオンしてね！<BR>
+            <A HREF='gz.php'>トップページ</A><BR><BR>
             <A HREF='gz_logon.php'>ログオン</A></P>";
 }
 ?>

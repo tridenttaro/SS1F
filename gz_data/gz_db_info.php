@@ -2,5 +2,5 @@
 $SERV = "localhost";
 $USER = "root";
 $PASS = "";
-$DBNM = "db";
+$DBNM = "webdb";
 ?>

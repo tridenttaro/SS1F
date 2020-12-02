@@ -16,11 +16,12 @@ $b = htmlspecialchars($_POST['myb'], ENT_QUOTES);
 <?php
 if (isset($_SESSION['uid']) && isset($_SESSION['nick']) && isset($_SESSION['tm'])) {
     $_SESSION['tm']= time();
+    // データベース設定
     require_once("db_init.php");
 
-    $ps = $db->prepare("INSERT INTO table4 (id, ban, nam) VALUES (:v_i, :v_b, :v_n)");
-    $ps->bindParam(':v_i', $_SESSION['uid']);
-    $ps->bindParam(':v_b', $b);
+    $ps = $webdb->prepare("INSERT INTO `favorites` (`uid`, `thread_number`, `fav_nick`) VALUES (:v_u, :v_tn, :v_n)");
+    $ps->bindParam(':v_u', $_SESSION['uid']);
+    $ps->bindParam(':v_tn', $b);
     $ps->bindParam(':v_n', $u);
     $ps->execute();
     print "<P>". $u . "さんが「イイネ！」と言いました<BR>

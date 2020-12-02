@@ -24,11 +24,14 @@ if (isset($_SESSION['uid']) && isset($_SESSION['nick']) && isset($_SESSION['tm']
 <A HREF='gz.php'>一覧表示に戻ります</A>
 
 <?php
+    // データベース設定
     require_once("db_init.php");
     $ima = date('YmdHis');
-    $ps = $db->prepare("INSERT INTO table3 (ban, com, nam, dat) VALUES (:v_b, :v_c, :v_n, :v_d)");
-    $ps->bindParam(':v_b', $b);
-    $ps->bindParam(':v_c', $p);
+    $ps = $webdb->prepare("INSERT INTO `comments` (`uid`, `thread_number`, `text`, `com_nick`, `date`) 
+                        VALUES (:v_u, :v_tn, :v_t, :v_n, :v_d)");
+    $ps->bindParam(':v_u', $_SESSION['uid']);
+    $ps->bindParam(':v_tn', $b);
+    $ps->bindParam(':v_t', $p);
     $ps->bindParam(':v_n', $u);
     $ps->bindParam(':v_d', $ima);
     $ps->execute();

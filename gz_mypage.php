@@ -34,7 +34,8 @@ session_start();
  <?php   
         }else{
             session_destroy();
-            print "<P>アップロードにはログオンが必要です<BR>
+            print "<P>ちゃんとログオンしてね！<BR>
+                    <A HREF='gz.php'>トップページ</A><BR><BR>
                     <A HREF='gz_logon.php'>ログオン</A></P>";
         }
 ?>

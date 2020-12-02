@@ -14,10 +14,11 @@ if (isset($_SESSION['uid']) && isset($_SESSION['nick']) && isset($_SESSION['tm']
 <BODY style="background-color:gray">
     
 <?php
+    // データベース設定
     require_once("db_init.php");
-    $n = $db->exec("UPDATE table1 SET ope = 1");
+    $n = $webdb->exec("UPDATE `threads` SET `ope` = 1");
     foreach ($_POST['check'] as $a => $b) {
-        $n = $db->exec("UPDATE table1 SET ope = 0 WHERE ban = $b");
+        $n = $webdb->exec("UPDATE `threads` SET `ope` = 0 WHERE `thread_number` = $b");
         print $b . "は非公開です<BR>";
     }
 ?>
@@ -29,6 +30,7 @@ if (isset($_SESSION['uid']) && isset($_SESSION['nick']) && isset($_SESSION['tm']
 } else {
     session_destroy();
     print "<P>ちゃんとログオンしてね！<BR>
+            <A HREF='gz.php'>トップページ</A><BR><BR>
             <A HREF='gz_logon.php'>ログオン</A></P>";
 }
 ?>

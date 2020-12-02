@@ -22,35 +22,36 @@ if (isset($_SESSION['uid']) && isset($_SESSION['nick']) && isset($_SESSION['tm']
         <P>ここは管理者のページです</P>
         <FORM ACTION="gz_admin_op.php" METHOD="post">
 <?php
+            // データベース設定
             require_once("db_init.php");
-            $ps = $db->query("SELECT * FROM table1 ORDER BY ban DESC");
+            $ps = $webdb->query("SELECT * FROM `threads` ORDER BY `thread_number` DESC");
             while ($r = $ps->fetch()) {
-                $tg = $r['gaz'];
-                $tb = $r['ban'];
+                $tg = $r['image'];
+                $tb = $r['thread_number'];
                 $to = $r['ope'];
                 $ii = null;
-                $ps_ii = $db->query("SELECT DISTINCT * FROM table4 WHERE ban = $tb");
+                $ps_ii = $webdb->query("SELECT DISTINCT * FROM `favorites` WHERE `thread_number` = $tb");
                 $coun_iine = 0;
                 while ($r_ii = $ps_ii->fetch()) {
-                    $ii = $ii . " " . $r_ii['nam'];
+                    $ii = $ii . " " . $r_ii['fav_nick'];
                     $coun_iine++;
                 }
-                print "<DIV ID='box'>対象" . $r['ban'] . 
+                print "<DIV ID='box'>対象" . $r['thread_nick'] . 
                         "<INPUT TYPE = checkbox NAME = check[] VALUE = $tb";
                 if ($to == 0) print " CHECKED = checked";
 
                 print ">非公開<BR>
-                    {$r['ban']}【投稿者:{$r['nam']}】{$r['dat']}
-                    <BR>" . nl2br($r['mes']) . "<BR><A HREF = './gz_img/$tg' TARGET = '_blank'>
+                    {$r['thread_number']}【投稿者:{$r['thread_nick']}】{$r['date']}
+                    <BR>" . nl2br($r['text']) . "<BR><A HREF = './gz_img/$tg' TARGET = '_blank'>
                     <IMG SRC='./gz_img/thumb_$tg'></A><BR>";
 
 
-                $ps_com = $db->query("SELECT * FROM table3 WHERE ban = $tb");
+                $ps_com = $webdb->query("SELECT * FROM `comments` WHERE `thread_number` = $tb");
                 $coun = 1;
                 while ($r_com = $ps_com->fetch()) {
                     print "<P CLASS='com'>●投稿コメント{$coun}<BR>
-                            【{$r_com['nam']}さんのメッセージ】{$r_com['dat']}<BR>"
-                            . nl2br($r_com['com']) . "</P>";
+                            【{$r_com['com_nick']}さんのメッセージ】{$r_com['date']}<BR>"
+                            . nl2br($r_com['text']) . "</P>";
                     $coun++;
                 }
                 print "</P></DIV>";
@@ -62,7 +63,7 @@ if (isset($_SESSION['uid']) && isset($_SESSION['nick']) && isset($_SESSION['tm']
 
     <div id='hidari'>
         <p>
-            <a href='gz_mypage.php'>マイページ</a><br>
+            <a href='gz_mypage.php'>マイページ</a><br><br>
             <p><a href = 'gz.php'>通常画面へ(トップページ)</a></p><br><br>
             <a href='gz_logon.php'>ログオフ</a>
         </p>

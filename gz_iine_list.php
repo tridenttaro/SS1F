@@ -24,23 +24,25 @@ session_start();
 
 
 <?php
-            $id = $_SESSION['uid'];
+            $uid = $_SESSION['uid'];
+            // データベース設定
             require_once("db_init.php");
-            $ps = $db->query("SELECT * FROM table1 WHERE ope=1 ORDER BY ban DESC");
+            $ps = $webdb->query("SELECT * FROM `threads` WHERE `ope` = 1 ORDER BY `thread_number` DESC");
             while ($r = $ps->fetch()) {
-                $ps2 = $db->query("SELECT ban FROM table4 WHERE id = '$id'");
-                while ($r2 = $ps2->fetch()) {
-                    if ($r['ban'] == $r2['ban']) {
+                $ps2 = $webdb->query("SELECT `thread_number` FROM `favorites` WHERE `uid` = '" . $uid . "'");
 
-                        $tg = $r['gaz'];
-                        $tb = $r['ban'];
+                while ($r2 = $ps2->fetch()) {
+                    if ($r['thread_number'] == $r2['thread_number']) {
+
+                        $tg = $r['image'];
+                        $tb = $r['thread_number'];
                         $ii = null;
 ?>
                         <DIV ID='box'>
                             <p> 
-                                <?=print $r['ban'] . "【投稿者:" . $r['nam'] . "】" . $r['dat'];?>
+                                <?=print $r['thread_number'] . "【投稿者:" . $r['thread_nick'] . "】" . $r['date'];?>
                                 <br>
-                                <?=nl2br($r['mes']);?><br>
+                                <?=nl2br($r['text']);?><br>
                                 <a href='./gz_img/<?=$tg?>' TARGET='_blank'>
                                     <img src='./gz_img/thumb_<?=$tg?>'>
                                 </a><br>
@@ -61,8 +63,9 @@ session_start();
 <?php
     } else {
         session_destroy();
-        print "<P>アップロードにはログオンが必要です<BR>
-                <A HREF='gz_logon.php'>ログオン</A></P>";
+        print "<P>ちゃんとログオンしてね！<BR>
+            <A HREF='gz.php'>トップページ</A><BR><BR>
+            <A HREF='gz_logon.php'>ログオン</A></P>";
     }
 ?>
 

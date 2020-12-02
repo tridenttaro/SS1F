@@ -17,9 +17,10 @@ session_start();
 <?php
     if (isset($_SESSION['uid'])) {
         // データベース
-        require_once("db_init.php");
-        $sql = "SELECT * FROM `table2.1` WHERE id = '" . $_SESSION['uid'] . "'";
-        $sth = $db->query($sql);
+        require_once("./db_init.php");
+        $sql = "SELECT * FROM `users` WHERE `uid`" . "='" . $_SESSION['uid'] . "'";
+        
+        $sth = $webdb->query($sql);
         $sth->execute();
         $count = $sth->rowCount();
 
