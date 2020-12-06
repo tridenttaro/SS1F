@@ -3,47 +3,47 @@ session_start();
 ?>
 
 <!DOCTYPE html>
-<HTML lang=ja>
-<HEAD>
-    <META HTTP EQUIV='Content-Type' CONTENT='text/html;charset=UTF-8'>
-    <TITLE>たび画像アップロード</TITLE>
-</HEAD>
-<BODY style='background-color:lightblue'>
+<html lang=ja>
+<head>
+    <meta http equiv='content-type' content='text/html;charset=utf-8'>
+    <title>アップロード画面</title>
+</head>
+<body style='background-color:lightblue'>
 
 <?php
 if (isset($_SESSION['uid']) && isset($_SESSION['nick']) && isset($_SESSION['tm'])) {
     $_SESSION['tm'] = time();
 ?>
 
-    <P style="color:deeppink;font-size:300%">ソリューションシェア</P>
-    投稿よろしくお願いします！
-    <FORM ENCTYPE = 'multipart/form-data' ACTION = 'gz_up_set.php' 
-          METHOD = 'post'>
-        名前<BR>
-        <INPUT TYPE='text' NAME='myn' VALUE="<?php print $_SESSION['nick']; ?>"><BR>
-        タイトル<BR>
-        <INPUT TYPE='text' NAME='myt' MAXLENGTH='30' 
-            PLACEHOLDER='タイトル：最大３０文字' required><BR>
-        本文<BR>
-        <TEXTAREA NAME='mym' ROWS='10' COLS='70' MAXLENGTH='2040' 
-            PLACEHOLDER='本文：最大２０４０文字' required></TEXTAREA><BR>
-        <INPUT TYPE = 'file' NAME='myf'>
-        <P>送信できるのは1MBまでのJPEG画像だけです！<BR>
-            また展開後のメモリ消費が多い場合アップロードできません。<BR>
-            <INPUT TYPE='submit' VALUE='送信'><BR>
-            <A HREF='gz.php'>一覧表示へ</A>
-        </P>
-    </FORM>
+    <p style="color:deeppink;font-size:300%">ソリューションシェア</p>
+    投稿画面
+    <form enctype = 'multipart/form-data' action = 'gz_up_set.php' 
+          method = 'post'>
+        名前<br>
+        <input type='text' name='myn' value="<?php print $_SESSION['nick']; ?>"><br>
+        タイトル<br>
+        <input type='text' name='myt' maxlength='30' 
+            placeholder='タイトル：最大３０文字' required><br>
+        本文<br>
+        <textarea name='mym' rows='10' cols='70' maxlength='2040' 
+            placeholder='本文：最大２０４０文字' required></textarea><br>
+        <input type = 'file' name='myf'>
+        <p>送信できるのは1mbまでのjpeg画像だけです！<br>
+            また展開後のメモリ消費が多い場合アップロードできません。<br>
+            <input type='submit' value='送信'><br>
+            <a href='gz.php'>一覧表示へ</a>
+        </p>
+    </form>
 
 
 <?php
 }else{
     session_destroy();
-    print "<P>アップロードにはログオンが必要です<BR>
-            <A HREF='gz.php'>トップページ</A><BR><BR>
-            <A HREF='gz_logon.php'>ログオン</A></P>";
+    print "<p>アップロードにはログオンが必要です<br>
+            <a href='gz.php'>トップページ</a><br><br>
+            <a href='gz_logon.php'>ログオン</a></p>";
 }
 ?>
             
-</BODY>
-</HTML>
+</body>
+</html>

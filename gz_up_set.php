@@ -3,13 +3,13 @@ session_start();
 ?>
 
 <!DOCTYPE html>
-<HTML lang="ja">
-<HEAD>
-    <META HTTP EQUIV='Content-Type' CONTENT='text/html;charset=UTF-8'>
-    <TITLE>アップロード完了</TITLE>
-</HEAD>
+<html lang="ja">
+<head>
+    <meta http equiv='content-type' content='text/html;charset=utf-8'>
+    <title>アップロード完了</title>
+</head>
     
-<BODY style='background-color:khaki'>
+<body style='background-color:khaki'>
 
 <?php
 if (isset($_SESSION['uid']) && isset($_SESSION['nick']) && isset($_SESSION['tm'])) {
@@ -22,8 +22,8 @@ if (isset($_SESSION['uid']) && isset($_SESSION['nick']) && isset($_SESSION['tm']
 
         if ($file['size'] > 1024*1024){
             unlink($file['tmp_name']);
-            print "<P>アップするファイルのサイズは1MB以下にしてください<BR>
-            <A HREF='gz_up.php'>アップに戻る</A></P>";
+            print "<p>アップするファイルのサイズは1mb以下にしてください<br>
+            <a href='gz_up.php'>アップに戻る</a></p>";
             
         }else{
             $ima = date('YmdHis');
@@ -60,7 +60,7 @@ if (isset($_SESSION['uid']) && isset($_SESSION['nick']) && isset($_SESSION['tm']
             $ps->bindParam(':v_g', $fn);
             $ps->bindParam(':v_d', $ima);
             $ps->execute();
-            print "<P><A HREF=gz.php>一覧表示へ</A></P>";
+            print "<p><a href=gz.php>一覧表示へ</a></p>";
         }
     } else if ($_POST['myn']<>"" && $_POST['mym']<>"" && $_POST['myt']<>"") {
         $ima = date('YmdHis');
@@ -82,20 +82,20 @@ if (isset($_SESSION['uid']) && isset($_SESSION['nick']) && isset($_SESSION['tm']
         $ps->bindParam(':v_m', $my_mes);
         $ps->bindParam(':v_d', $ima);
         $ps->execute();
-        print "<P><A HREF=gz.php>一覧表示へ</A></P>";
+        print "<p><a href=gz.php>一覧表示へ</a></p>";
 
     }else{
-        print "<P>必ず名前、タイトル、本文を入力してください<BR>
-                <A HREF='gz_up.php'>再度アップロード</A></P>";
+        print "<p>必ず名前、タイトル、本文を入力してください<br>
+                <a href='gz_up.php'>再度アップロード</a></p>";
     }
     
 }else{
     session_destroy();
-    print "<P>ちゃんとログオンしてね！<BR>
-            <A HREF='gz.php'>トップページ</A><BR><BR>
-            <A HREF='gz_logon.php'>ログオン</A></P>";
+    print "<p>ちゃんとログオンしてね！<br>
+            <a href='gz.php'>トップページ</a><br><br>
+            <a href='gz_logon.php'>ログオン</a></p>";
 }
 ?>
 
-</BODY>
-</HTML>
+</body>
+</html>

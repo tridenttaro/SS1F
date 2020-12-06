@@ -3,13 +3,13 @@ session_start();
 ?>
 
 <!DOCTYPE html>
-<HTML lang="ja">
-<HEAD>
-    <META HTTP-EQUIV='Content-Type' CONTENT='text/html;charset=UTF-8'>
-    <TITLE>イイネを送信します</TITLE>
-</HEAD>
+<html lang="ja">
+<head>
+    <meta http-equiv='content-type' content='text/html;charset=utf-8'>
+    <title>イイネを送信します</title>
+</head>
 
-<BODY STYLE = 'background-color:Lightblue'>
+<body style = 'background-color:lightblue'>
 <?php
 if (isset($_GET['tran_b'])) {
     if (isset($_SESSION['uid']) && isset($_SESSION['nick']) && isset($_SESSION['tm'])) {
@@ -17,26 +17,26 @@ if (isset($_GET['tran_b'])) {
     
         $b = $_GET['tran_b'];
 ?>
-        <P><?php print $b;?>番の投稿に<U>イイネ！</U>と言いました</P>
-        名前を入力してください<BR>
-        <FORM ACTION="gz_iine_set.php" METHOD="post">
-            名前<BR>
-            <INPUT TYPE = "text" NAME = "myn" VALUE = "<?php print $_SESSION['nick']; ?>"><BR>
-            <INPUT TYPE = "hidden" NAME = "myb" VALUE="<?php print $b; ?>">
-            <INPUT TYPE="submit" VALUE="送信">
-        </FORM>
+        <p><?php print $b;?>番の投稿に<u>イイネ！</u>と言いました</p>
+        名前を入力してください<br>
+        <form action="gz_iine_set.php" method="post">
+            名前<br>
+            <input type = "text" name = "myn" value = "<?php print $_SESSION['nick']; ?>"><br>
+            <input type = "hidden" name = "myb" value="<?php print $b; ?>">
+            <input type="submit" value="送信">
+        </form>
 
 <?php
     } else {
         session_destroy();
-        print "<P>ちゃんとログオンしてね！<BR>
-                <A HREF='gz.php'>トップページ</A><BR><BR>
-                <A HREF='gz_logon.php'>ログオン</A></P>";
+        print "<p>ちゃんとログオンしてね！<br>
+                <a href='gz.php'>トップページ</a><br><br>
+                <a href='gz_logon.php'>ログオン</a></p>";
     }
 } else {
-    print "<P>正しい画面から遷移してください</P>";
+    print "<p>正しい画面から遷移してください</p>";
 }
 ?>
 
-</BODY>
-</HTML>
+</body>
+</html>

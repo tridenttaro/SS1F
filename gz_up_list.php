@@ -15,7 +15,7 @@ if (isset($_GET['uid'])) {
 <html lang="ja">
 <head>
     <meta http equiv='Content-Type' content='text/html;charset=UTF-8'>
-    <title>イイネ一覧</title>
+    <title>投稿スレッド一覧</title>
     <link rel="stylesheet" href="gz_style_file.css" type="text/css">
 </head>
     
@@ -46,34 +46,31 @@ if (isset($_GET['uid'])) {
 
             // データベース設定
             require_once("db_init.php");
-            $ps = $webdb->query("SELECT * FROM `threads` WHERE `ope` = 1 ORDER BY `thread_number` DESC");
+            $ps = $webdb->query("SELECT * FROM `threads` WHERE `uid` = '" . $get_uid . "' ORDER BY `thread_number` DESC");
             while ($r = $ps->fetch()) {
-                $ps2 = $webdb->query("SELECT `thread_number` FROM `favorites` WHERE `uid` = '" . $get_uid . "'");
-
-                while ($r2 = $ps2->fetch()) {
-                    if ($r['thread_number'] == $r2['thread_number']) {
-                        $tb = $r['thread_number'];
-                        // イイネの表示
-                        $ps_ii = $webdb->query("SELECT DISTINCT * FROM `favorites` WHERE `thread_number` = $tb");
-                        $coun_iine = 0;
-                        while ($r_ii = $ps_ii->fetch()) {
-                            $coun_iine++;
-                        }
-?>
-                        <div id='box'>
-                                <?php print $r['thread_number']?>
-                                <a href='gz_mypage.php?uid=<?=$r['uid']?>'>【投稿者:<?php print $r['thread_nick'];?>】</a><?$r['date'];?><br>
-                                <p class='iine'>イイネ(<?=$coun_iine?>)</p><hr>
-                                <a href='gz_thread.php?tran_b=<?=$tb?>' class='thread_title'><?= $r['title'] ?></a><br>
-                        </div>
-<?php  
+                    $tb = $r['thread_number'];
+                    // イイネの表示
+                    $ps_ii = $webdb->query("SELECT DISTINCT * FROM `favorites` WHERE `thread_number` = $tb");
+                    $coun_iine = 0;
+                    while ($r_ii = $ps_ii->fetch()) {
+                        $coun_iine++;
                     }
-                }
+?>
+                    <div id='box'>
+<?php                         
+                            if ($r['ope'] == 0) {print "<p style='color: red;'>管理者により非公開に設定されています</p>";}
+?>                          
+                            <?php print $r['thread_number']?>
+                            <a href='gz_mypage.php?uid=<?=$r['uid']?>'>【投稿者:<?php print $r['thread_nick'];?>】</a><?$r['date'];?><br>
+                            <p class='iine'>イイネ(<?=$coun_iine?>)</p><hr>
+                            <a href='gz_thread.php?tran_b=<?=$tb?>' class='thread_title'><?= $r['title'] ?></a><br>
+                    </div>
+<?php  
             }
 ?>
             <script>
                 // ログオンしていない場合のあいさつ
-                message.innerHTML = 'イイネしたスレッド一覧';
+                message.innerHTML = 'アップロードしたスレッド一覧';
             </script>
 <?php
             // かつ、ログインしている

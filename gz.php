@@ -33,16 +33,17 @@ if (isset($_POST['nick']) && $_POST['nick'] != "") {
         while ($r = $ps->fetch()) {
             $tg = $r['image'];
             $tb = $r['thread_number'];
-            $ii = null;
+            // イイネの表示
             $ps_ii = $webdb->query("SELECT DISTINCT * FROM `favorites` WHERE `thread_number` = $tb");
             $coun_iine = 0;
             while ($r_ii = $ps_ii->fetch()) {
-                $ii = $ii . " " . $r_ii['fav_nick'];
                 $coun_iine++;
             }
 ?>
             <div id='box'>
-                <?=print $r['thread_number'] . "【投稿者:" . $r['thread_nick'] . "】" . $r['date'];?><br>
+                <?php print $r['thread_number']?>
+                <a href='gz_mypage.php?uid=<?=$r['uid']?>'>【投稿者:<?php print $r['thread_nick'];?>】</a><?$r['date'];?><br>
+                <p class='iine'>イイネ(<?=$coun_iine?>)</p><hr>
                 <a href='gz_thread.php?tran_b=<?=$tb?>' class='thread_title'><?= $r['title'] ?></a><br>
             </div>
 <?php            
@@ -50,19 +51,17 @@ if (isset($_POST['nick']) && $_POST['nick'] != "") {
 ?>
     </div>
     <div id='hidari'>
-        <a href='gz_logon.php' id='logon' style='display:none;'>ログオン</a>
-        <p>
-            <a href='gz_up.php' id='upload' style='display:none;'>アップロードはここ</a><br><br>
-            <a href='gz_mypage.php' id='mypage' style='display:none;'>マイページ</a><br><br>
-            <a href='gz_admin.php' id='admin' style='display:none;'>管理者ページ</a><br>
-            
-            <form method="post" id='logoff' style='display:none;'>
-                <button type="submit" name="action" value="logoff" 
-                    onclick="return confirm('ログオフします。よろしいですか?')">ログオフ</button>
-            </form>
+        <div id='logon' style='display:none;'><br><a href='gz_logon.php'>ログオン</a></div>
 
-            
-        </p>
+        <div id='upload' style='display:none;'><br><a href='gz_up.php'>アップロードはここ</a></div>
+        <div id='mypage' style='display:none;'><br><a href='gz_mypage.php?uid=<?=$_SESSION['uid']?>'>マイページ</a></div>
+        <div id='admin' style='display:none;'><br><br><a href='gz_admin.php'>管理者ページ</a></div>
+        <br><br>
+        <form method="post" id='logoff' style='display:none;'>
+            <button type="submit" name="action" value="logoff" 
+                onclick="return confirm('ログオフします。よろしいですか?')">ログオフ</button>
+        </form>
+
     </div>
      
 <?php

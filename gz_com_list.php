@@ -15,7 +15,7 @@ if (isset($_GET['uid'])) {
 <html lang="ja">
 <head>
     <meta http equiv='Content-Type' content='text/html;charset=UTF-8'>
-    <title>イイネ一覧</title>
+    <title>コメント一覧</title>
     <link rel="stylesheet" href="gz_style_file.css" type="text/css">
 </head>
     
@@ -48,7 +48,7 @@ if (isset($_GET['uid'])) {
             require_once("db_init.php");
             $ps = $webdb->query("SELECT * FROM `threads` WHERE `ope` = 1 ORDER BY `thread_number` DESC");
             while ($r = $ps->fetch()) {
-                $ps2 = $webdb->query("SELECT `thread_number` FROM `favorites` WHERE `uid` = '" . $get_uid . "'");
+                $ps2 = $webdb->query("SELECT `thread_number` FROM `comments` WHERE `uid` = '" . $get_uid . "'");
 
                 while ($r2 = $ps2->fetch()) {
                     if ($r['thread_number'] == $r2['thread_number']) {
@@ -73,7 +73,7 @@ if (isset($_GET['uid'])) {
 ?>
             <script>
                 // ログオンしていない場合のあいさつ
-                message.innerHTML = 'イイネしたスレッド一覧';
+                message.innerHTML = 'コメントしたスレッド一覧';
             </script>
 <?php
             // かつ、ログインしている

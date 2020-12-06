@@ -38,20 +38,20 @@ if (isset($_SESSION['uid']) && isset($_SESSION['nick']) && isset($_SESSION['tm']
             require_once("db_init.php");
             $ps = $webdb->query("SELECT * FROM `threads` ORDER BY `thread_number` DESC");
             while ($r = $ps->fetch()) {
-                $tg = $r['image'];
                 $tb = $r['thread_number'];
                 $to = $r['ope'];
-                $ii = null;
+                // イイネの表示
                 $ps_ii = $webdb->query("SELECT DISTINCT * FROM `favorites` WHERE `thread_number` = $tb");
                 $coun_iine = 0;
                 while ($r_ii = $ps_ii->fetch()) {
-                    $ii = $ii . " " . $r_ii['fav_nick'];
                     $coun_iine++;
                 }
 ?>
                 <div id='box'>
                     非公開：<INPUT TYPE = checkbox NAME = check[] VALUE = <?=$tb?> <?php if ($to == 0) { print "CHECKED = checked";} ?> ><br>
-                    <?=$r['thread_number']?>【投稿者:<?=$r['thread_nick']?>】<?=$r['date']?><br>
+                    <?=print $r['thread_number']?>
+                    <a href='gz_mypage.php?uid=<?=$r['uid']?>'>【投稿者:<?php print $r['thread_nick'];?>】</a><?$r['date'];?><br>
+                    <p class='iine'>イイネ(<?=$coun_iine?>)</p><hr>
                     <a href='gz_thread.php?tran_b=<?=$tb?>' class='thread_title'><?= $r['title'] ?></a><br>
                 </div>
 <?php

@@ -5,6 +5,31 @@ if (isset($_POST["action"]) && $_POST["action"] == "logoff") {
     $_SESSION = array();
     session_destroy();
 }
+
+if (isset($_GET['tran_b'])) {
+    $_SESSION['thread'] = $_GET['tran_b'];
+}
+
+if (isset($_POST['myn']) && isset($_POST['myc']) && isset($_POST['myb'])) {
+    $u = htmlspecialchars($_POST['myn'], ENT_QUOTES);
+    $p = htmlspecialchars($_POST['myc'], ENT_QUOTES);
+    $b = htmlspecialchars($_POST['myb'], ENT_QUOTES);
+
+    // データベース設定
+    require_once("db_init.php");
+    $ima = date('YmdHis');
+    $ps = $webdb->prepare("INSERT INTO `comments` (`uid`, `thread_number`, `text`, `com_nick`, `date`) 
+                        VALUES (:v_u, :v_tn, :v_t, :v_n, :v_d)");
+    $ps->bindParam(':v_u', $_SESSION['uid']);
+    $ps->bindParam(':v_tn', $b);
+    $ps->bindParam(':v_t', $p);
+    $ps->bindParam(':v_n', $u);
+    $ps->bindParam(':v_d', $ima);
+    $ps->execute();
+
+    header("Location: {$_SERVER['PHP_SELF']}");
+    exit;
+}
 ?>
     
 <!DOCTYPE html>
@@ -19,25 +44,24 @@ if (isset($_POST["action"]) && $_POST["action"] == "logoff") {
         <p class="title">ソリューションシェア</p>
     </div>
     <div id='hidari'>
-        <a href='gz_logon.php' id='logon' style='display:none;'>ログオン</a>
-        <p>
-            <a href='gz_up.php' id='upload' style='display:none;'>アップロードはここ</a><br>
-            <a href='gz.php' id='toppage'>トップページ</a><br><br>
-            <a href='gz_mypage.php' id='mypage' style='display:none;'>マイページ</a><br><br>
-            <a href='gz_admin.php' id='admin' style='display:none;'>管理者ページ</a><br>
-            
-            <form method="post" id='logoff' style='display:none;'>
-                <button type="submit" name="action" value="logoff" 
-                    onclick="return confirm('ログオフします。よろしいですか?')">ログオフ</button>
-            </form>
-        </p>
+        <div id='logon' style='display:none;'><br><a href='gz_logon.php'>ログオン</a></div>
+
+        <div id='toppage'><br><a href='gz.php'>トップページ</a></div>
+        <div id='upload' style='display:none;'><br><a href='gz_up.php'>アップロードはここ</a></div>
+	    <div id='mypage' style='display:none;'><br><a href='gz_mypage.php?uid=<?=$_SESSION['uid']?>'>マイページ</a></div>
+        <div id='admin' style='display:none;'><br><br><a href='gz_admin.php'>管理者ページ</a></div>
+        <br><br>
+        <form method="post" id='logoff' style='display:none;'>
+            <button type="submit" name="action" value="logoff" 
+                onclick="return confirm('ログオフします。よろしいですか?')">ログオフ</button>
+        </form>
     </div>
     <div id="main">
         <h3>スレッド詳細画面</h3>
         <p id="message"></p>
 <?php
-        if (isset($_GET['tran_b'])) {
-            $b = $_GET['tran_b'];
+        if (isset($_SESSION['thread'])) {
+            $b = $_SESSION['thread'];
 
             // データベース設定
             require_once("db_init.php");
@@ -55,25 +79,35 @@ if (isset($_POST["action"]) && $_POST["action"] == "logoff") {
                 }
 ?>
                 <div id='box'>
-                    <?=$r['thread_number']?>【投稿者:<?=$r['thread_nick']?>】<?=$r['date']?>
+                    <?=print $r['thread_number']?>
+                    <a href='gz_mypage.php?uid=<?=$r['uid']?>'>【投稿者:<?php print $r['thread_nick'];?>】</a><?$r['date'];?><br>
                     <p class='iine'><a href='gz_iine.php?tran_b=<?=$tb?>'>イイネ!</a> (<?=$coun_iine?>):<?=$ii?></p>
                     <p class='thread_title'><?= $r['title'] ?></p>
                     <?=nl2br($r['text']);?><br>
                     <a href='./gz_img/<?=$tg?>' TARGET='_blank'>
                         <img src='./gz_img/thumb_<?=$tg?>'>
                     </a><br><hr>
-                    <p class='com'><a href='gz_com.php?sn=<?=$tb?>'>コメントするときはここをクリック</a></p>          
+                    <!-- <p class='com'><a href='gz_com.php?sn=<?=$tb?>'>コメントするときはここをクリック</a></p>           -->
 <?php
-                    $ps_com = $webdb->query("SELECT * FROM `comments` WHERE `thread_number` = $tb");
-                    $coun = 1;
+                    $ps_com = $webdb->query("SELECT * FROM `comments` WHERE `thread_number` = $tb ORDER BY `date` DESC");
+                    $coun = $ps_com->rowCount();
                     while ($r_com = $ps_com->fetch()) {
 ?>
                         <p class='com'>●投稿コメント<?=$coun?><br>【<?=$r_com['com_nick']?>さんのメッセージ】
                             <?=$r_com['date']?><br><?=nl2br($r_com['text'])?></p>
 <?php
-                        $coun++;
+                        $coun--;
                     }
 ?>
+                    <form method="post" id="upcom" style="display:none;" action="<?php print($_SERVER['PHP_SELF']); ?>">
+                        名前<br>
+                        <input type = "text" name = "myn" value = "<?php print $_SESSION['nick']; ?>"><br>
+                        コメント<BR>
+                        <textarea name = "myc" rows = "5" cols = "60" maxlength='250' 
+                            placeholder='最大２５０文字' required></textarea><br>
+                        <input type = "hidden" name = "myb" value = "<?php print $tb; ?>">
+                        <input type="submit" value="送信">
+                    </form>
                 </div>  
 <?php
             }
@@ -90,8 +124,19 @@ if (isset($_POST["action"]) && $_POST["action"] == "logoff") {
                     logoff.style.display = "block";
                     // マイページボタンを表示
                     mypage.style.display = "block";
+                    // コメント入力欄表示
+                    upcom.style.display = "block";
                 </script>
 <?php
+                // 管理者アカウントの場合
+                if ($_SESSION['uid'] == 'fkisRnWQAXfzG8cVY0M8k1a91dD2') {
+?>
+                    <script>
+                        // 管理者ページボタンを表示
+                        admin.style.display = "block";
+                    </script>
+<?php
+                }
             } else {
 ?>
                 <script>
