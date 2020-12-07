@@ -31,7 +31,7 @@ if (isset($_SESSION['uid']) && isset($_SESSION['nick']) && isset($_SESSION['tm']
     </div>
     <div id="main">
         <p id="message"></p>
-        <P>ここは管理者のページです</P>
+        <h3>ここは管理者のページです</h3>
         <FORM ACTION="gz_admin_op.php" METHOD="post">
 <?php
             // データベース設定
@@ -63,14 +63,14 @@ if (isset($_SESSION['uid']) && isset($_SESSION['nick']) && isset($_SESSION['tm']
     </div>
 
     <div id='hidari'>
-        <p>
-            <a href='gz_mypage.php'>マイページ</a><br><br>
-            <p><a href = 'gz.php'>通常画面へ(トップページ)</a></p><br><br>
-            <form method="post" id='logoff'>
-                <button type="submit" name="action" value="logoff" 
-                    onclick="return confirm('ログオフします。よろしいですか?')">ログオフ</button>
-            </form>
-        </p>
+        <div id='toppage'><br><a href='gz.php'>トップページ</a></div>
+        <div id='upload'><br><a href='gz_up.php'>アップロードはここ</a></div>
+        <div id='mypage'><br><a href='gz_mypage.php?uid=<?=$_SESSION['uid']?>'>マイページ</a></div>
+        <br><br>
+        <form method="post" id='logoff' style='display:none;'>
+            <button type="submit" name="action" value="logoff" 
+                onclick="return confirm('ログオフします。よろしいですか?')">ログオフ</button>
+        </form>
     </div>
 
 <?php

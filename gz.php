@@ -52,7 +52,8 @@ if (isset($_POST['nick']) && $_POST['nick'] != "") {
     </div>
     <div id='hidari'>
         <div id='logon' style='display:none;'><br><a href='gz_logon.php'>ログオン</a></div>
-
+        
+        <div id='toppage'><br><a href='gz.php'>トップページ</a></div>
         <div id='upload' style='display:none;'><br><a href='gz_up.php'>アップロードはここ</a></div>
         <div id='mypage' style='display:none;'><br><a href='gz_mypage.php?uid=<?=$_SESSION['uid']?>'>マイページ</a></div>
         <div id='admin' style='display:none;'><br><br><a href='gz_admin.php'>管理者ページ</a></div>
