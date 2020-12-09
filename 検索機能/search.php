@@ -9,6 +9,16 @@
 <link href="_common/css/style.css" rel="stylesheet">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <style>
+        .example li {
+display: inline;
+padding:10px 15px;
+border:1px #ccc solid;color:#000053;
+border-radius: 5px / 5px;
+}
+
+.example .this {background-color:#777;color:#fff;}
+    </style>
 </head>
 <body>
     <header>
@@ -22,16 +32,49 @@
 <?php
     $d = mysql_connect("localhost", "root", "") or die("接続失敗");
     mysql_select_db("db", $d);
-    $key = $_POST["search"];  
+     session_start();
         
-   
-    if($_POST["search_cat"]=="thread"){
-        $table_cat = "thread_name";   
-    }else{
-        $table_cat = "story";
-    }
+      
+        if(isset($_POST["search_cat"])){
+            if($_POST["search_cat"]=="thread"){
+                $_SESSION['search_cat']= "thread_name"; 
+            }else{
+                $_SESSION['search_cat'] = "story";
+            }
+        }
+        $table_cat = $_SESSION['search_cat']; 
+        
+        if(isset($_POST["search_method"])){
+            if($_POST["search_method"]=="and"){
+                $_SESSION['search_method']= "and"; 
+            }else{
+                $_SESSION['search_method'] = "or";
+            }
+        }
+        $table_method = $_SESSION['search_method']; 
+        
+        if(isset($_POST["search_sort"])){
+                $_SESSION['search_sort']= $_POST["search_sort"];     
+        }
+        $date_sort = $_SESSION['search_sort'];
+        
+        if(isset($_POST["search"])){
+            $limit = -1;
+        
+     
+            $keywords = preg_split('/[\p{Z}\p{Cc}]++/u', $_POST["search"], $limit, PREG_SPLIT_NO_EMPTY);
+            print_r($keywords);
+            $_SESSION['search'] = $keywords[0];
+            for($i=1; $i<count($keywords); $i++){
+                $_SESSION['search'] = $_SESSION['search']."%' ".$table_method." `".$table_cat."` LIKE '%".$keywords[$i];
+            }
+            echo $_SESSION['search'];
+        }
+        $key = $_SESSION['search']; 
+        
+
     $rc = mysql_query("SELECT COUNT(*) FROM `thread` WHERE `".$table_cat."` LIKE '%".$key."%'");
-        $num_tag =mysql_fetch_array($rc)[mysql_fetch_array($rc)];
+        $num_tag =mysql_fetch_array($rc)[mysql_fetch_array($rc)]; //num_tagは検索結果件数
 
     ?><p class="alert alert-success">
         <?php echo "検索結果は".$num_tag ."件でした<br>";
@@ -39,7 +82,10 @@
     
 <?php  
         
-    $r = mysql_query("SELECT * FROM `thread` WHERE `".$table_cat."` LIKE '%".$key."%'");
+        $page_num = 5; //何項目ずつ表示するか
+        $page = $_GET["page"];
+        $this_page = ($page - 1) * $page_num;
+    $r = mysql_query("SELECT * FROM `thread` WHERE `".$table_cat."` LIKE '%".$key."%' ORDER BY `thread_created` " .$date_sort." LIMIT ".$this_page."," .$page_num);
         $num = 0;
     while ($row = mysql_fetch_array($r)){
         $id_rows[] = $row['thread_id']; ?>
@@ -53,8 +99,28 @@
         print $row['story'].'<br>';
         $num++;
     }
-    mysql_close($d);
-?>
+     
+        ?>
+        <br><br>
+        <ul class="example">
+            <?php if ($page != 1){?>
+            <li><?php echo '<a href="' . "search.php" . '?page=' . ($page - 1) . '">前へ</a>'; ?></li><?php } ?>
+            <?php if ($page > 2){?>
+            <li><?php echo '<a href="' . "search.php" . '?page=' . ($page - 2) . '">'. ($page - 2) .'</a>'; ?></li><?php } ?>
+            <?php if ($page > 1){?>
+            <li><?php echo '<a href="' . "search.php" . '?page=' . ($page - 1) . '">'. ($page - 1) .'</a>'; ?></li><?php } if($num_tag != 0){ ?>
+            <li class="this"><?php echo $page.'</a>'; ?></li><?php } 
+            if ($page < ceil($num_tag/$page_num )  ){?>
+            <li><?php echo '<a href="' . "search.php" . '?page=' . ($page + 1) . '">'. ($page + 1) .'</a>'; ?></li><?php }
+            if ($page < ceil($num_tag/$page_num ) - 1 ){ ?>
+            <li><?php echo '<a href="' . "search.php" . '?page=' . ($page + 2) . '">'. ($page + 2) .'</a>'; ?></li><?php } 
+            if (($page != ceil($num_tag/$page_num ))&&($num_tag != 0)) {?>
+            <li><?php echo '<a href="' . "search.php" . '?page=' . ($page + 1) . '">次へ</a>'; ?></li>
+            <?php } ?>
+            
+</ul>
+        <?php
+    mysql_close($d);?>
     </main>
     
 </body>

@@ -18,14 +18,23 @@
 </header>
 <main>
     <!-- ↓検索機能。 -->
-<form method="post" action="search.php">
+<form method="post" action="search.php?page=1">
     <p>検索
     <input type=search name="search" >
     <input type="submit" value="検索">
+      
     </p>
     <p>
     <label><input type=radio name="search_cat" value="thread" checked>スレッド名検索</label>
     <label><input type=radio name="search_cat" value="text">本文検索</label>
+    </p>
+    <p>
+    <label><input type=radio name="search_method" value="and" checked>すべて含む</label>
+    <label><input type=radio name="search_method" value="or">少なくとも1つを含む</label>
+    </p>
+    <p>
+    <label><input type=radio name="search_sort" value="ASC" checked>新しくできたスレッド順</label>
+    <label><input type=radio name="search_sort" value="DESC" >昔からあるスレッド順</label>
     </p>
 </form>
     <!-- ↑ここまで -->
