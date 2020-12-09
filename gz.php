@@ -33,20 +33,45 @@ if (isset($_POST['nick']) && $_POST['nick'] != "") {
         while ($r = $ps->fetch()) {
             $tg = $r['image'];
             $tb = $r['thread_number'];
-            // イイネの表示
-            $ps_ii = $webdb->query("SELECT DISTINCT * FROM `favorites` WHERE `thread_number` = $tb");
+            $th_uid = $r['uid'];
+            // ニックネームの取得
+            $ps_nick = $webdb->query("SELECT * FROM `users` WHERE `uid` = '" . $th_uid . "'");
+            while ($r_nick = $ps_nick->fetch()) {
+                $thread_nick = $r_nick['nick'];
+            }
+            // イイネの個数取得
+            $ps_ii = $webdb->query("SELECT DISTINCT * FROM `favorites` WHERE `thread_number` = '" . $tb . "'");
             $coun_iine = 0;
             while ($r_ii = $ps_ii->fetch()) {
                 $coun_iine++;
             }
+            // ブラックリストに入っているか確認
+            $flag_bk = 0;
+            // セッションが存在している(ログオンしている)
+            if(isset($_SESSION['uid'])) {
+                $uid = $_SESSION['uid'];
+            // セッションが存在していない(ログオンしていない)
+            } else {
+                $uid = 1;
+            }
+            $ps_bk = $webdb->query("SELECT * FROM `blacklists` WHERE `uid` = '" . $uid . "'");
+            while ($r_bk = $ps_bk->fetch()) {
+                // ブロックしているユーザの時
+                if ($r_bk['black_uid'] == $th_uid) {
+                    $flag_bk = 1;
+                }
+            }
+            // ブロックしていないアカウントの場合、表示
+            if ($flag_bk == 0) {
 ?>
-            <div id='box'>
-                <?php print $r['thread_number']?>
-                <a href='gz_mypage.php?uid=<?=$r['uid']?>'>【投稿者:<?php print $r['thread_nick'];?>】</a><?$r['date'];?><br>
-                <p class='iine'>イイネ(<?=$coun_iine?>)</p><hr>
-                <a href='gz_thread.php?tran_b=<?=$tb?>' class='thread_title'><?= $r['title'] ?></a><br>
-            </div>
+                <div id='box'>
+                    <?php print $r['thread_number']?>
+                    【投稿者:<a href='gz_mypage.php?uid=<?=$r['uid']?>'><?php print $thread_nick ?></a>】<?=$r['date'];?><br>
+                    <p class='iine'>イイネ(<?=$coun_iine?>)</p><hr>
+                    <a href='gz_thread.php?tran_b=<?=$tb?>' class='thread_title'><?= $r['title'] ?></a><br>
+                </div>
 <?php            
+            }
         }
 ?>
     </div>
@@ -66,12 +91,13 @@ if (isset($_POST['nick']) && $_POST['nick'] != "") {
     </div>
      
 <?php
+    // ログインしている
     if (isset($_SESSION['uid']) && isset($_SESSION['nick']) && isset($_SESSION['tm'])) {
         $_SESSION['tm'] = time();
         setcookie("gz_user", $_SESSION['uid'], time()+60*60*24*365);
         setcookie("gz_date", date('Y年m月d日H字i分s秒'), time()+60*60*24*365);
-
-        // データベースに追加
+        // ユーザを追加
+        // データベースの設定
         require_once("db_init.php");
         $ps = $webdb->prepare("INSERT INTO `users`(`uid`, `nick`) VALUES (:v_u, :v_n)");
         $ps->bindParam(':v_u', $_SESSION['uid']);

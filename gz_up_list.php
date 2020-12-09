@@ -49,6 +49,12 @@ if (isset($_GET['uid'])) {
             $ps = $webdb->query("SELECT * FROM `threads` WHERE `uid` = '" . $get_uid . "' ORDER BY `thread_number` DESC");
             while ($r = $ps->fetch()) {
                     $tb = $r['thread_number'];
+                    $th_uid = $r['uid'];
+                    // ニックネームの取得
+                    $ps_nick = $webdb->query("SELECT * FROM `users` WHERE `uid` = '" . $th_uid . "'");
+                    while ($r_nick = $ps_nick->fetch()) {
+                        $th_nick = $r_nick['nick'];
+                    }
                     // イイネの表示
                     $ps_ii = $webdb->query("SELECT DISTINCT * FROM `favorites` WHERE `thread_number` = $tb");
                     $coun_iine = 0;
@@ -61,7 +67,7 @@ if (isset($_GET['uid'])) {
                             if ($r['ope'] == 0) {print "<p style='color: red;'>管理者により非公開に設定されています</p>";}
 ?>                          
                             <?php print $r['thread_number']?>
-                            <a href='gz_mypage.php?uid=<?=$r['uid']?>'>【投稿者:<?php print $r['thread_nick'];?>】</a><?$r['date'];?><br>
+                            <a href='gz_mypage.php?uid=<?=$r['uid']?>'>【投稿者:<?=$th_nick;?>】</a><?$r['date'];?><br>
                             <p class='iine'>イイネ(<?=$coun_iine?>)</p><hr>
                             <a href='gz_thread.php?tran_b=<?=$tb?>' class='thread_title'><?= $r['title'] ?></a><br>
                     </div>

@@ -44,43 +44,12 @@ if (isset($_GET['uid'])) {
         // URLが正しい
         if (isset($get_uid)) {
 
-            // データベース設定
-            require_once("db_init.php");
-            $ps = $webdb->query("SELECT * FROM `threads` WHERE `ope` = 1 ORDER BY `thread_number` DESC");
-            while ($r = $ps->fetch()) {
-                $ps2 = $webdb->query("SELECT `thread_number` FROM `favorites` WHERE `uid` = '" . $get_uid . "'");
-
-                while ($r2 = $ps2->fetch()) {
-                    if ($r['thread_number'] == $r2['thread_number']) {
-                        $tb = $r['thread_number'];
-                        // イイネの表示
-                        $ps_ii = $webdb->query("SELECT DISTINCT * FROM `favorites` WHERE `thread_number` = $tb");
-                        $coun_iine = 0;
-                        while ($r_ii = $ps_ii->fetch()) {
-                            $coun_iine++;
-                        }
-?>
-                        <div id='box'>
-                                <?php print $r['thread_number']?>
-                                <a href='gz_mypage.php?uid=<?=$r['uid']?>'>【投稿者:<?php print $r['thread_nick'];?>】</a><?$r['date'];?><br>
-                                <p class='iine'>イイネ(<?=$coun_iine?>)</p><hr>
-                                <a href='gz_thread.php?tran_b=<?=$tb?>' class='thread_title'><?= $r['title'] ?></a><br>
-                        </div>
-<?php  
-                    }
-                }
-            }
-?>
-            <script>
-                // ログオンしていない場合のあいさつ
-                message.innerHTML = 'イイネしたスレッド一覧';
-            </script>
-<?php
             // かつ、ログインしている
             if (isset($_SESSION['uid']) && isset($_SESSION['nick']) && isset($_SESSION['tm'])) {
                 $_SESSION['tm'] = time();
 ?>
                 <script>
+                    message.innerHTML = 'イイネしたスレッド一覧';
                     // ログオフボタンを表示
                     logoff.style.display = "block";
                     // アップロードボタンを表示
@@ -98,10 +67,69 @@ if (isset($_GET['uid'])) {
                     </script>
 <?php
                 }
+                // アクセスページの本人のアカウント
+                if ($_SESSION['uid'] == $get_uid) {
+
+                    // データベース設定
+                    require_once("db_init.php");
+                    $ps = $webdb->query("SELECT * FROM `threads` WHERE `ope` = 1 ORDER BY `thread_number` DESC");
+                    while ($r = $ps->fetch()) {
+                        
+                        $ps2 = $webdb->query("SELECT `thread_number` FROM `favorites` WHERE `uid` = '" . $get_uid . "'");
+                        while ($r2 = $ps2->fetch()) {
+                            if ($r['thread_number'] == $r2['thread_number']) {
+                                $tb = $r['thread_number'];
+                                $th_uid = $r['uid'];
+                                // ニックネームの取得
+                                $ps_nick = $webdb->query("SELECT * FROM `users` WHERE `uid` = '" . $th_uid . "'");
+                                while ($r_nick = $ps_nick->fetch()) {
+                                    $th_nick = $r_nick['nick'];
+                                }
+                                // イイネの表示
+                                $ps_ii = $webdb->query("SELECT DISTINCT * FROM `favorites` WHERE `thread_number` = $tb");
+                                $coun_iine = 0;
+                                while ($r_ii = $ps_ii->fetch()) {
+                                    $coun_iine++;
+                                }
+                                // ブラックリストに入っているか確認
+                                $flag_bk = 0;
+                                $uid = $_SESSION['uid'];
+                                $ps_bk = $webdb->query("SELECT * FROM `blacklists` WHERE `uid` = '" . $uid . "'");
+                                for ($i = 0; $i < 1; $i++) {
+                                    while ($r_bk = $ps_bk->fetch()) {
+                                        // ブロックしているユーザの時
+                                        if ($r_bk['black_uid'] == $r['uid']) {
+                                            $flag_bk = 1;
+                                        }
+                                    }
+                                    // ブロックしていないアカウントの場合、表示
+                                    if ($flag_bk == 0) {
+?>
+                                        <div id='box'>
+                                                <?php print $r['thread_number']?>
+                                                <a href='gz_mypage.php?uid=<?=$r['uid']?>'>【投稿者:<?=$th_nick;?>】</a><?$r['date'];?><br>
+                                                <p class='iine'>イイネ(<?=$coun_iine?>)</p><hr>
+                                                <a href='gz_thread.php?tran_b=<?=$tb?>' class='thread_title'><?= $r['title'] ?></a><br>
+                                        </div>
+<?php  
+                                    }
+                                }
+                            }
+                        }
+                    }
+                // 本人のアカウントではない
+                } else {
+?>
+                    <script>
+                        message.innerHTML = 'このページは表示できません。本人のアカウントでログオンした場合のみ閲覧できます。';
+                    </script>
+<?php
+                }
+            // ログオンしていない
             } else {
-                // ログオンしていない
 ?>
                 <script>
+                    message.innerHTML = 'このページは表示できません。本人のアカウントでログオンした場合のみ閲覧できます。';
                     // ログオンボタン非表示
                     logon.style.display = "block";
                 </script>

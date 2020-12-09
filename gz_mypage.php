@@ -86,13 +86,14 @@ if (isset($_GET['uid'])) {
         <div id='thlist' style='display:none;'><br><a href="gz_up_list.php?uid=<?=$get_uid?>">投稿したスレッド一覧</a></div>
         <div id='iilist' style='display:none;'><br><a href="gz_iine_list.php?uid=<?=$get_uid?>">イイネしたスレッド一覧</a></div>
         <div id='comlist' style='display:none;'><br><a href="gz_com_list.php?uid=<?=$get_uid?>">コメントしたスレッド一覧</a></div>
+        <div id='bklist' style='display:none;'><br><a href="gz_bk_list.php">ブロックしたアカウント一覧</a></div>
         <div id='chnick' style='display:none;'><br><a href="gz_rename.php">ニックネーム変更</a></div>
         <!-- ブロックボタン -->
         <form method='post' name='form1' id='black' style='display:none;'>
             <br><br>
             <input type="hidden" name="black_uid" value="<?=$get_uid?>">
             <a href="javascript:form1.submit()" style="background-color:red; color:gold;"
-                onclick="return confirm('ブロックします。よろしいですか?')"><?=$get_nick?>さんをブロックする</a>
+                onclick="return confirm('ブロックしたユーザの投稿、コメントは表示されなくなります。\nよろしいですか?')"><?=$get_nick?>さんをブロックする</a>
         </form>
         <!-- ブロック解除ボタン -->
         <form method='post' name='form2' id='white' style='display:none;'>
@@ -163,14 +164,20 @@ if (isset($_GET['uid'])) {
 ?>
                     <script>
                         message.innerHTML = 'マイページ';
+                        // 投稿したスレッド一覧ボタンを表示
+                        thlist.style.display = "block";
                         // イイネしたスレッド一覧ボタンを表示
                         iilist.style.display = "block";
+                        // コメントしたスレッド一覧ボタンを表示
+                        comlist.style.display = "block";
                         // ニックネーム変更ボタンを表示
                         chnick.style.display = "block";
+                        // ブラックリストボタンを表示
+                        bklist.style.display = "block";
                     </script>
 <?php
+            // ブラックリストに入っていない
             } else {
-                // ブラックリストに入っていない
                 if ($flag_bk == 0) {    
 ?>
                     <script>

@@ -17,7 +17,7 @@ if (isset($_POST["action"]) && $_POST["action"] == "logoff") {
 <html lang="ja">
 <head>
     <meta http equiv='Content-Type' content='text/html;charset=UTF-8'>
-    <title>名前変更</title>
+    <title>ブラックリスト</title>
     <link rel="stylesheet" href="gz_style_file.css" type="text/css">
 </head>
     
@@ -45,19 +45,26 @@ if (isset($_POST["action"]) && $_POST["action"] == "logoff") {
 <?php
         if (isset($_SESSION['uid']) && isset($_SESSION['nick']) && isset($_SESSION['tm'])) {
             $_SESSION['tm'] = time();
+
+            // データベース設定
+            require_once("db_init.php");
+            $uid = $_SESSION['uid'];
+            $ps = $webdb->query("SELECT * FROM `blacklists` WHERE `uid` =  '" . $uid . "'");
+            while ($r = $ps->fetch()) {
+                $bk_uid = $r['black_uid'];
+
+                $ps_u = $webdb->query("SELECT * FROM `users` WHERE `uid` = '" . $bk_uid . "'");
+                        while ($r_u = $ps_u->fetch()) {
 ?>
-            <h1>ニックネームの変更</h1>
-            <h3>現在のニックネーム「<?php echo $_SESSION['nick'] ?>」</h3>
-
-            <form action="gz_rename_set.php" method="post">
-                <div>
-                    <label>ニックネーム</label>
-                    <input type="text" name="nick" required>
-                </div><br>
-                <input type="submit" value="編集する">
-            </form>
-
+                            <div id='box'>
+                                <a href='gz_mypage.php?uid=<?=$bk_uid?>'>【<?php print $r_u['nick'];?>】</a><br>
+                            </div>
+<?php
+                        }
+            }
+?>
             <script>
+                message.innerHTML = "ブロックしたアカウント一覧";
                 // ログオフボタンを表示
                 logoff.style.display = "block";
                 // アップロードボタンを表示
@@ -80,7 +87,7 @@ if (isset($_POST["action"]) && $_POST["action"] == "logoff") {
         }else{
 ?>
             <script>
-                message.innerHTML = 'ログインが必要';
+                message.innerHTML = "ログインが必要";
                 // ログオンボタン表示
                 logon.style.display = "block";
             </script>

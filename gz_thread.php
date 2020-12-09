@@ -1,27 +1,25 @@
 <?php
 session_start();
 
-// ログオブボタンを押した
+// ログオフボタンを押した
 if (isset($_POST["action"]) && $_POST["action"] == "logoff") {
     $_SESSION = array();
     session_destroy();
 }
 
 // コメントを送信した
-if (isset($_POST['myn']) && isset($_POST['myc']) && isset($_POST['myb'])) {
-    $u = htmlspecialchars($_POST['myn'], ENT_QUOTES);
+if (isset($_POST['myc']) && isset($_POST['myb'])) {
     $p = htmlspecialchars($_POST['myc'], ENT_QUOTES);
     $b = htmlspecialchars($_POST['myb'], ENT_QUOTES);
 
     // データベース設定
     require_once("db_init.php");
     $ima = date('YmdHis');
-    $ps = $webdb->prepare("INSERT INTO `comments` (`uid`, `thread_number`, `text`, `com_nick`, `date`) 
-                        VALUES (:v_u, :v_tn, :v_t, :v_n, :v_d)");
+    $ps = $webdb->prepare("INSERT INTO `comments` (`uid`, `thread_number`, `text`, `date`) 
+                        VALUES (:v_u, :v_tn, :v_t, :v_d)");
     $ps->bindParam(':v_u', $_SESSION['uid']);
     $ps->bindParam(':v_tn', $b);
     $ps->bindParam(':v_t', $p);
-    $ps->bindParam(':v_n', $u);
     $ps->bindParam(':v_d', $ima);
     $ps->execute();
 
@@ -34,6 +32,26 @@ if (isset($_POST['myn']) && isset($_POST['myc']) && isset($_POST['myb'])) {
 <?php
     // header("Location: {$_SERVER['PHP_SELF']}");
     // exit;
+}
+
+// イイネ！をした
+if (isset($_POST['myb_ii'])) {
+    $b_ii = htmlspecialchars($_POST['myb_ii'], ENT_QUOTES);
+
+    // データベース設定
+    require_once("db_init.php");
+    $ps = $webdb->prepare("INSERT INTO `favorites` (`uid`, `thread_number`) VALUES (:v_u, :v_tn)");
+    $ps->bindParam(':v_u', $_SESSION['uid']);
+    $ps->bindParam(':v_tn', $b_ii);
+    $ps->execute();
+
+    $_POST = array();
+?>
+    <script>
+        // 再読み込み
+        location.href = "./gz_thread.php?uid=<?=$get_num?>'";
+    </script>
+<?php
 }
 
 //URLが正しい
@@ -81,55 +99,106 @@ if (isset($_GET['tran_b'])) {
             while ($r = $ps->fetch()) {
                 $tg = $r['image'];
                 $tb = $r['thread_number'];
-                // イイネ関連
+                $th_uid = $r['uid'];
+                // ニックネームの取得
+                $ps_nick = $webdb->query("SELECT * FROM `users` WHERE `uid` = '" . $th_uid . "'");
+                while ($r_nick = $ps_nick->fetch()) {
+                    $th_nick = $r_nick['nick'];
+                }
+                // イイネの個数取得
                 $ii = null;
                 $ps_ii = $webdb->query("SELECT DISTINCT * FROM `favorites` WHERE `thread_number` = $tb");
                 $coun_iine = 0;
                 while ($r_ii = $ps_ii->fetch()) {
-                    $ii = $ii . " " . $r_ii['fav_nick'];
+                    $ii = $ii . " " . $th_nick;
                     $coun_iine++;
                 }
+ 
                 // ブラックリストに入っているか確認
                 $flag_bk = 0;
-                $uid = $_SESSION['uid'];
+                // セッションが存在している(ログオンしている)
+                if(isset($_SESSION['uid'])) {
+                    $uid = $_SESSION['uid'];
+                // セッションが存在していない(ログオンしていない)
+                } else {
+                    $uid = 1;
+                }
                 $ps_bk = $webdb->query("SELECT * FROM `blacklists` WHERE `uid` = '" . $uid . "'");
-                for ($i = 0; $i < 1; $i++) {
-                    while ($r_bk = $ps_bk->fetch()) {
-                        // ブロックしているユーザの時
-                        if ($r_bk['black_uid'] == $r['uid']) {
-                            $flag_bk = 1;
-?>
-                            <script>
-                                message.innerHTML = 'このスレッドは表示できません。投稿ユーザをブロックしている可能性があります。';
-                            </script>
-<?php
-                            goto skip;
-                        }
+                while ($r_bk = $ps_bk->fetch()) {
+                    // ブロックしているユーザの時
+                    if ($r_bk['black_uid'] == $th_uid) {
+                        $flag_bk = 1;
                     }
+                }
+                // ブロックしていないアカウントの場合、表示
+                if ($flag_bk == 0) {
 ?>
                     <div id='box'>
-                        <?=print $r['thread_number']?>
-                        <a href='gz_mypage.php?uid=<?=$r['uid']?>'>【投稿者:<?php print $r['thread_nick'];?>】</a><?$r['date'];?><br>
-                        <p class='iine'><a href='gz_iine.php?tran_b=<?=$tb?>'>イイネ!</a> (<?=$coun_iine?>):<?=$ii?></p>
-                        <p class='thread_title'><?= $r['title'] ?></p>
+                        <?php print $r['thread_number']?>
+                        【投稿者:<a href='gz_mypage.php?uid=<?=$th_uid?>'><?php print $th_nick;?></a>】作成日:<?=$r['date'];?>
+                        <div>最終更新:<?=$r['update_date'];?></div>
+                        <form method="post" id="upiine" style="display:none;">
+                                <input type = "hidden" name = "myb_ii" value = "<?php print $tb; ?>">
+                                <input type="submit" value="イイネ！" onclick="return confirm('イイネ！します。')">
+                        </form>
+                        <p class='iine'>イイネ！(<?=$coun_iine?>)</p><hr>
+                        <p class='thread_title'><?= $r['title'] ?></p><hr>
                         <?=nl2br($r['text']);?><br>
-                        <a href='./gz_img/<?=$tg?>' TARGET='_blank'>
-                            <img src='./gz_img/thumb_<?=$tg?>'>
-                        </a><br><hr>
 <?php
+                        if (isset($tg) && $tg != "") {
+?>
+                            <a href='./gz_img/<?=$tg?>' target='_blank'>
+                                <img src='./gz_img/thumb_<?=$tg?>'>
+                            </a><br>
+<?php
+                        }
+?>
+                        <!-- 編集ボタン -->
+                        <form action="gz_up.php" method="post" id="edit" style="display:none;">
+                                <input type = "hidden" name = "myb" value = "<?php print $tb; ?>">
+                                <input type="submit" value="編集する" style="background-color:yellow;">
+                        </form>
+                        <hr><hr>
+<?php
+                        // コメントの表示
                         $ps_com = $webdb->query("SELECT * FROM `comments` WHERE `thread_number` = $tb ORDER BY `date` DESC");
                         $coun = $ps_com->rowCount();
                         while ($r_com = $ps_com->fetch()) {
+                            $com_uid = $r_com['uid'];
+                            // ニックネームの取得
+                            $ps_nick_com = $webdb->query("SELECT * FROM `users` WHERE `uid` = '" . $com_uid . "'");
+                            while ($r_nick_com = $ps_nick_com->fetch()) {
+                                $com_nick = $r_nick_com['nick'];
+                            }
+                            // ブラックリストに入っているか確認
+                            $flag_bk_com = 0;
+                            // セッションが存在している(ログオンしている)
+                            if(isset($_SESSION['uid'])) {
+                                $uid = $_SESSION['uid'];
+                            // セッションが存在していない(ログオンしていない)
+                            } else {
+                                $uid = 1;
+                            }
+                            $ps_bk_com = $webdb->query("SELECT * FROM `blacklists` WHERE `uid` = '" . $uid . "'");
+                            while ($r_bk_com = $ps_bk_com->fetch()) {
+                                // ブロックしているユーザの時
+                                if ($r_bk_com['black_uid'] == $com_uid) {
+                                    $flag_bk_com = 1;
+                                }
+                            }
+                            // ブロックしていないユーザの時、出力
+                            if ($flag_bk_com == 0) {
 ?>
-                            <p class='com'>●投稿コメント<?=$coun?><br>【<?=$r_com['com_nick']?>さんのメッセージ】
+                                <p class='com'>●投稿コメント<?=$coun?><br>【<?php print $com_nick?>さんのメッセージ】
                                 <?=$r_com['date']?><br><?=nl2br($r_com['text'])?></p>
-<?php
+<?php   
+                            }
                             $coun--;
+ 
                         }
 ?>
+                        <!-- コメント入力欄 -->
                         <form method="post" id="upcom" style="display:none;">
-                            名前<br>
-                            <input type = "text" name = "myn" value = "<?php print $_SESSION['nick']; ?>"><br>
                             コメント<BR>
                             <textarea name = "myc" rows = "5" cols = "60" maxlength='250' 
                                 placeholder='最大２５０文字' required></textarea><br>
@@ -137,10 +206,10 @@ if (isset($_GET['tran_b'])) {
                             <input type="submit" value="送信">
                         </form>
                     </div>  
-<?php                        
-                }
+<?php          
+                }              
             }
-            skip:
+        
             if (isset($_SESSION['uid']) && isset($_SESSION['nick']) && isset($_SESSION['tm'])) {
                 $_SESSION['tm'] = time();
 ?>
@@ -153,6 +222,8 @@ if (isset($_GET['tran_b'])) {
                     mypage.style.display = "block";
                     // コメント入力欄表示
                     upcom.style.display = "block";
+                    // イイネボタン表示
+                    upiine.style.display = "block";
                 </script>
 <?php
                 // かつ、ブラックリストに入っていない
@@ -163,7 +234,25 @@ if (isset($_GET['tran_b'])) {
                         message.innerHTML = 'こんにちは' + '<?php print $_SESSION['nick'] ?>' + 'さん。'; 
                     </script>
 <?php
+                // ブラックリストに入っている
+                } else {
+?>
+                    <script>
+                        message.innerHTML = 'このスレッドは表示できません。投稿ユーザをブロックしている可能性があります。';
+                    </script>
+<?php
                 }
+
+                // 自分が投稿したスレッド
+                if ($th_uid == $_SESSION['uid']) {
+?>
+                    <script>
+                        // 編集ボタンを表示
+                        edit.style.display = "block";
+                    </script>
+<?php
+                }
+
                 // 管理者アカウントの場合
                 if ($_SESSION['uid'] == 'fkisRnWQAXfzG8cVY0M8k1a91dD2') {
 ?>
