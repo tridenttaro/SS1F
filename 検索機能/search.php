@@ -31,15 +31,15 @@ border-radius: 5px / 5px;
     <main>
 <?php
     $d = mysql_connect("localhost", "root", "") or die("接続失敗");
-    mysql_select_db("db", $d);
+    mysql_select_db("webdb", $d);
      session_start();
         
       
-        if(isset($_POST["search_cat"])){
+        if(isset($_POST["search_cat"])){ //タイトル検索か失敗談（本文）検索
             if($_POST["search_cat"]=="thread"){
-                $_SESSION['search_cat']= "thread_name"; 
+                $_SESSION['search_cat']= "title"; 
             }else{
-                $_SESSION['search_cat'] = "story";
+                $_SESSION['search_cat'] = "text";
             }
         }
         $table_cat = $_SESSION['search_cat']; 
@@ -73,7 +73,7 @@ border-radius: 5px / 5px;
         $key = $_SESSION['search']; 
         
 
-    $rc = mysql_query("SELECT COUNT(*) FROM `thread` WHERE `".$table_cat."` LIKE '%".$key."%'");
+    $rc = mysql_query("SELECT COUNT(*) FROM `threads` WHERE `".$table_cat."` LIKE '%".$key."%'");
         $num_tag =mysql_fetch_array($rc)[mysql_fetch_array($rc)]; //num_tagは検索結果件数
 
     ?><p class="alert alert-success">
@@ -85,18 +85,18 @@ border-radius: 5px / 5px;
         $page_num = 5; //何項目ずつ表示するか
         $page = $_GET["page"];
         $this_page = ($page - 1) * $page_num;
-    $r = mysql_query("SELECT * FROM `thread` WHERE `".$table_cat."` LIKE '%".$key."%' ORDER BY `thread_created` " .$date_sort." LIMIT ".$this_page."," .$page_num);
+    $r = mysql_query("SELECT * FROM `threads` WHERE `".$table_cat."` LIKE '%".$key."%' ORDER BY `date` " .$date_sort." LIMIT ".$this_page."," .$page_num);
         $num = 0;
     while ($row = mysql_fetch_array($r)){
-        $id_rows[] = $row['thread_id']; ?>
+        $id_rows[] = $row['thread_number']; ?>
         
         <form method="get" action="zyusin.php" name="thread_id">
             <input type=hidden name="thread_id" value="<?php echo $id_rows[$num]; ?>">
         </form>
         <a href="javascript:thread_id<?php if ($num_tag== 1){echo "";}else{
-             echo "[".$num."]";}?>.submit()"><?php echo $row['thread_name'] ;?></a><br>
+             echo "[".$num."]";}?>.submit()"><?php echo $row['title'] ;?></a><br>
         <?php
-        print $row['story'].'<br>';
+        print $row['text'].'<br>';
         $num++;
     }
      
