@@ -66,15 +66,17 @@ if (isset($_POST["action"]) && $_POST["action"] == "logoff") {
             }
             
             if (isset($_POST['nick']) && $_POST['nick'] != "") {
-                $_SESSION['nick'] = htmlspecialchars($_POST['nick'], ENT_QUOTES, 'UTF-8');
+                $nick = htmlspecialchars($_POST['nick'], ENT_QUOTES, 'UTF-8');
 
                 // データベースの設定
                 require_once("db_init.php");
                 
-                $ps = $webdb->prepare("UPDATE `table2.1` SET `nick` = :v_n WHERE `id` = :v_i");
-                $ps->bindParam(':v_i', $_SESSION['uid']);
-                $ps->bindParam(':v_n', $_SESSION['nick']);
+                $ps = $webdb->prepare("UPDATE `users` SET `nick` = :v_n WHERE `uid` = :v_u");
+                $ps->bindParam(':v_u', $_SESSION['uid']);
+                $ps->bindParam(':v_n', $nick);
                 $ps->execute();
+
+                $_SESSION['nick'] = $nick;
 
                 print "<h1>ニックネームの変更が完了しました。</h1>";
                 print "<h3>現在のニックネーム「" . $_SESSION['nick']  . "」</h3>";

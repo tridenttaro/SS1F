@@ -9,79 +9,9 @@ if (isset($_POST["action"]) && $_POST["action"] == "logoff") {
 if (isset($_POST['nick']) && $_POST['nick'] != "") {
     $_SESSION['nick'] = htmlspecialchars($_POST['nick'], ENT_QUOTES, 'UTF-8');
 }
-// トップページボタン押下
-if (isset($_POST["top"])) {
-    unset($_SESSION["word"]);
-    unset($_SESSION['search']);
-    unset($_SESSION["search_cat"]);
-    unset($_SESSION["search_method"]);
-    unset($_SESSION["search_sort"]);
-    unset($_SESSION["page_num"]);
-}
 
-// キーワード検索
-if(isset($_POST["search"])){
-    $limit = -1;
-
-    $_SESSION['word'] = htmlspecialchars($_POST["search"], ENT_QUOTES, 'UTF-8');
-
-    if ($_SESSION['word'] != "") {
-        $keywords = preg_split('/[\p{Z}\p{Cc}]++/u', $_SESSION['word'], $limit, PREG_SPLIT_NO_EMPTY);
-    } else {
-        $keywords[0] = "";
-    }
-    
-    $_SESSION['search'] = $keywords[0];    
-
-    for($i=1; $i<count($keywords); $i++){
-        $_SESSION['search'] = $_SESSION['search']."%' ".$table_method." `".$table_cat."` LIKE '%".$keywords[$i];
-    }  
-}
-if (isset($_SESSION['search'])) {
-    $key = $_SESSION['search'];
-} else {
-    $key  = "";
-}
-// 検索対象
-if(isset($_POST["search_cat"])){
-    $_SESSION['search_cat'] = htmlspecialchars($_POST["search_cat"], ENT_QUOTES, 'UTF-8');
-}
-if(isset($_SESSION['search_cat'])) {
-    $table_cat = $_SESSION['search_cat'];
-} else {
-    $table_cat = "title";
-}
-
-// キーワードの検索範囲
-if(isset($_POST["search_method"])){
-    $_SESSION['search_method'] = htmlspecialchars($_POST["search_method"], ENT_QUOTES, 'UTF-8');
-}
-if(isset($_SESSION['search_method'])) {
-    $table_method = $_SESSION['search_method']; 
-} else {
-    $table_method = "and";
-}
-
-// 検索結果の順番
-if(isset($_POST["search_sort"])){
-    $_SESSION['search_sort'] = htmlspecialchars($_POST["search_sort"], ENT_QUOTES, 'UTF-8');     
-}
-if(isset($_SESSION['search_sort'])) {
-    $date_sort = $_SESSION['search_sort'];
-} else {
-    $date_sort = "DESC";
-}
-// 検索件数
-if(isset($_POST["page_num"])){
-    $_SESSION['page_num'] = htmlspecialchars($_POST["page_num"], ENT_QUOTES, 'UTF-8');
-}
-if(isset($_SESSION['page_num'])) {
-    $page_num = $_SESSION['page_num'];
-} else {
-    $page_num = 2;
-}
-    
-     
+// 検索機能php部分の読み込み
+require_once("search_set.php");
 ?>
     
 <!DOCTYPE html>
@@ -96,68 +26,11 @@ if(isset($_SESSION['page_num'])) {
         <p class="title">ソリューションシェア</p>
     </div>
     <div id="main">
-        <!-- 検索機能。 -->
-        <form method="post" action="">
-            <div>
-                <!-- キーワード検索 -->
-                <br>検索<input type=search name="search" value="<?php if(isset($_SESSION['word'])) {print $_SESSION['word'];}?>">
-                <!-- 決定ボタン -->
-                <input type="submit" value="検索">
-                
-                <!-- 折り畳み展開設定 -->
-                <div onclick="obj=document.getElementById('open').style; obj.display=(obj.display=='none')?'block':'none';">
-                    <a style="cursor:pointer; background-color:white; border:1px solid;">詳細設定</a>
-                </div>
-                <!-- 折り畳まれ部分 -->
-                <div id="open" style="display:none;clear:both;background-color:silver;">
-                    <!-- 検索対象 -->
-                    <div>
-                        検索対象<br>
-                        <label><input type=radio name="search_cat" value="title" checked>タイトル検索</label>
-                        <label><input type=radio name="search_cat" value="text">本文検索</label><br><br>
-                    </div>
-                    <!-- キーワードの検索範囲 -->
-                    <div>
-                        キーワード<br>
-                        <label><input type=radio name="search_method" value="and" checked>すべて含む</label>
-                        <label><input type=radio name="search_method" value="or">少なくとも1つを含む</label><br><br>
-                    </div>
-                    <!-- 検索件数 -->
-                    <div>
-                        表示件数:
-                        <select name="page_num">
-                            <option value= 2 <?php if(isset($_SESSION['page_num']) && $_SESSION['page_num'] == 2) {print 'selected';} ?>>
-                                2件(テスト用)
-                            </option>
-                            <option value= 5 <?php if(isset($_SESSION['page_num']) && $_SESSION['page_num'] == 5) {print 'selected';} ?>>
-                                5件
-                            </option>
-                            <option value= 10 <?php if(isset($_SESSION['page_num']) && $_SESSION['page_num'] == 10) {print 'selected';} ?>>
-                                10件
-                            </option>
-                        </select>
-                    </div>
-                </div>
-                <!-- // 折り畳まれ部分 -->
-                <br><br>
-            </div>
-            <!-- 検索結果の順番 -->
-            <div>
-                <select name="search_sort" onchange="submit(this.form)">
-                    <option value="DESC" <?php if(isset($_SESSION['search_sort']) && $_SESSION['search_sort'] == 'DESC') {print 'selected';} ?>>
-                        新しい順
-                    </option>
-                    <option value="ASC" <?php if(isset($_SESSION['search_sort']) && $_SESSION['search_sort'] == 'ASC') {print 'selected';} ?>>
-                        古い順
-                    </option>
-                </select> 
-            </div>
-        </form>
-        <!-- // 検索機能。 -->
         <p id="message"></p>
         <p class="iine">(よかったら<u>イイネ！</u>を押してください)</p>
-    
 <?php
+        // 検索機能のHTML部分読み込み
+        require_once("search_form.php");
  
         
         // データベース設定
@@ -183,7 +56,6 @@ if(isset($_SESSION['page_num'])) {
         while ($r = $ps->fetch()) {
             $id_rows[] = $r['thread_number'];
 
-            $tg = $r['image'];
             $tb = $r['thread_number'];
             $th_uid = $r['uid'];
             // ニックネームの取得

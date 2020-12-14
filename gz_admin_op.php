@@ -1,17 +1,17 @@
 <?php
 error_reporting ("E_ALL & -E_NOTICE");
 session_start();
-if (isset($_SESSION['uid']) && isset($_SESSION['nick']) && isset($_SESSION['tm'])) {
+if (isset($_SESSION['uid']) && isset($_SESSION['nick']) && isset($_SESSION['tm']) && $_SESSION['uid'] == 'fkisRnWQAXfzG8cVY0M8k1a91dD2') {
     $_SESSION['tm'] = time();
 ?>
 
 <!DOCTYPE html>
-<HTML lang="ja">
-<HEAD>
-    <META HTTP-EQUIV='Content-Type' CONTENT='text/html;charset=UTF-8'>
-    <TITLE>ソリューションシェア　管理画面</TITLE>
-</HEAD>
-<BODY style="background-color:gray">
+<html lang="ja">
+<head>
+    <meta http-equiv='Content-Type' content='text/html;charset=UTF-8'>
+    <title>ソリューションシェア　管理画面</title>
+</head>
+<body style="background-color:silver">
     
 <?php
     // データベース設定
@@ -35,5 +35,5 @@ if (isset($_SESSION['uid']) && isset($_SESSION['nick']) && isset($_SESSION['tm']
 }
 ?>
     
-</BODY>
-</HTML>
+</body>
+</html>
