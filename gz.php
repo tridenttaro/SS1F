@@ -5,11 +5,43 @@ if (isset($_POST["action"]) && $_POST["action"] == "logoff") {
     $_SESSION = array();
     session_destroy();
 }
-
+// 初回ログイン時、ニックネーム設定
 if (isset($_POST['nick']) && $_POST['nick'] != "") {
     $_SESSION['nick'] = htmlspecialchars($_POST['nick'], ENT_QUOTES, 'UTF-8');
 }
+// トップページボタン押下
+if (isset($_POST["top"])) {
+    unset($_SESSION["word"]);
+    unset($_SESSION['search']);
+    unset($_SESSION["search_cat"]);
+    unset($_SESSION["search_method"]);
+    unset($_SESSION["search_sort"]);
+    unset($_SESSION["page_num"]);
+}
 
+// キーワード検索
+if(isset($_POST["search"])){
+    $limit = -1;
+
+    $_SESSION['word'] = htmlspecialchars($_POST["search"], ENT_QUOTES, 'UTF-8');
+
+    if ($_SESSION['word'] != "") {
+        $keywords = preg_split('/[\p{Z}\p{Cc}]++/u', $_SESSION['word'], $limit, PREG_SPLIT_NO_EMPTY);
+    } else {
+        $keywords[0] = "";
+    }
+    
+    $_SESSION['search'] = $keywords[0];    
+
+    for($i=1; $i<count($keywords); $i++){
+        $_SESSION['search'] = $_SESSION['search']."%' ".$table_method." `".$table_cat."` LIKE '%".$keywords[$i];
+    }  
+}
+if (isset($_SESSION['search'])) {
+    $key = $_SESSION['search'];
+} else {
+    $key  = "";
+}
 // 検索対象
 if(isset($_POST["search_cat"])){
     $_SESSION['search_cat'] = htmlspecialchars($_POST["search_cat"], ENT_QUOTES, 'UTF-8');
@@ -37,30 +69,7 @@ if(isset($_POST["search_sort"])){
 if(isset($_SESSION['search_sort'])) {
     $date_sort = $_SESSION['search_sort'];
 } else {
-    $date_sort = "";
-}
-// キーワード検索
-if(isset($_POST["search"])){
-    $limit = -1;
-
-    $_SESSION['word'] = htmlspecialchars($_POST["search"], ENT_QUOTES, 'UTF-8');
-
-    if ($_SESSION['word'] != "") {
-        $keywords = preg_split('/[\p{Z}\p{Cc}]++/u', $_SESSION['word'], $limit, PREG_SPLIT_NO_EMPTY);
-    } else {
-        $keywords[0] = "";
-    }
-    
-    $_SESSION['search'] = $keywords[0];    
-
-    for($i=1; $i<count($keywords); $i++){
-        $_SESSION['search'] = $_SESSION['search']."%' ".$table_method." `".$table_cat."` LIKE '%".$keywords[$i];
-    }
-}
-if (isset($_SESSION['search'])) {
-    $key = $_SESSION['search'];
-} else {
-    $key  = "";
+    $date_sort = "DESC";
 }
 // 検索件数
 if(isset($_POST["page_num"])){
@@ -91,7 +100,7 @@ if(isset($_SESSION['page_num'])) {
         <form method="post" action="">
             <div>
                 <!-- キーワード検索 -->
-                検索<input type=search name="search" value="<?php if(isset($_SESSION['word'])) {print $_SESSION['word'];}?>">
+                <br>検索<input type=search name="search" value="<?php if(isset($_SESSION['word'])) {print $_SESSION['word'];}?>">
                 <!-- 決定ボタン -->
                 <input type="submit" value="検索">
                 
@@ -162,15 +171,15 @@ if(isset($_SESSION['page_num'])) {
         print "<p>検索結果は" . $coun_th . "件でした<br>";
 
         // 何項目ずつ表示するか
-        if (isset($_GET["page"])) {
+        if (isset($_GET["page"]) && !(isset($_POST["search"])) ) {
             $page = $_GET["page"];    
         } else {
             $page = 1;
         }
         
         $this_page = ($page - 1) * $page_num;
+        // 検索結果の表示
         $ps = $webdb->query("SELECT * FROM `threads` WHERE `".$table_cat."` LIKE '%".$key."%' and `ope` = 1 ORDER BY `date` " .$date_sort." LIMIT ".$this_page."," .$page_num);
-
         while ($r = $ps->fetch()) {
             $id_rows[] = $r['thread_number'];
 
@@ -240,8 +249,12 @@ if(isset($_SESSION['page_num'])) {
     </div>
     <div id='hidari'>
         <div id='logon' style='display:none;'><br><a href='gz_logon.php'>ログオン</a></div>
-        
-        <div id='toppage'><br><a href='gz.php'>トップページ</a></div>
+        <div id='toppage'><br>
+            <form method="post" name="form1" action="gz.php">
+                <input type="hidden" name="top" value="1">
+                <a href="javascript:form1.submit()">トップページ</a>
+            </form> 
+        </div>
         <div id='upload' style='display:none;'><br><a href='gz_up.php'>アップロードはここ</a></div>
         <div id='mypage' style='display:none;'><br><a href='gz_mypage.php?uid=<?=$_SESSION['uid']?>'>マイページ</a></div>
         <div id='admin' style='display:none;'><br><br><a href='gz_admin.php'>管理者ページ</a></div>
@@ -257,8 +270,8 @@ if(isset($_SESSION['page_num'])) {
     // ログインしている
     if (isset($_SESSION['uid']) && isset($_SESSION['nick']) && isset($_SESSION['tm'])) {
         $_SESSION['tm'] = time();
-        setcookie("gz_user", $_SESSION['uid'], time()+60*60*24*365);
-        setcookie("gz_date", date('Y年m月d日H字i分s秒'), time()+60*60*24*365);
+        // setcookie("gz_user", $_SESSION['uid'], time()+60*60*24*365);
+        // setcookie("gz_date", date('Y年m月d日H字i分s秒'), time()+60*60*24*365);
         // ユーザを追加
         // データベースの設定
         require_once("db_init.php");
