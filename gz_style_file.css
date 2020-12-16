@@ -6,7 +6,7 @@ p.iine {color:red; margin:0; padding:0; font-size: 80%}
 p.com {margin:0; padding: 0; font-size: 70%}
 td {background-color: lightblue}
 table {border: none; margin: 1em; }
-#ue {margin:0 0 0 0; height:7em; overflow:auto;
+#ue {margin:0 0 0 0; height:7em; overflow:hidden;
     background-color: brown}
 #hidari {margin: 7em 0 0 0; width: 6em; position: absolute;
         min-height: 100%; left: 0; top: 0; background-color: pink}
@@ -14,4 +14,8 @@ table {border: none; margin: 1em; }
         background-color: #99cc99}
 #box {width: 30em; background-color: lightblue; margin: 1em;
         padding: 1em}
+#search {width: 30em;}
+
+/* 追加 */
+#aisatsu {font-size: 80%; margin: 0;}
 

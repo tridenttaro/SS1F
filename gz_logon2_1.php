@@ -11,7 +11,7 @@ session_start();
 <body style="background-color:lightblue;">
     <form action="gz.php" method="post" id="nickname" style="display:none;">
         <p>ニックネームを設定してください</p>
-        <input type="text" name="nick" maxlength='16' required><br>
+        <input type="text" name="nick" maxlength='16' pattern="\S|\S.*?\S" required><br>
         <input type="submit" value="決定">
     </form>
 <?php

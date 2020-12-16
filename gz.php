@@ -26,16 +26,29 @@ require_once("search_set.php");
         <p class="title">ソリューションシェア</p>
     </div>
     <div id="main">
-        <p id="message"></p>
-        <p class="iine">(よかったら<u>イイネ！</u>を押してください)</p>
+        <div id="message"><br>トップページ
+            <p id="aisatsu"></p><br>
+        </div>
+        
+        <!-- <p class="iine">(よかったら<u>イイネ！</u>を押してください)</p> -->
 <?php
+        $ph_text = "スレッドの検索";
         // 検索機能のHTML部分読み込み
         require_once("search_form.php");
- 
+
+        // セッションが存在している(ログオンしている)
+        if(isset($_SESSION['uid'])) {
+            $uid = $_SESSION['uid'];
+        // セッションが存在していない(ログオンしていない)
+        } else {
+            $uid = 1;
+        }
         
         // データベース設定
         require_once("db_init.php");
-        $ps_thcoun = $webdb->query("SELECT `thread_number` FROM `threads` WHERE `".$table_cat."` LIKE '%".$key."%' and `ope` = 1");
+        $ps_thcoun = $webdb->query("SELECT * FROM `threads` as `t1` LEFT JOIN `blacklists` as `t2` ON `t1`.`uid` = `t2`.`black_uid` 
+                                    WHERE `".$table_cat."` LIKE '%".$key."%' and `t1`.`ope` = 1 
+                                    and ((`t2`.`black_uid` is null) or (not `t2`.`uid` = '".$uid."'))" );
         $coun_th = 0;
         // 検索結果件数
         while ($r_thcoun = $ps_thcoun->fetch()) {
@@ -52,10 +65,13 @@ require_once("search_set.php");
         
         $this_page = ($page - 1) * $page_num;
         // 検索結果の表示
-        $ps = $webdb->query("SELECT * FROM `threads` WHERE `".$table_cat."` LIKE '%".$key."%' and `ope` = 1 ORDER BY `date` " .$date_sort." LIMIT ".$this_page."," .$page_num);
+        $ps = $webdb->query("SELECT `t1`.`thread_number`as`thread_number`, `t1`.`uid`as`uid`, `t1`.`title`as`title`, `t1`.`text`as`text`, `t1`.`ope`as`ope`, `t1`.`date`as`date` 
+                                FROM `threads` as `t1` LEFT JOIN `blacklists` as `t2` ON `t1`.`uid` = `t2`.`black_uid` 
+                                WHERE `".$table_cat."` LIKE '%".$key."%' and `t1`.`ope` = 1 
+                                and ((`t2`.`black_uid` is null) or (not `t2`.`uid` = '".$uid."'))
+                                ORDER BY `date` " .$date_sort." LIMIT ".$this_page."," .$page_num);
         while ($r = $ps->fetch()) {
-            $id_rows[] = $r['thread_number'];
-
+            
             $tb = $r['thread_number'];
             $th_uid = $r['uid'];
             // ニックネームの取得
@@ -69,33 +85,16 @@ require_once("search_set.php");
             while ($r_ii = $ps_ii->fetch()) {
                 $coun_iine++;
             }
-            // ブラックリストに入っているか確認
-            $flag_bk = 0;
-            // セッションが存在している(ログオンしている)
-            if(isset($_SESSION['uid'])) {
-                $uid = $_SESSION['uid'];
-            // セッションが存在していない(ログオンしていない)
-            } else {
-                $uid = 1;
-            }
-            $ps_bk = $webdb->query("SELECT * FROM `blacklists` WHERE `uid` = '" . $uid . "'");
-            while ($r_bk = $ps_bk->fetch()) {
-                // ブロックしているユーザの時
-                if ($r_bk['black_uid'] == $th_uid) {
-                    $flag_bk = 1;
-                }
-            }
-            // ブロックしていないアカウントの場合、表示
-            if ($flag_bk == 0) {
+            
 ?>
-                <div id='box'>
-                    <?php print $r['thread_number']?>
-                    【投稿者:<a href='gz_mypage.php?uid=<?=$r['uid']?>'><?php print $thread_nick ?></a>】<?=$r['date'];?><br>
-                    <p class='iine'>イイネ(<?=$coun_iine?>)</p><hr>
-                    <a href='gz_thread.php?tran_b=<?=$tb?>' class='thread_title'><?= $r['title'] ?></a><br>
-                </div>
+            <div id='box'>
+                <?php print $r['thread_number']?>
+                【投稿者:<a href='gz_mypage.php?uid=<?=$r['uid']?>'><?php print $thread_nick ?></a>】<?=$r['date'];?><br>
+                <p class='iine'>イイネ(<?=$coun_iine?>)</p><hr>
+                <a href='gz_thread.php?tran_b=<?=$tb?>' class='thread_title'><?= $r['title'] ?></a><br>
+            </div>
 <?php            
-            }
+            
         }        
 ?>
         <br><br>
@@ -129,7 +128,12 @@ require_once("search_set.php");
         </div>
         <div id='upload' style='display:none;'><br><a href='gz_up.php'>アップロードはここ</a></div>
         <div id='mypage' style='display:none;'><br><a href='gz_mypage.php?uid=<?=$_SESSION['uid']?>'>マイページ</a></div>
-        <div id='admin' style='display:none;'><br><br><a href='gz_admin.php'>管理者ページ</a></div>
+        <div id='admin' style='display:none;'><br><br>
+            <form method="post" name="form2" action="gz_admin.php">
+                <input type="hidden" name="top" value="1">
+                <a href="javascript:form2.submit()">管理者ページ</a>
+            </form> 
+        </div>
         <br><br>
         <form method="post" id='logoff' style='display:none;'>
             <button type="submit" name="action" value="logoff" 
@@ -142,8 +146,6 @@ require_once("search_set.php");
     // ログインしている
     if (isset($_SESSION['uid']) && isset($_SESSION['nick']) && isset($_SESSION['tm'])) {
         $_SESSION['tm'] = time();
-        // setcookie("gz_user", $_SESSION['uid'], time()+60*60*24*365);
-        // setcookie("gz_date", date('Y年m月d日H字i分s秒'), time()+60*60*24*365);
         // ユーザを追加
         // データベースの設定
         require_once("db_init.php");
@@ -154,7 +156,7 @@ require_once("search_set.php");
 ?>
         <script>
             // ログオンしている場合の挨拶
-            message.innerHTML = 'こんにちは' + '<?php print $_SESSION['nick'] ?>' + 'さん。'; 
+            aisatsu.innerHTML = 'こんにちは' + '<?php print $_SESSION['nick'] ?>' + 'さん。'; 
             // アップロードボタンを表示
             upload.style.display = "block";
             // ログオフボタンを表示
@@ -176,7 +178,7 @@ require_once("search_set.php");
 ?>
         <script>
             // ログオンしていない場合のあいさつ
-            message.innerHTML = 'こんにちは名無しさん。';
+            aisatsu.innerHTML = 'こんにちは名無しさん。';
             // ログオンボタン非表示
             logon.style.display = "block";
         </script>

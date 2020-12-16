@@ -83,16 +83,34 @@ if (isset($_GET['uid'])) {
     </div>
     <div id='main'>
         <p id="message"></p>
-        <div id='thlist' style='display:none;'><br><a href="gz_up_list.php?uid=<?=$get_uid?>">投稿したスレッド一覧</a></div>
-        <div id='iilist' style='display:none;'><br><a href="gz_iine_list.php?uid=<?=$get_uid?>">イイネしたスレッド一覧</a></div>
-        <div id='comlist' style='display:none;'><br><a href="gz_com_list.php?uid=<?=$get_uid?>">コメントしたスレッド一覧</a></div>
+
+        <div id='thlist' style='display:none;'><br>
+            <form method="post" name="uplist" action="gz_up_list.php?uid=<?=$get_uid?>">
+                <input type="hidden" name="top" value="1">
+                <a href="javascript:uplist.submit()">投稿したスレッド一覧</a>
+            </form>        
+        </div>
+        <div id='iilist' style='display:none;'><br>
+            <form method="post" name="iine_list" action="gz_iine_list.php?uid=<?=$get_uid?>">
+                <input type="hidden" name="top" value="1">
+                <a href="javascript:iine_list.submit()">イイネしたスレッド一覧</a>
+            </form>        
+        </div>
+        <div id='comlist' style='display:none;'><br>
+            <form method="post" name="com_list" action="gz_com_list.php?uid=<?=$get_uid?>">
+                <input type="hidden" name="top" value="1">
+                <a href="javascript:com_list.submit()">コメントしたスレッド一覧</a>        
+            </form>       
+        </div>
+        
+        
         <div id='bklist' style='display:none;'><br><a href="gz_bk_list.php">ブロックしたアカウント一覧</a></div>
         <div id='chnick' style='display:none;'><br><a href="gz_rename.php">ニックネーム変更</a></div>
         <!-- ブロックボタン -->
-        <form method='post' name='form1' id='black' style='display:none;'>
+        <form method='post' name='black' id='black' style='display:none;'>
             <br><br>
             <input type="hidden" name="black_uid" value="<?=$get_uid?>">
-            <a href="javascript:form1.submit()" style="background-color:red; color:gold;"
+            <a href="javascript:black.submit()" style="background-color:red; color:gold;"
                 onclick="return confirm('ブロックしたユーザの投稿、コメントは表示されなくなります。\nよろしいですか?')"><?=$get_nick?>さんをブロックする</a>
         </form>
         <!-- ブロック解除ボタン -->
@@ -106,10 +124,20 @@ if (isset($_GET['uid'])) {
     <div id='hidari'>
         <div id='logon' style='display:none;'><br><a href='gz_logon.php'>ログオン</a></div>
 
-        <div id='toppage'><br><a href='gz.php'>トップページ</a></div>
+        <div id='toppage'><br>
+            <form method="post" name="form1" action="gz.php">
+                <input type="hidden" name="top" value="1">
+                <a href="javascript:form1.submit()">トップページ</a>
+            </form> 
+        </div>
         <div id='upload' style='display:none;'><br><a href='gz_up.php'>アップロードはここ</a></div>
         <div id='mypage' style='display:none;'><br><a href='gz_mypage.php?uid=<?=$_SESSION['uid']?>'>マイページ</a></div>
-        <div id='admin' style='display:none;'><br><br><a href='gz_admin.php'>管理者ページ</a></div>
+        <div id='admin' style='display:none;'><br><br>
+            <form method="post" name="form2" action="gz_admin.php">
+                <input type="hidden" name="top" value="1">
+                <a href="javascript:form2.submit()">管理者ページ</a>
+            </form> 
+        </div>
         <form method="post" id='logoff' style='display:none;'>
             <br><br>
             <button type="submit" name="action" value="logoff" 
@@ -202,6 +230,18 @@ if (isset($_GET['uid'])) {
 <?php
                 }
             }
+        // ログインしていない
+        } else {
+?>
+             <script>
+                let nick = <?php echo json_encode($get_nick); ?>;
+                message.innerHTML = nick + 'さんのユーザーページ';
+                // 投稿したスレッド一覧ボタンを表示
+                thlist.style.display = "block";
+                // コメントしたスレッド一覧ボタンを表示
+                comlist.style.display = "block";
+            </script>
+<?php
         }
     // 正しく遷移していない
     } else {      

@@ -29,10 +29,20 @@ if (isset($_POST["action"]) && $_POST["action"] == "logoff") {
     <div id='hidari'>
         <div id='logon' style='display:none;'><br><a href='gz_logon.php'>ログオン</a></div>
 
-        <div id='toppage'><br><a href='gz.php'>トップページ</a></div>
+        <div id='toppage'><br>
+            <form method="post" name="form1" action="gz.php">
+                <input type="hidden" name="top" value="1">
+                <a href="javascript:form1.submit()">トップページ</a>
+            </form> 
+        </div>
         <div id='upload' style='display:none;'><br><a href='gz_up.php'>アップロードはここ</a></div>
         <div id='mypage' style='display:none;'><br><a href='gz_mypage.php?uid=<?=$_SESSION['uid']?>'>マイページ</a></div>
-        <div id='admin' style='display:none;'><br><br><a href='gz_admin.php'>管理者ページ</a></div>
+        <div id='admin' style='display:none;'><br><br>
+            <form method="post" name="form2" action="gz_admin.php">
+                <input type="hidden" name="top" value="1">
+                <a href="javascript:form2.submit()">管理者ページ</a>
+            </form> 
+        </div>
         <br><br>
         <form method="post" id='logoff' style='display:none;'>
             <button type="submit" name="action" value="logoff" 

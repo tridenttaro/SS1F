@@ -2,7 +2,8 @@
 <form method="post" action="">
     <div>
         <!-- キーワード検索 -->
-        検索<input type=search name="search" value="<?php if(isset($_SESSION['word'])) {print $_SESSION['word'];}?>">
+        検索<input type=search name="search" value="<?php if(isset($_SESSION['word'])) {print $_SESSION['word'];}?>"
+                id="search" pattern="\S|\S.*?\S" placeholder="<?php if(isset($ph_text)) { print $ph_text;} ?>">
         <!-- 決定ボタン -->
         <input type="submit" value="検索">
         

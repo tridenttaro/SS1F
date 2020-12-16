@@ -64,7 +64,6 @@ if (isset($_SESSION['uid']) && isset($_SESSION['nick']) && isset($_SESSION['tm']
             $ps = $webdb->query("SELECT * FROM `threads` WHERE `".$table_cat."` LIKE '%".$key."%'
                                     ORDER BY `date` " .$date_sort." LIMIT ".$this_page."," .$page_num);
             while ($r = $ps->fetch()) {
-                $id_rows[] = $r['thread_number'];
     
                 $tb = $r['thread_number'];
                 $to = $r['ope'];
