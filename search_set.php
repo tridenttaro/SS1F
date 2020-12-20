@@ -9,29 +9,6 @@ if (isset($_POST["top"])) {
     unset($_SESSION["page_num"]);
 }
 
-// キーワード検索
-if(isset($_POST["search"])){
-    $limit = -1;
-
-    $_SESSION['word'] = htmlspecialchars($_POST["search"], ENT_QUOTES, 'UTF-8');
-
-    if ($_SESSION['word'] != "") {
-        $keywords = preg_split('/[\p{Z}\p{Cc}]++/u', $_SESSION['word'], $limit, PREG_SPLIT_NO_EMPTY);
-    } else {
-        $keywords[0] = "";
-    }
-    
-    $_SESSION['search'] = $keywords[0];    
-
-    for($i=1; $i<count($keywords); $i++){
-        $_SESSION['search'] = $_SESSION['search']."%' ".$table_method." `".$table_cat."` LIKE '%".$keywords[$i];
-    }  
-}
-if (isset($_SESSION['search'])) {
-    $key = $_SESSION['search'];
-} else {
-    $key  = "";
-}
 // 検索対象
 if(isset($_POST["search_cat"])){
     $_SESSION['search_cat'] = htmlspecialchars($_POST["search_cat"], ENT_QUOTES, 'UTF-8');
@@ -70,4 +47,28 @@ if(isset($_SESSION['page_num'])) {
 } else {
     $page_num = 2;
 }
+// キーワード検索
+if(isset($_POST["search"])){
+    $limit = -1;
+
+    $_SESSION['word'] = htmlspecialchars($_POST["search"], ENT_QUOTES, 'UTF-8');
+
+    if ($_SESSION['word'] != "") {
+        $keywords = preg_split('/[\p{Z}\p{Cc}]++/u', $_SESSION['word'], $limit, PREG_SPLIT_NO_EMPTY);
+    } else {
+        $keywords[0] = "";
+    }
+    
+    $_SESSION['search'] = htmlspecialchars($keywords[0], ENT_QUOTES, 'UTF-8');    
+
+    for($i=1; $i<count($keywords); $i++){
+        $_SESSION['search'] = $_SESSION['search']."%' ".$table_method." `".$table_cat."` LIKE '%".htmlspecialchars($keywords[$i], ENT_QUOTES, 'UTF-8');
+    }  
+}
+if (isset($_SESSION['search'])) {
+    $key = htmlspecialchars($_SESSION['search'], ENT_QUOTES, 'UTF-8');
+} else {
+    $key  = "";
+}
+
 ?>

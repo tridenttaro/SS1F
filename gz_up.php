@@ -59,7 +59,7 @@ if (isset($_POST["action"]) && $_POST["action"] == "logoff") {
             
             // スレッド編集ボタンから遷移
             if (isset($_POST["myb"])) {
-                $th_num = $_POST["myb"];
+                $th_num = $_SESSION['tb'];
 
                 // データベース設定
                 require_once("db_init.php");
@@ -68,9 +68,12 @@ if (isset($_POST["action"]) && $_POST["action"] == "logoff") {
                     $title = $r['title'];
                     $text = $r['text'];
                     $image = $r['image'];
+
+                    // セッションに代入(受け渡し用)
+                    $_SESSION['th_num'] = $th_num;
 ?>
                     <form enctype = 'multipart/form-data' action = 'gz_up_set.php' method = 'post'>
-                        <input type='hidden' name='edit' value="<?php print $th_num; ?>"><br>
+                        <input type='hidden' name='edit' value="1"><br>
                         タイトル<br>
                         <input type='text' name='myt' maxlength='30' pattern="\S|\S.*?\S"
                             placeholder='タイトル：最大３０文字' value="<?php print $title; ?>" required><br>

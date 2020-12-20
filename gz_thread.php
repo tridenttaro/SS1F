@@ -9,8 +9,7 @@ if (isset($_POST["action"]) && $_POST["action"] == "logoff") {
 
 // コメントを送信した
 if (isset($_POST['myc']) && isset($_POST['myb'])) {
-    $p = htmlspecialchars($_POST['myc'], ENT_QUOTES);
-    $b = htmlspecialchars($_POST['myb'], ENT_QUOTES);
+    $p = htmlspecialchars($_POST['myc'], ENT_QUOTES, 'UTF-8');
 
     // データベース設定
     require_once("db_init.php");
@@ -18,7 +17,7 @@ if (isset($_POST['myc']) && isset($_POST['myb'])) {
     $ps = $webdb->prepare("INSERT INTO `comments` (`uid`, `thread_number`, `text`, `date`) 
                         VALUES (:v_u, :v_tn, :v_t, :v_d)");
     $ps->bindParam(':v_u', $_SESSION['uid']);
-    $ps->bindParam(':v_tn', $b);
+    $ps->bindParam(':v_tn', $_SESSION['tb']);
     $ps->bindParam(':v_t', $p);
     $ps->bindParam(':v_d', $ima);
     $ps->execute();
@@ -36,13 +35,11 @@ if (isset($_POST['myc']) && isset($_POST['myb'])) {
 
 // イイネ！をした
 if (isset($_POST['myb_ii'])) {
-    $b_ii = htmlspecialchars($_POST['myb_ii'], ENT_QUOTES);
-
     // データベース設定
     require_once("db_init.php");
     $ps = $webdb->prepare("INSERT INTO `favorites` (`uid`, `thread_number`) VALUES (:v_u, :v_tn)");
     $ps->bindParam(':v_u', $_SESSION['uid']);
-    $ps->bindParam(':v_tn', $b_ii);
+    $ps->bindParam(':v_tn',$_SESSION['tb']);
     $ps->execute();
 
     $_POST = array();
@@ -56,8 +53,9 @@ if (isset($_POST['myb_ii'])) {
 
 //URLが正しい
 if (isset($_GET['tran_b'])) {
-    // $_SESSION['thread'] = $_GET['tran_b'];
-    $get_num = $_GET['tran_b'];
+    $get_num = htmlspecialchars($_GET['tran_b'], ENT_QUOTES);
+    // セッションに格納
+    $_SESSION['tb'] = $get_num;
 }
 
 ?>
@@ -158,7 +156,7 @@ if (isset($_GET['tran_b'])) {
                             【投稿者:<a href='gz_mypage.php?uid=<?=$th_uid?>'><?php print $th_nick;?></a>】作成日:<?=$r['date'];?>
                             <div>最終更新:<?=$r['update_date'];?></div>
                             <form method="post" id="upiine" style="display:none;">
-                                    <input type = "hidden" name = "myb_ii" value = "<?php print $tb; ?>">
+                                    <input type = "hidden" name = "myb_ii" value = 1>
                                     <input type="submit" value="イイネ！" onclick="return confirm('イイネ！します。')">
                             </form>
                             <p class='iine'>イイネ！(<?=$coun_iine?>)</p><hr>
@@ -175,7 +173,7 @@ if (isset($_GET['tran_b'])) {
 ?>
                             <!-- 編集ボタン -->
                             <form action="gz_up.php" method="post" id="edit" style="display:none;">
-                                    <input type = "hidden" name = "myb" value = "<?php print $tb; ?>">
+                                    <input type = "hidden" name = "myb" value = 1>
                                     <input type="submit" value="編集する" style="background-color:yellow;">
                             </form>
                             <hr><hr>
@@ -221,7 +219,7 @@ if (isset($_GET['tran_b'])) {
                                 コメント<BR>
                                 <textarea name = "myc" rows = "5" cols = "60" maxlength='250' 
                                     placeholder='最大２５０文字' required></textarea><br>
-                                <input type = "hidden" name = "myb" value = "<?php print $tb; ?>">
+                                <input type = "hidden" name = "myb" value = 1>
                                 <input type="submit" value="送信">
                             </form>
 <?php
@@ -237,6 +235,7 @@ if (isset($_GET['tran_b'])) {
         
             if (isset($_SESSION['uid']) && isset($_SESSION['nick']) && isset($_SESSION['tm'])) {
                 $_SESSION['tm'] = time();
+
 ?>
                 <script>
                     // アップロードボタンを表示

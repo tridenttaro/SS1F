@@ -38,13 +38,11 @@ if (isset($_POST["white_uid"])) {
         // 再読み込み
         location.href = "./gz_mypage.php?uid=<?=$get_uid?>'";
     </script>
-<?php 
-    
+<?php     
 }
-
 // URLが正しい
 if (isset($_GET['uid'])) {
-    $get_uid = $_GET['uid'];
+    $get_uid = htmlspecialchars($_GET['uid'], ENT_QUOTES, 'UTF-8');
     // uidからニックネームを取り出す
     // データベース設定
     require_once("db_init.php");
@@ -67,6 +65,7 @@ if (isset($_GET['uid'])) {
         }
     }
 }
+
 ?>
 
 <!DOCTYPE html>

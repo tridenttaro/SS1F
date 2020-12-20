@@ -89,7 +89,8 @@ if (isset($_POST["action"]) && $_POST["action"] == "logoff") {
                     
                     // スレッドの編集(書き換え)
                     if (isset($_POST['edit'])) {
-                        $th_num = $_POST['edit'];
+                        $th_num = $_SESSION['th_num'];
+                        
                         //データベースの設定
                         require_once("db_init.php");
                         $ps = $webdb->prepare("UPDATE `threads` SET `title` = (:v_t), `text` = (:v_m), `image` = (:v_g), `update_date` = (:v_ud) 
@@ -126,7 +127,7 @@ if (isset($_POST["action"]) && $_POST["action"] == "logoff") {
 
                 // スレッドの編集(書き換え)
                 if (isset($_POST['edit'])) {
-                    $th_num = $_POST['edit'];
+                    $th_num = $_SESSION['th_num'];
                     //データベースの設定
                     require_once("db_init.php");
                     $ps = $webdb->prepare("UPDATE `threads` SET `title` = (:v_t), `text` = (:v_m), `update_date` = (:v_ud) 

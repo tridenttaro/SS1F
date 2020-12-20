@@ -44,11 +44,18 @@ require_once("search_set.php");
             $uid = 1;
         }
         
+        
         // データベース設定
         require_once("db_init.php");
-        $ps_thcoun = $webdb->query("SELECT * FROM `threads` as `t1` LEFT JOIN `blacklists` as `t2` ON `t1`.`uid` = `t2`.`black_uid` 
-                                    WHERE `".$table_cat."` LIKE '%".$key."%' and `t1`.`ope` = 1 
+        $ps_thcoun = $webdb->prepare("SELECT * FROM `threads` as `t1` LEFT JOIN `blacklists` as `t2` ON `t1`.`uid` = `t2`.`black_uid` 
+                                    WHERE `".$table_cat."` LIKE (:v_k) and `t1`.`ope` = 1 
                                     and ((`t2`.`black_uid` is null) or (not `t2`.`uid` = '".$uid."'))" );
+        // エスケープ
+        $key = '%'.$key.'%';
+        $key = htmlspecialchars($key, ENT_QUOTES, 'UTF-8');
+        $ps_thcoun->bindParam(':v_k', $key, PDO::PARAM_STR);
+        $ps_thcoun->execute();
+
         $coun_th = 0;
         // 検索結果件数
         while ($r_thcoun = $ps_thcoun->fetch()) {
@@ -65,11 +72,14 @@ require_once("search_set.php");
         
         $this_page = ($page - 1) * $page_num;
         // 検索結果の表示
-        $ps = $webdb->query("SELECT `t1`.`thread_number`as`thread_number`, `t1`.`uid`as`uid`, `t1`.`title`as`title`, `t1`.`text`as`text`, `t1`.`ope`as`ope`, `t1`.`date`as`date` 
+        $ps = $webdb->prepare("SELECT `t1`.`thread_number`as`thread_number`, `t1`.`uid`as`uid`, `t1`.`title`as`title`, `t1`.`text`as`text`, `t1`.`ope`as`ope`, `t1`.`date`as`date` 
                                 FROM `threads` as `t1` LEFT JOIN `blacklists` as `t2` ON `t1`.`uid` = `t2`.`black_uid` 
-                                WHERE `".$table_cat."` LIKE '%".$key."%' and `t1`.`ope` = 1 
+                                WHERE `".$table_cat."` LIKE (:v_k) and `t1`.`ope` = 1 
                                 and ((`t2`.`black_uid` is null) or (not `t2`.`uid` = '".$uid."'))
                                 ORDER BY `date` " .$date_sort." LIMIT ".$this_page."," .$page_num);
+        // エスケープ
+        $ps->bindParam(':v_k', $key, PDO::PARAM_STR);
+        $ps->execute();
         while ($r = $ps->fetch()) {
             
             $tb = $r['thread_number'];

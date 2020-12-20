@@ -43,7 +43,13 @@ if (isset($_SESSION['uid']) && isset($_SESSION['nick']) && isset($_SESSION['tm']
 <?php
             // データベース設定
             require_once("db_init.php");
-            $ps_thcoun = $webdb->query("SELECT `thread_number` FROM `threads` WHERE `".$table_cat."` LIKE '%".$key."%'");
+            $ps_thcoun = $webdb->prepare("SELECT `thread_number` FROM `threads` WHERE `".$table_cat."` LIKE (:v_k)");
+            // エスケープ
+            $key = '%'.$key.'%';
+            $key = htmlspecialchars($key, ENT_QUOTES, 'UTF-8');
+            $ps_thcoun->bindParam(':v_k', $key, PDO::PARAM_STR);
+            $ps_thcoun->execute();
+
             $coun_th = 0;
             // 検索結果件数
             while ($r_thcoun = $ps_thcoun->fetch()) {
@@ -61,8 +67,11 @@ if (isset($_SESSION['uid']) && isset($_SESSION['nick']) && isset($_SESSION['tm']
             $this_page = ($page - 1) * $page_num;
 
             // 検索結果の表示
-            $ps = $webdb->query("SELECT * FROM `threads` WHERE `".$table_cat."` LIKE '%".$key."%'
+            $ps = $webdb->prepare("SELECT * FROM `threads` WHERE `".$table_cat."` LIKE (:v_k)
                                     ORDER BY `date` " .$date_sort." LIMIT ".$this_page."," .$page_num);
+            // エスケープ
+            $ps->bindParam(':v_k', $key, PDO::PARAM_STR);
+            $ps->execute();
             while ($r = $ps->fetch()) {
     
                 $tb = $r['thread_number'];

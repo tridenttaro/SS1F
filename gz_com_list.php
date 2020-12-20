@@ -63,8 +63,14 @@ require_once("search_set.php");
 
             // データベース設定
             require_once("db_init.php");
-            $ps_thcoun = $webdb->query("SELECT DISTINCT * FROM `threads` as `t1` INNER JOIN `comments` as `t2` ON `t1`.`thread_number` = `t2`.`thread_number` 
-                                                    WHERE `t1`.`".$table_cat."` LIKE '%".$key."%' and `t2`.`uid` = '" . $get_uid . "'");
+            $ps_thcoun = $webdb->prepare("SELECT DISTINCT `t1`.`thread_number` FROM `threads` as `t1` INNER JOIN `comments` as `t2` ON `t1`.`thread_number` = `t2`.`thread_number` 
+                                                    WHERE `t1`.`".$table_cat."` LIKE (:v_k) and `t2`.`uid` = '" . $get_uid . "'");
+            // エスケープ
+            $key = '%'.$key.'%';
+            $key = htmlspecialchars($key, ENT_QUOTES, 'UTF-8');
+            $ps_thcoun->bindParam(':v_k', $key, PDO::PARAM_STR);
+            $ps_thcoun->execute();
+
             $coun_th = 0;
             // 検索結果件数
             while ($r_thcoun = $ps_thcoun->fetch()) {
@@ -85,10 +91,14 @@ require_once("search_set.php");
 
 
 
-            $ps = $webdb->query("SELECT DISTINCT `t1`.`thread_number`as`thread_number`, `t1`.`uid`as`uid`, `t1`.`title`as`title`, `t1`.`text`as`text`, `t1`.`ope`as`ope`, `t1`.`date`as`date`
+            $ps = $webdb->prepare("SELECT DISTINCT `t1`.`thread_number`as`thread_number`, `t1`.`uid`as`uid`, `t1`.`title`as`title`, `t1`.`text`as`text`, `t1`.`ope`as`ope`, `t1`.`date`as`date`
                                     FROM `threads` as `t1` INNER JOIN `comments` as `t2` ON `t1`.`thread_number` = `t2`.`thread_number` 
-                                    WHERE `t1`.`".$table_cat."` LIKE '%".$key."%' and `t2`.`uid` = '" . $get_uid . "'
+                                    WHERE `t1`.`".$table_cat."` LIKE (:v_k) and `t2`.`uid` = '" . $get_uid . "'
                                     ORDER BY `t1`.`date` " .$date_sort." LIMIT ".$this_page."," .$page_num);
+            // エスケープ
+            $ps->bindParam(':v_k', $key, PDO::PARAM_STR);
+            $ps->execute();
+
             while ($r = $ps->fetch()) {
                 
    
