@@ -73,14 +73,53 @@ if (isset($_GET['uid'])) {
 <HEAD>
     <META HTTP EQUIV='Content-Type' CONTENT='text/html;charset=UTF-8'>
     <TITLE>マイページ</TITLE>
-    <link rel="stylesheet" href="gz_style_file.css" type="text/css">
+    <link rel="stylesheet" href="css/bootstrap.css" type="text/css">
 </HEAD>
     
 <BODY style="background-color:beige">
-    <div id="ue">
-        <p class="title">ソリューションシェア</p>
-    </div>
-    <div id='main'>
+    <header class="sticky-top">
+        <div class="p-3 mb-2 bg-success text-white" >
+            
+            <div class ="row">
+                <div calss="col-sm" id='toppage'><br>
+            <form method="post" name="form1" action="gz.php">
+                <input type="hidden" name="top" value="1">
+                <a class="white" href="javascript:form1.submit()"><h1>ソリューションシェア</h1></a>
+            </form> 
+        </div>
+                
+                                <div class="col clearfix">
+                    <div class="col-sm">
+                <div class="float-right">
+                     <div class ="row">
+
+                         <div id='logon' style='display:none;'><br><a href='gz_logon.php'><button type="button" class="btn btn-light">ログオン</button></a></div>
+                <div id='toppage'><br>
+            
+        </div>
+                         <div id='upload' style='display:none;'><br><a href='gz_up.php'><button type="button" class="btn btn-light">スレッド作成</button></a></div>
+                         <div id='mypage' style='display:none;'><br><a href='gz_mypage.php?uid=<?=$_SESSION['uid']?>'><button type="button" class="btn btn-light">マイページ</button></a></div>
+        <div id='admin' style='display:none;'><br>
+            <form method="post" name="form2" action="gz_admin.php">
+                <input type="hidden" name="top" value="1">
+                <a href="javascript:form2.submit()"><button type="button" class="btn btn-light">管理者ページ</button></a>
+            </form> 
+        </div>
+        <form method="post" id='logoff' style='display:none;'><br>
+            <button type="submit" class="btn btn-light" name="action" value="logoff" 
+                onclick="return confirm('ログオフします。よろしいですか?')">ログオフ</button>
+        </form>
+
+            </div>
+                        </div>
+                                    
+                </div>
+            </div>
+        </div>
+            </div>
+    </header>
+      <div class="container-fluid">
+        <div id="main" class="mx-auto" >
         <p id="message"></p>
 
         <div id='thlist' style='display:none;'><br>
@@ -120,7 +159,8 @@ if (isset($_GET['uid'])) {
                 onclick="return confirm('ブロックを解除します。よろしいですか?')"><?=$get_nick?>さんのブロックを解除</a>
         </form>
     </div>
-    <div id='hidari'>
+    </div>
+   <!-- <div id='hidari'>
         <div id='logon' style='display:none;'><br><a href='gz_logon.php'>ログオン</a></div>
 
         <div id='toppage'><br>
@@ -143,6 +183,7 @@ if (isset($_GET['uid'])) {
                 onclick="return confirm('ログオフします。よろしいですか?')">ログオフ</button>
         </form>
     </div>
+-->
 <?php
     //------------------------------
     //       hidari UI部分
@@ -258,4 +299,4 @@ if (isset($_GET['uid'])) {
 
     
 </BODY>
-</HTML>
+    </HTML>

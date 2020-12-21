@@ -19,13 +19,52 @@ require_once("search_set.php");
 <head>
     <meta http-equiv="content-type" content="text/html;charset=UTF-8">    
     <title>ソリューションシェア</title>
-    <link rel="stylesheet" href="gz_style_file.css" type="text/css">
+    <link rel="stylesheet" href="css/bootstrap.css" type="text/css">
 </head>
 <body style="background-color:beige">
-    <div id="ue">
-        <p class="title">ソリューションシェア</p>
-    </div>
-    <div id="main">
+    <header class="sticky-top">
+        <div class="p-3 mb-2 bg-success text-white" >
+            
+            <div class ="row">
+                <div calss="col-sm" id='toppage'><br>
+            <form method="post" name="form1" action="gz.php">
+                <input type="hidden" name="top" value="1">
+                <a class="white" href="javascript:form1.submit()"><h1>ソリューションシェア</h1></a>
+            </form> 
+        </div>
+                
+                                <div class="col clearfix">
+                    <div class="col-sm">
+                <div class="float-right">
+                     <div class ="row">
+
+                         <div id='logon' style='display:none;'><br><a href='gz_logon.php'><button type="button" class="btn btn-light">ログオン</button></a></div>
+                <div id='toppage'><br>
+            
+        </div>
+                         <div id='upload' style='display:none;'><br><a href='gz_up.php'><button type="button" class="btn btn-light">スレッド作成</button></a></div>
+                         <div id='mypage' style='display:none;'><br><a href='gz_mypage.php?uid=<?=$_SESSION['uid']?>'><button type="button" class="btn btn-light">マイページ</button></a></div>
+        <div id='admin' style='display:none;'><br>
+            <form method="post" name="form2" action="gz_admin.php">
+                <input type="hidden" name="top" value="1">
+                <a href="javascript:form2.submit()"><button type="button" class="btn btn-light">管理者ページ</button></a>
+            </form> 
+        </div>
+        <form method="post" id='logoff' style='display:none;'><br>
+            <button type="submit" class="btn btn-light" name="action" value="logoff" 
+                onclick="return confirm('ログオフします。よろしいですか?')">ログオフ</button>
+        </form>
+
+            </div>
+                        </div>
+                                    
+                </div>
+            </div>
+        </div>
+            </div>
+    </header>
+    <div class="container-fluid">
+        <div id="main" class="mx-auto" >
         <div id="message"><br>トップページ
             <p id="aisatsu"></p><br>
         </div>
@@ -112,7 +151,7 @@ require_once("search_set.php");
         <ul class="example">
             <?php if ($page != 1){?>
             <li><?php echo '<a href="' . "gz.php" . '?page=' . ($page - 1) . '">前へ</a>'; ?></li><?php } else { ?>
-            <li><div style="color:gray;">前へ</div></li><?php } ?>
+            <?php } ?>
             <?php if ($page > 2){?>
             <li><?php echo '<a href="' . "gz.php" . '?page=' . ($page - 2) . '">'. ($page - 2) .'</a>'; ?></li><?php } ?>
             <?php if ($page > 1){?>
@@ -124,33 +163,11 @@ require_once("search_set.php");
             <li><?php echo '<a href="' . "gz.php" . '?page=' . ($page + 2) . '">'. ($page + 2) .'</a>'; ?></li><?php } 
             if (($page != ceil($coun_th/$page_num ))&&($coun_th != 0)) {?>
             <li><?php echo '<a href="' . "gz.php" . '?page=' . ($page + 1) . '">次へ</a>'; ?></li><?php } else { ?>
-            <li><div style="color:gray;">次へ</div></li><?php } ?>
+           <?php } ?>
             
         </ul>
     </div>
-    <div id='hidari'>
-        <div id='logon' style='display:none;'><br><a href='gz_logon.php'>ログオン</a></div>
-        <div id='toppage'><br>
-            <form method="post" name="form1" action="gz.php">
-                <input type="hidden" name="top" value="1">
-                <a href="javascript:form1.submit()">トップページ</a>
-            </form> 
-        </div>
-        <div id='upload' style='display:none;'><br><a href='gz_up.php'>アップロードはここ</a></div>
-        <div id='mypage' style='display:none;'><br><a href='gz_mypage.php?uid=<?=$_SESSION['uid']?>'>マイページ</a></div>
-        <div id='admin' style='display:none;'><br><br>
-            <form method="post" name="form2" action="gz_admin.php">
-                <input type="hidden" name="top" value="1">
-                <a href="javascript:form2.submit()">管理者ページ</a>
-            </form> 
-        </div>
-        <br><br>
-        <form method="post" id='logoff' style='display:none;'>
-            <button type="submit" name="action" value="logoff" 
-                onclick="return confirm('ログオフします。よろしいですか?')">ログオフ</button>
-        </form>
-
-    </div>
+  </div>
      
 <?php
     // ログインしている
@@ -195,6 +212,9 @@ require_once("search_set.php");
 <?php
     }
 ?> 
+    
+          <script type="text/javascript" src="js/jquery-3.3.1.js"></script>
+  <script type="text/javascript" src="js/bootstrap.bundle.js"></script>
 </body>
 
 </html>
