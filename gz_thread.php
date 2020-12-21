@@ -34,13 +34,24 @@ if (isset($_POST['myc']) && isset($_POST['myb'])) {
 }
 
 // イイネ！をした
-if (isset($_POST['myb_ii'])) {
+if (isset($_POST['iibtn_act'])) {
+    $iibtn_act = htmlspecialchars($_POST['iibtn_act'], ENT_QUOTES, 'UTF-8');
     // データベース設定
     require_once("db_init.php");
-    $ps = $webdb->prepare("INSERT INTO `favorites` (`uid`, `thread_number`) VALUES (:v_u, :v_tn)");
-    $ps->bindParam(':v_u', $_SESSION['uid']);
-    $ps->bindParam(':v_tn',$_SESSION['tb']);
-    $ps->execute();
+    // イイネの追加処理
+    if ($iibtn_act == 1) {
+        $ps = $webdb->prepare("INSERT INTO `favorites` (`uid`, `thread_number`) VALUES (:v_u, :v_tn)");
+        $ps->bindParam(':v_u', $_SESSION['uid']);
+        $ps->bindParam(':v_tn',$_SESSION['tb']);
+        $ps->execute();
+    // イイネの削除処理
+    } else if ($iibtn_act == 0) {
+        $ps = $webdb->prepare("DELETE FROM `favorites` WHERE `uid` = (:v_u) and `thread_number` = (:v_tn)");
+        $ps->bindParam(':v_u', $_SESSION['uid']);
+        $ps->bindParam(':v_tn',$_SESSION['tb']);
+        $ps->execute();
+    // 不正な書き換えは未動作
+    } else {}
 
     $_POST = array();
 ?>
@@ -155,12 +166,16 @@ if (isset($_GET['tran_b'])) {
                             <?php print $r['thread_number']?>
                             【投稿者:<a href='gz_mypage.php?uid=<?=$th_uid?>'><?php print $th_nick;?></a>】作成日:<?=$r['date'];?>
                             <div>最終更新:<?=$r['update_date'];?></div>
+                            <!-- イイネボタン(ログオン済のみ表示) -->
                             <form method="post" id="upiine" style="display:none;">
-                                    <input type = "hidden" name = "myb_ii" value = 1>
-                                    <input type="submit" value="イイネ！" onclick="return confirm('イイネ！します。')">
+                                    <input type = "hidden" name = "iibtn_act" id="iibtn_act" value = 0>
+                                    <button type="submit" id="iibtn">イイネ！</button>
                             </form>
+                            <!-- イイネの数 -->
                             <p class='iine'>イイネ！(<?=$coun_iine?>)</p><hr>
+                            <!-- スレッドタイトル -->
                             <p class='thread_title'><?= $r['title'] ?></p><hr>
+                            <!-- スレッド本文 -->
                             <?=nl2br($r['text']);?><br>
 <?php
                             if (isset($tg) && $tg != "") {
@@ -174,7 +189,7 @@ if (isset($_GET['tran_b'])) {
                             <!-- 編集ボタン -->
                             <form action="gz_up.php" method="post" id="edit" style="display:none;">
                                     <input type = "hidden" name = "myb" value = 1>
-                                    <input type="submit" value="編集する" style="background-color:yellow;">
+                                    <button type="submit" style="background-color:yellow;">編集する</button>
                             </form>
                             <hr><hr>
 <?php
@@ -220,7 +235,7 @@ if (isset($_GET['tran_b'])) {
                                 <textarea name = "myc" rows = "5" cols = "60" maxlength='250' 
                                     placeholder='最大２５０文字' required></textarea><br>
                                 <input type = "hidden" name = "myb" value = 1>
-                                <input type="submit" value="送信">
+                                <button type="submit">送信</button>
                             </form>
 <?php
                         }
@@ -235,7 +250,6 @@ if (isset($_GET['tran_b'])) {
         
             if (isset($_SESSION['uid']) && isset($_SESSION['nick']) && isset($_SESSION['tm'])) {
                 $_SESSION['tm'] = time();
-
 ?>
                 <script>
                     // アップロードボタンを表示
@@ -249,6 +263,31 @@ if (isset($_GET['tran_b'])) {
                     // イイネボタン表示
                     upiine.style.display = "block";
                 </script>
+<?php
+                // データベース設定
+                require_once("db_init.php");
+                $ps_iibtn = $webdb->query("SELECT * FROM `favorites` WHERE `uid` = '" .$uid. "' and `thread_number` = '" .$get_num. "'");
+                $ps_iibtn->execute();
+                // 実行結果個数のカウント
+                $count = $ps_iibtn->rowCount();
+?>
+                    <script>
+                        let count = <?php echo json_encode($count); ?>;
+                        // let iibtn = document.getElementById( 'iibtn' );
+                        console.log(count);
+                        // 既にイイネされている
+                        if (count == 1) {
+                            iibtn_act.value = 0;
+                            iibtn.innerHTML = 'イイネ解除';
+                            iibtn.style.backgroundColor = "darkred";
+                            
+                        // まだイイネしていない
+                        } else {
+                            iibtn_act.value = 1;
+                            iibtn.innerHTML = 'イイネ！';
+                            iibtn.style.backgroundColor = "royalblue";
+                        }
+                    </script>
 <?php
                 // かつ、ブラックリストに入っていない
                 if ($flag_bk == 0) {

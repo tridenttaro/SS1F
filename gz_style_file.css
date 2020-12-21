@@ -18,4 +18,8 @@ table {border: none; margin: 1em; }
 
 /* 追加 */
 #aisatsu {font-size: 80%; margin: 0;}
+/* イイネボタン(静的) */
+#iibtn {color: white;}
+/* イイネボタン(動的) */
+/* #iibtn2 {background-color:darkred; color: white;} */
 
