@@ -64,8 +64,8 @@ require_once("search_set.php");
             </div>
     </header>
     <div class="container-fluid">
-        <div id="main" class="mx-auto" >
-        <div id="message"><br>トップページ
+        <div id="main" class="mx-auto" style="background-color: white;">
+        <div id="message"><br><h2>トップページ</h2>
             <p id="aisatsu"></p><br>
         </div>
         
@@ -136,12 +136,13 @@ require_once("search_set.php");
             }
             
 ?>
-            <div id='box'>
-                <?php print $r['thread_number']?>
-                【投稿者:<a href='gz_mypage.php?uid=<?=$r['uid']?>'><?php print $thread_nick ?></a>】<?=$r['date'];?><br>
-                <p class='iine'>イイネ(<?=$coun_iine?>)</p><hr>
-                <a href='gz_thread.php?tran_b=<?=$tb?>' class='thread_title'><?= $r['title'] ?></a><br>
+            <div class="container-fluid">
+            <div class="card"  style="background-color: lightblue; margin: 1em; padding: 1em">
+                <div class="card-header"><?php print $r['thread_number']?>【投稿者:<a href='gz_mypage.php?uid=<?=$r['uid']?>'><?php print $thread_nick ?></a>】<?=$r['date'];?><br>
+                <p class='iine'>イイネ(<?=$coun_iine?>)</p></div>
+                <div class="card-body"style="background-color: white;"><a href='gz_thread.php?tran_b=<?=$tb?>' class='thread_title'><?= $r['title'] ?></a><br></div>
             </div>
+                </div>
 <?php            
             
         }        
@@ -166,6 +167,7 @@ require_once("search_set.php");
            <?php } ?>
             
         </ul>
+            <br><br>
     </div>
   </div>
      

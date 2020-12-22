@@ -1,11 +1,16 @@
 <!-- 検索機能。 -->
 <form method="post" action="">
-    <div>
+    <div class="container-fluid">
         <!-- キーワード検索 -->
-        検索<input type=search name="search" value="<?php if(isset($_SESSION['word'])) {print $_SESSION['word'];}?>"
-                id="search" pattern="\S|\S.*?\S" placeholder="<?php if(isset($ph_text)) { print $ph_text;} ?>">
+        <div class="form-group">
+            <div class="row">
+            <div class="col-10">
+        <input type=search name="search" value="<?php if(isset($_SESSION['word'])) {print $_SESSION['word'];}?>"
+                id="search" pattern="\S|\S.*?\S" placeholder="<?php if(isset($ph_text)) { print $ph_text;} ?>"class="form-control" ></div>
         <!-- 決定ボタン -->
-        <input type="submit" value="検索">
+                <input type="submit" value="検索" >
+                </div>
+        </div>
         
         <!-- 折り畳み展開設定 -->
         <div onclick="obj=document.getElementById('open').style; obj.display=(obj.display=='none')?'block':'none';">
@@ -42,7 +47,7 @@
             </div>
         </div>
         <!-- // 折り畳まれ部分 -->
-        <br><br>
+        <br>
     </div>
     <!-- 検索結果の順番 -->
     <div>
@@ -56,3 +61,5 @@
         </select> 
     </div>
 </form>
+<script type="text/javascript" src="js/jquery-3.3.1.js"></script>
+  <script type="text/javascript" src="js/bootstrap.bundle.js"></script>

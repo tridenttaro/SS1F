@@ -4,7 +4,7 @@
  * Copyright 2011-2020 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  */
-:root {
+ :root {
   --blue: #007bff;
   --indigo: #6610f2;
   --purple: #6f42c1;
@@ -564,11 +564,7 @@ pre code {
   margin-left: auto;
 }
 
-p.title {color: yellow; font-size:300%}
-p.title_pink {color: deeppink; font-size:300%;margin:0}
-a.thread_title {color: darkslateblue; margin:0; padding:0; font-size: 120%}
-p.iine {color:red; margin:0; padding:0; font-size: 80%}
-p.com {margin:0; padding: 0; font-size: 70%}
+
 .example li {
 display: inline;
 padding:10px 15px;
@@ -579,9 +575,8 @@ border-radius: 5px / 5px;
 .example .this {background-color:#777;color:#fff;}
 
 
+#main {background-color: white}
 
-#box {width: 30em; background-color: lightblue; margin: 1em;
-        padding: 1em}
 
 #aisatsu {font-size: 80%; margin: 0;}
 
@@ -2069,6 +2064,32 @@ border-radius: 5px / 5px;
 
 .table-responsive > .table-bordered {
   border: 0;
+}
+
+@media (min-width: 992px) {
+ body {
+   font-size: 1.0rem;
+ }
+}
+
+@media (max-width: 991.98px) {
+ body {
+   font-size: 2.0rem;
+ }
+}
+
+@media (max-width: 767.98px) {
+ body {
+   font-size: 2.0rem;
+ }
+}
+
+@media (max-width: 575.98px) {
+   
+ body {
+   font-size: 1.5rem;
+ }
+        
 }
 
 .form-control {
