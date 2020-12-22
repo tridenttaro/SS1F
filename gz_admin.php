@@ -24,15 +24,53 @@ if (isset($_SESSION['uid']) && isset($_SESSION['nick']) && isset($_SESSION['tm']
 <head>
     <meta http-equiv='Content-Type' content='text/html;charset=UTF-8'>
     <title>ソリューションシェア　管理画面</title>
-    <link rel='stylesheet' href='gz_style_file.css' type='text/css'>
+    <link rel='stylesheet' href='css/bootstrap.css' type='text/css'>
 </head>
 <body style="background-color:gray">
-    <div id="ue">
-        <p class="title">ソリューションシェア　管理画面</p>
-    </div>
-    <div id="main">
+    <header class="sticky-top">
+        <div class="p-3 mb-2 bg-success text-white" >
+            
+            <div class ="row">
+                <div calss="col-sm" id='toppage'><br>
+            <form method="post" name="form1" action="gz.php">
+                <input type="hidden" name="top" value="1">
+                <a class="white" href="javascript:form1.submit()"><h1>ソリューションシェア</h1></a>
+            </form> 
+        </div>
+                
+                                <div class="col clearfix">
+                    <div class="col-sm">
+                <div class="float-right">
+                     <div class ="row">
+
+                         <div id='logon' style='display:none;'><br><a href='gz_logon.php'><button type="button" class="btn btn-light">ログオン</button></a></div>
+                <div id='toppage'><br>
+            
+        </div>
+                         <div id='upload' style='display:none;'><br><a href='gz_up.php'><button type="button" class="btn btn-light">スレッド作成</button></a></div>
+                         <div id='mypage' style='display:none;'><br><a href='gz_mypage.php?uid=<?=$_SESSION['uid']?>'><button type="button" class="btn btn-light">マイページ</button></a></div>
+        <div id='admin' style='display:none;'><br>
+            <form method="post" name="form2" action="gz_admin.php">
+                <input type="hidden" name="top" value="1">
+                <a href="javascript:form2.submit()"><button type="button" class="btn btn-light">管理者ページ</button></a>
+            </form> 
+        </div>
+        <form method="post" id='logoff' style='display:none;'><br>
+            <button type="submit" class="btn btn-light" name="action" value="logoff" 
+                onclick="return confirm('ログオフします。よろしいですか?')">ログオフ</button>
+        </form>
+
+            </div>
+                        </div>
+                                    
+                </div>
+            </div>
+        </div>
+            </div>
+    </header>
+    <div id="main" class="container-fluid">
         <p id="message"></p>
-        <h3>ここは管理者のページです</h3>
+        <h2>ここは管理者のページです</h2>
 <?php 
         // 検索機能のHTML部分読み込み
         require_once("search_form.php");
@@ -89,24 +127,26 @@ if (isset($_SESSION['uid']) && isset($_SESSION['nick']) && isset($_SESSION['tm']
                     $coun_iine++;
                 }
 ?>
-                <div id='box'>
-                    非公開：<INPUT TYPE = checkbox NAME = check[] VALUE = <?=$tb?> <?php if ($to == 0) { print "CHECKED = checked";} ?> ><br>
+                <div class="container-fluid">
+                <div class="card"  style="background-color: lightblue; margin: 1em; padding: 1em" >
+                    <div class="card-header">非公開：<INPUT TYPE = checkbox NAME = check[] VALUE = <?=$tb?> <?php if ($to == 0) { print "CHECKED = checked";} ?> ></INPUT><br>
                     <?=$r['thread_number']?>
                     【投稿者:<a href='gz_mypage.php?uid=<?=$r['uid']?>'><?=$thread_nick;?></a>】<?=$r['date'];?><br>
-                    <p class='iine'>イイネ(<?=$coun_iine?>)</p><hr>
-                    <a href='gz_thread.php?tran_b=<?=$tb?>' class='thread_title'><?= $r['title'] ?></a><br>
+                        <p class='iine'>イイネ(<?=$coun_iine?>)</p><hr></div><div class="card-body"style="background-color: white;">
+                    <a href='gz_thread.php?tran_b=<?=$tb?>' class='thread_title'><?= $r['title'] ?></a><br></div>
                 </div>
+                    </div>
 <?php             
             }
 ?>
-        </form>
+                </form>
 
         <br><br>
         <!-- ページ遷移 -->
         <ul class="example">
             <?php if ($page != 1){?>
             <li><?php echo '<a href="' . "gz_admin.php" . '?page=' . ($page - 1) . '">前へ</a>'; ?></li><?php } else { ?>
-            <li><div style="color:gray;">前へ</div></li><?php } ?>
+            <?php } ?>
             <?php if ($page > 2){?>
             <li><?php echo '<a href="' . "gz_admin.php" . '?page=' . ($page - 2) . '">'. ($page - 2) .'</a>'; ?></li><?php } ?>
             <?php if ($page > 1){?>
@@ -118,33 +158,13 @@ if (isset($_SESSION['uid']) && isset($_SESSION['nick']) && isset($_SESSION['tm']
             <li><?php echo '<a href="' . "gz_admin.php" . '?page=' . ($page + 2) . '">'. ($page + 2) .'</a>'; ?></li><?php } 
             if (($page != ceil($coun_th/$page_num ))&&($coun_th != 0)) {?>
             <li><?php echo '<a href="' . "gz_admin.php" . '?page=' . ($page + 1) . '">次へ</a>'; ?></li><?php } else { ?>
-            <li><div style="color:gray;">次へ</div></li><?php } ?>
+            <?php } ?>
             
         </ul>
+                <br><br>
     </div>
 
-    <div id='hidari'>
-        <div id='toppage'><br>
-            <form method="post" name="form1" action="gz.php">
-                <input type="hidden" name="top" value="1">
-                <a href="javascript:form1.submit()">トップページ</a>
-            </form> 
-        </div>
-        <div id='upload'><br><a href='gz_up.php'>アップロードはここ</a></div>
-        <div id='mypage'><br><a href='gz_mypage.php?uid=<?=$_SESSION['uid']?>'>マイページ</a></div>
-        <div id='admin'><br><br>
-            <form method="post" name="form2" action="gz_admin.php">
-                <input type="hidden" name="top" value="1">
-                <a href="javascript:form2.submit()">管理者ページ</a>
-            </form> 
-        </div>
-        <br><br>
-        <form method="post" id='logoff'>
-            <button type="submit" name="action" value="logoff" 
-                onclick="return confirm('ログオフします。よろしいですか?')">ログオフ</button>
-        </form>
-
-    </div>
+    
 
 <?php
 } else {

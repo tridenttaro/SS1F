@@ -76,36 +76,52 @@ if (isset($_GET['tran_b'])) {
 <head>
     <meta http-equiv="content-type" content="text/html;charset=UTF-8">    
     <title>ソリューションシェア</title>
-    <link rel="stylesheet" href="gz_style_file.css" type="text/css">
+    <link rel="stylesheet" href="css/bootstrap.css" type="text/css">
 </head>
 <body style="background-color:beige">
-    <div id="ue">
-        <p class="title">ソリューションシェア</p>
-    </div>
-    <div id='hidari'>
-        <div id='logon' style='display:none;'><br><a href='gz_logon.php'>ログオン</a></div>
-
-        <div id='toppage'><br>
+    <header class="sticky-top">
+        <div class="p-3 mb-2 bg-success text-white" >
+            
+            <div class ="row">
+                <div calss="col-sm" id='toppage'><br>
             <form method="post" name="form1" action="gz.php">
                 <input type="hidden" name="top" value="1">
-                <a href="javascript:form1.submit()">トップページ</a>
+                <a class="white" href="javascript:form1.submit()"><h1>ソリューションシェア</h1></a>
             </form> 
         </div>
-        <div id='upload' style='display:none;'><br><a href='gz_up.php'>アップロードはここ</a></div>
-	    <div id='mypage' style='display:none;'><br><a href='gz_mypage.php?uid=<?=$_SESSION['uid']?>'>マイページ</a></div>
-        <div id='admin' style='display:none;'><br><br>
+                
+                                <div class="col clearfix">
+                    <div class="col-sm">
+                <div class="float-right">
+                     <div class ="row">
+
+                         <div id='logon' style='display:none;'><br><a href='gz_logon.php'><button type="button" class="btn btn-light">ログオン</button></a></div>
+                <div id='toppage'><br>
+            
+        </div>
+                         <div id='upload' style='display:none;'><br><a href='gz_up.php'><button type="button" class="btn btn-light">スレッド作成</button></a></div>
+                         <div id='mypage' style='display:none;'><br><a href='gz_mypage.php?uid=<?=$_SESSION['uid']?>'><button type="button" class="btn btn-light">マイページ</button></a></div>
+        <div id='admin' style='display:none;'><br>
             <form method="post" name="form2" action="gz_admin.php">
                 <input type="hidden" name="top" value="1">
-                <a href="javascript:form2.submit()">管理者ページ</a>
+                <a href="javascript:form2.submit()"><button type="button" class="btn btn-light">管理者ページ</button></a>
             </form> 
         </div>
-        <br><br>
-        <form method="post" id='logoff' style='display:none;'>
-            <button type="submit" name="action" value="logoff" 
+        <form method="post" id='logoff' style='display:none;'><br>
+            <button type="submit" class="btn btn-light" name="action" value="logoff" 
                 onclick="return confirm('ログオフします。よろしいですか?')">ログオフ</button>
         </form>
-    </div>
-    <div id="main">
+
+            </div>
+                        </div>
+                                    
+                </div>
+            </div>
+        </div>
+            </div>
+    </header>
+    
+    <div id="main" class="container-fluid">
         <h3>スレッド詳細画面</h3>
         <p id="message"></p>
 <?php
@@ -151,7 +167,7 @@ if (isset($_GET['tran_b'])) {
                 }
                 
 ?>
-                <div id='box'>
+                <div class="card">
 <?php
                     // ブロックしていないアカウントの場合、表示
                     if ($flag_bk == 0) {
@@ -163,6 +179,7 @@ if (isset($_GET['tran_b'])) {
                         if (((isset($_SESSION['uid']) && isset($_SESSION['nick']) && isset($_SESSION['tm'])) && (
                             ($th_uid == $_SESSION['uid']) || ($_SESSION['uid'] == 'fkisRnWQAXfzG8cVY0M8k1a91dD2'))) || $r['ope'] == 1) {
 ?>
+                    <div class="card-header">
                             <?php print $r['thread_number']?>
                             【投稿者:<a href='gz_mypage.php?uid=<?=$th_uid?>'><?php print $th_nick;?></a>】作成日:<?=$r['date'];?>
                             <div>最終更新:<?=$r['update_date'];?></div>
@@ -174,8 +191,9 @@ if (isset($_GET['tran_b'])) {
                             <!-- イイネの数 -->
                             <p class='iine'>イイネ！(<?=$coun_iine?>)</p><hr>
                             <!-- スレッドタイトル -->
-                            <p class='thread_title'><?= $r['title'] ?></p><hr>
+                        <p class='thread_title'><?= $r['title'] ?></p></div>
                             <!-- スレッド本文 -->
+                    <div class="card-body">
                             <?=nl2br($r['text']);?><br>
 <?php
                             if (isset($tg) && $tg != "") {
@@ -191,7 +209,8 @@ if (isset($_GET['tran_b'])) {
                                     <input type = "hidden" name = "myb" value = 1>
                                     <button type="submit" style="background-color:yellow;">編集する</button>
                             </form>
-                            <hr><hr>
+                        </div>
+                            
 <?php
                             // コメントの表示
                             $ps_com = $webdb->query("SELECT * FROM `comments` WHERE `thread_number` = $tb ORDER BY `date` DESC");
@@ -222,8 +241,10 @@ if (isset($_GET['tran_b'])) {
                                 // ブロックしていないユーザの時、出力
                                 if ($flag_bk_com == 0) {
 ?>
+                    <div class="container-fluid">
+            <div class="card"   margin: 1em; padding: 1em>
                                     <p class='com'>●投稿コメント<?=$coun?><br>【<?php print $com_nick?>さんのメッセージ】
-                                    <?=$r_com['date']?><br><?=nl2br($r_com['text'])?></p>
+                                                          <?=$r_com['date']?><br><?=nl2br($r_com['text'])?></p></div></div>
 <?php   
                                 }
                                 $coun--;
@@ -345,6 +366,8 @@ if (isset($_GET['tran_b'])) {
         }
 ?>
     </div>
+                 <script type="text/javascript" src="js/jquery-3.3.1.js"></script>
+ 		 <script type="text/javascript" src="js/bootstrap.bundle.js"></script>
 </body>
 
 </html>

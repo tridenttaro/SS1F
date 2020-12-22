@@ -18,37 +18,53 @@ if (isset($_POST["action"]) && $_POST["action"] == "logoff") {
 <head>
     <meta http equiv='Content-Type' content='text/html;charset=UTF-8'>
     <title>名前変更</title>
-    <link rel="stylesheet" href="gz_style_file.css" type="text/css">
+    <link rel="stylesheet" href="css/bootstrap.css" type="text/css">
 </head>
     
 <body style="background-color:beige">
-    <div id="ue">
-        <p class="title">ソリューションシェア</p>
-    </div>
-
-    <div id='hidari'>
-        <div id='logon' style='display:none;'><br><a href='gz_logon.php'>ログオン</a></div>
-
-        <div id='toppage'><br>
+    <header class="sticky-top">
+        <div class="p-3 mb-2 bg-success text-white" >
+            
+            <div class ="row">
+                <div calss="col-sm" id='toppage'><br>
             <form method="post" name="form1" action="gz.php">
                 <input type="hidden" name="top" value="1">
-                <a href="javascript:form1.submit()">トップページ</a>
+                <a class="white" href="javascript:form1.submit()"><h1>ソリューションシェア</h1></a>
             </form> 
         </div>
-        <div id='upload' style='display:none;'><br><a href='gz_up.php'>アップロードはここ</a></div>
-        <div id='mypage' style='display:none;'><br><a href='gz_mypage.php?uid=<?=$_SESSION['uid']?>'>マイページ</a></div>
-        <div id='admin' style='display:none;'><br><br>
+                
+                                <div class="col clearfix">
+                    <div class="col-sm">
+                <div class="float-right">
+                     <div class ="row">
+
+                         <div id='logon' style='display:none;'><br><a href='gz_logon.php'><button type="button" class="btn btn-light">ログオン</button></a></div>
+                <div id='toppage'><br>
+            
+        </div>
+                         <div id='upload' style='display:none;'><br><a href='gz_up.php'><button type="button" class="btn btn-light">スレッド作成</button></a></div>
+                         <div id='mypage' style='display:none;'><br><a href='gz_mypage.php?uid=<?=$_SESSION['uid']?>'><button type="button" class="btn btn-light">マイページ</button></a></div>
+        <div id='admin' style='display:none;'><br>
             <form method="post" name="form2" action="gz_admin.php">
                 <input type="hidden" name="top" value="1">
-                <a href="javascript:form2.submit()">管理者ページ</a>
+                <a href="javascript:form2.submit()"><button type="button" class="btn btn-light">管理者ページ</button></a>
             </form> 
         </div>
-        <br><br>
-        <form method="post" id='logoff' style='display:none;'>
-            <button type="submit" name="action" value="logoff" 
+        <form method="post" id='logoff' style='display:none;'><br>
+            <button type="submit" class="btn btn-light" name="action" value="logoff" 
                 onclick="return confirm('ログオフします。よろしいですか?')">ログオフ</button>
         </form>
-    </div>
+
+            </div>
+                        </div>
+                                    
+                </div>
+            </div>
+        </div>
+            </div>
+    </header>
+
+    
 
     <div id='main'>
         <p id="message"></p>
@@ -63,8 +79,9 @@ if (isset($_POST["action"]) && $_POST["action"] == "logoff") {
                 <div>
                     <label>ニックネーム</label>
                     <input type="text" name="nick" required>
-                </div><br>
-                <input type="submit" value="編集する">
+                    <input type="submit" value="編集する">
+                </div>
+                
             </form>
 
             <script>
@@ -97,6 +114,7 @@ if (isset($_POST["action"]) && $_POST["action"] == "logoff") {
 <?php
         }
 ?>       
+        <br><br>
     </div>
  
     

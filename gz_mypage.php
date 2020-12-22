@@ -158,6 +158,7 @@ if (isset($_GET['uid'])) {
             <a href="javascript:form2.submit()" style="background-color:blue; color:white;"
                 onclick="return confirm('ブロックを解除します。よろしいですか?')"><?=$get_nick?>さんのブロックを解除</a>
         </form>
+            <br><br>
     </div>
     </div>
    <!-- <div id='hidari'>

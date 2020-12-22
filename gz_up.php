@@ -18,39 +18,55 @@ if (isset($_POST["action"]) && $_POST["action"] == "logoff") {
 <head>
     <meta http equiv='Content-Type' content='text/html;charset=UTF-8'>
     <title>アップロード画面</title>
-    <link rel="stylesheet" href="gz_style_file.css" type="text/css">
+    <link rel="stylesheet" href="css/bootstrap.css" type="text/css">
 </head>
     
 <body style="background-color:beige">
-    <div id="ue">
-        <p class="title">ソリューションシェア</p>
-    </div>
-
-    <div id='hidari'>
-        <div id='logon' style='display:none;'><br><a href='gz_logon.php'>ログオン</a></div>
-
-        <div id='toppage'><br>
+    <header class="sticky-top">
+        <div class="p-3 mb-2 bg-success text-white" >
+            
+            <div class ="row">
+                <div calss="col-sm" id='toppage'><br>
             <form method="post" name="form1" action="gz.php">
                 <input type="hidden" name="top" value="1">
-                <a href="javascript:form1.submit()">トップページ</a>
+                <a class="white" href="javascript:form1.submit()"><h1>ソリューションシェア</h1></a>
             </form> 
         </div>
-        <div id='upload' style='display:none;'><br><a href='gz_up.php'>アップロードはここ</a></div>
-        <div id='mypage' style='display:none;'><br><a href='gz_mypage.php?uid=<?=$_SESSION['uid']?>'>マイページ</a></div>
-        <div id='admin' style='display:none;'><br><br>
+                
+                                <div class="col clearfix">
+                    <div class="col-sm">
+                <div class="float-right">
+                     <div class ="row">
+
+                         <div id='logon' style='display:none;'><br><a href='gz_logon.php'><button type="button" class="btn btn-light">ログオン</button></a></div>
+                <div id='toppage'><br>
+            
+        </div>
+                         <div id='upload' style='display:none;'><br><a href='gz_up.php'><button type="button" class="btn btn-light">スレッド作成</button></a></div>
+                         <div id='mypage' style='display:none;'><br><a href='gz_mypage.php?uid=<?=$_SESSION['uid']?>'><button type="button" class="btn btn-light">マイページ</button></a></div>
+        <div id='admin' style='display:none;'><br>
             <form method="post" name="form2" action="gz_admin.php">
                 <input type="hidden" name="top" value="1">
-                <a href="javascript:form2.submit()">管理者ページ</a>
+                <a href="javascript:form2.submit()"><button type="button" class="btn btn-light">管理者ページ</button></a>
             </form> 
         </div>
-        <br><br>
-        <form method="post" id='logoff' style='display:none;'>
-            <button type="submit" name="action" value="logoff" 
+        <form method="post" id='logoff' style='display:none;'><br>
+            <button type="submit" class="btn btn-light" name="action" value="logoff" 
                 onclick="return confirm('ログオフします。よろしいですか?')">ログオフ</button>
         </form>
-    </div>
 
-    <div id='main'>
+            </div>
+                        </div>
+                                    
+                </div>
+            </div>
+        </div>
+            </div>
+    </header>
+
+   
+
+    <div id='main'class="container-fluid">
         <p id="message"></p>
 <?php
         // ログオンしている
@@ -93,18 +109,21 @@ if (isset($_POST["action"]) && $_POST["action"] == "logoff") {
             } else {
 ?>
                 <form enctype = 'multipart/form-data' action = 'gz_up_set.php' method = 'post'>
+                    <div class="form-group">
                     タイトル<br>
-                    <input type='text' name='myt' maxlength='30' pattern="\S|\S.*?\S"
-                    placeholder='タイトル：最大３０文字' required><br>
+                    <input type='text' name='myt' class="form-control form-control-lg" maxlength='30' pattern="\S|\S.*?\S"
+                           placeholder='タイトル：最大３０文字' required></div>
+                    <div class="form-group">
                     本文<br>
-                    <textarea name='mym' rows='10' cols='70' maxlength='2040'
-                    placeholder='本文：最大２０４０文字' required></textarea><br>
+                    <textarea name='mym' rows='10' class="form-control form-control-lg" maxlength='2040'
+                              placeholder='本文：最大２０４０文字' required></textarea></div><br>
                     <input type = 'file' name='myf' accept='image/png, image/jpeg, image/gif'>
                     <p>送信できるのは1mbまでのjpeg画像だけです！<br>
                     また展開後のメモリ消費が多い場合アップロードできません。<br>
                         <input type='submit' value='送信'><br>
                     </p>
                 </form>
+        <br><br>
 <?php
             }
 ?>
