@@ -75,6 +75,7 @@ if (isset($_SESSION['uid']) && isset($_SESSION['nick']) && isset($_SESSION['tm']
         // 検索機能のHTML部分読み込み
         require_once("search_form.php");
 ?>        
+        <!-- 公開・非公開設定 -->
         <form action="gz_admin_op.php" method="post">
             <br>
             <INPUT TYPE = "submit" VALUE='公開・非公開の送信'>
