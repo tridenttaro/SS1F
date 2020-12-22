@@ -6,7 +6,7 @@
             <div class="row">
             <div class="col-10">
         <input type=search name="search" value="<?php if(isset($_SESSION['word'])) {print $_SESSION['word'];}?>"
-                id="search" pattern="\S|\S.*?\S" placeholder="<?php if(isset($ph_text)) { print $ph_text;} ?>"class="form-control" ></div>
+                id="search" pattern="\S|\S.*?\S" placeholder="<?php if(isset($ph_text)) { print $ph_text;} ?>"class="form-control col-form-label-lg" ></div>
         <!-- 決定ボタン -->
                 <input type="submit" value="検索" >
                 </div>
