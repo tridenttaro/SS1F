@@ -182,37 +182,38 @@ if (isset($_GET['tran_b'])) {
                         if (((isset($_SESSION['uid']) && isset($_SESSION['nick']) && isset($_SESSION['tm'])) && (
                             ($th_uid == $_SESSION['uid']) || ($_SESSION['uid'] == 'fkisRnWQAXfzG8cVY0M8k1a91dD2'))) || $r['ope'] == 1) {
 ?>
-                    <div class="card-header">
-                            <?php print $r['thread_number']?>
-                            【投稿者:<a href='gz_mypage.php?uid=<?=$th_uid?>'><?php print $th_nick;?></a>】作成日:<?=$r['date'];?>
-                            <div>最終更新:<?=$r['update_date'];?></div>
-                            <!-- イイネボタン(ログオン済のみ表示) -->
-                            <form method="post" id="upiine" style="display:none;">
-                                    <input type = "hidden" name = "iibtn_act" id="iibtn_act" value = 0>
-                                    <button type="submit" id="iibtn">イイネ！</button>
-                            </form>
-                            <!-- イイネの数 -->
-                            <p class='iine'>イイネ！(<?=$coun_iine?>)</p><hr>
-                            <!-- スレッドタイトル -->
-                        <p class='thread_title'><?= $r['title'] ?></p></div>
-                            <!-- スレッド本文 -->
-                    <div class="card-body">
-                            <?=nl2br($r['text']);?><br>
+                            <div class="card-header">
+                                <?php print $r['thread_number']?>
+                                【投稿者:<a href='gz_mypage.php?uid=<?=$th_uid?>'><?php print $th_nick;?></a>】作成日:<?=$r['date'];?>
+                                <div>最終更新:<?=$r['update_date'];?></div>
+                                <!-- イイネボタン(ログオン済のみ表示) -->
+                                <form method="post" id="upiine" style="display:none;">
+                                        <input type = "hidden" name = "iibtn_act" id="iibtn_act" value = 0>
+                                        <button type="submit" id="iibtn">イイネ！</button>
+                                </form>
+                                <!-- イイネの数 -->
+                                <p class='iine'>(<?=$coun_iine?>)</p><hr>
+                                <!-- スレッドタイトル -->
+                                <p class='thread_title'><?= $r['title'] ?></p>
+                            </div>
+                                <!-- スレッド本文 -->
+                            <div class="card-body">
+                                <?=nl2br($r['text']);?><br>
 <?php
-                            if (isset($tg) && $tg != "") {
+                                if (isset($tg) && $tg != "") {
 ?>
-                                <a href='./gz_img/<?=$tg?>' target='_blank'>
-                                    <img src='./gz_img/thumb_<?=$tg?>'>
-                                </a><br>
+                                    <a href='./gz_img/<?=$tg?>' target='_blank'>
+                                        <img src='./gz_img/thumb_<?=$tg?>'>
+                                    </a><br>
 <?php
-                            }
+                                }
 ?>
-                            <!-- 編集ボタン -->
-                            <form action="gz_up.php" method="post" id="edit" style="display:none;">
-                                    <input type = "hidden" name = "myb" value = 1>
-                                    <button type="submit" style="background-color:yellow;">編集する</button>
-                            </form>
-                        </div>
+                                <!-- 編集ボタン -->
+                                <form action="gz_up.php" method="post" id="edit" style="display:none;">
+                                        <input type = "hidden" name = "myb" value = 1>
+                                        <button type="submit" style="background-color:yellow;">編集する</button>
+                                </form>
+                            </div>
                             
 <?php
                             // コメントの表示
@@ -244,10 +245,10 @@ if (isset($_GET['tran_b'])) {
                                 // ブロックしていないユーザの時、出力
                                 if ($flag_bk_com == 0) {
 ?>
-                    <div class="container-fluid">
-            <div class="card"   margin: 1em; padding: 1em>
-                                    <p class='com'>●投稿コメント<?=$coun?><br>【<?php print $com_nick?>さんのメッセージ】
-                                                          <?=$r_com['date']?><br><?=nl2br($r_com['text'])?></p></div></div>
+                                    <div class="container-fluid">
+                                    <div class="card"   margin: 1em; padding: 1em>
+                                        <p class='com'>●投稿コメント<?=$coun?><br>【<?php print $com_nick?>さんのメッセージ】
+                                                            <?=$r_com['date']?><br><?=nl2br($r_com['text'])?></p></div></div>
 <?php   
                                 }
                                 $coun--;
