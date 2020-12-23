@@ -22,53 +22,57 @@ if (isset($_SESSION['uid']) && isset($_SESSION['nick']) && isset($_SESSION['tm']
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-    <meta http-equiv='Content-Type' content='text/html;charset=UTF-8'>
+    <meta http-equiv='content-Type' content='text/html;charset=UTF-8'>
     <title>ソリューションシェア　管理画面</title>
-    <link rel='stylesheet' href='css/bootstrap.css' type='text/css'>
+    <link rel="stylesheet" href="css/bootstrap.css" type="text/css">
 </head>
-<body style="background-color:gray">
+<body style="background-color:beige">
     <header class="sticky-top">
-        <div class="p-3 mb-2 bg-success text-white" >
-            
+        <div class="p-3 mb-2 bg-success text-white">
             <div class ="row">
                 <div calss="col-sm" id='toppage'><br>
-            <form method="post" name="form1" action="gz.php">
-                <input type="hidden" name="top" value="1">
-                <a class="white" href="javascript:form1.submit()"><h1>ソリューションシェア</h1></a>
-            </form> 
-        </div>
+                    <form method="post" name="form1" action="gz.php">
+                        <input type="hidden" name="top" value="1">
+                        <a class="white" href="javascript:form1.submit()"><h1>ソリューションシェア</h1></a>
+                    </form> 
+                </div>
                 
-                                <div class="col clearfix">
+                <div class="col clearfix">
                     <div class="col-sm">
-                <div class="float-right">
-                     <div class ="row">
+                        <div class="float-right">
+                            <div class ="row">
 
-                         <div id='logon' style='display:none;'><br><a href='gz_logon.php'><button type="button" class="btn btn-light">ログオン</button></a></div>
-                <div id='toppage'><br>
-            
-        </div>
-                         <div id='upload' style='display:none;'><br><a href='gz_up.php'><button type="button" class="btn btn-light">スレッド作成</button></a></div>
-                         <div id='mypage' style='display:none;'><br><a href='gz_mypage.php?uid=<?=$_SESSION['uid']?>'><button type="button" class="btn btn-light">マイページ</button></a></div>
-        <div id='admin' style='display:none;'><br>
-            <form method="post" name="form2" action="gz_admin.php">
-                <input type="hidden" name="top" value="1">
-                <a href="javascript:form2.submit()"><button type="button" class="btn btn-light">管理者ページ</button></a>
-            </form> 
-        </div>
-        <form method="post" id='logoff' style='display:none;'><br>
-            <button type="submit" class="btn btn-light" name="action" value="logoff" 
-                onclick="return confirm('ログオフします。よろしいですか?')">ログオフ</button>
-        </form>
+                                <div id='logon' style='display:none;'><br><a href='gz_logon.php'><button type="button" class="btn btn-light">ログオン</button></a></div>
+                                <div id='toppage'><br>
+                                    <form method="post" name="top_page" action="gz.php">
+                                        <input type="hidden" name="top" value="1">
+                                        <a class="white" href="javascript:top_page.submit()">
+                                            <button type="button" class="btn btn-light" style='margin-right:1em;'>トップ</button>
+                                        </a>
+                                    </form>
+                                </div>
 
-            </div>
-                        </div>
-                                    
+                                <div id='upload'><br><a href='gz_up.php'><button type="button" class="btn btn-light">スレッド作成</button></a></div>
+                                <div id='mypage'><br><a href='gz_mypage.php?uid=<?=$_SESSION['uid']?>'><button type="button" class="btn btn-light">マイページ</button></a></div>
+                                <div id='admin'><br>
+                                    <form method="post" name="form2" action="gz_admin.php">
+                                        <input type="hidden" name="top" value="1">
+                                        <a href="javascript:form2.submit()"><button type="button" class="btn btn-light">管理者ページ</button></a>
+                                    </form> 
+                                </div>
+                                <form method="post" id='logoff'><br>
+                                    <button type="submit" class="btn btn-light" name="action" value="logoff" 
+                                        onclick="return confirm('ログオフします。よろしいですか?')">ログオフ</button>
+                                </form>
+                            </div>
+                        </div>                  
+                    </div>
                 </div>
             </div>
         </div>
-            </div>
     </header>
-    <div id="main" class="container-fluid">
+    <div class="container-fluid">
+        <div id="main" class="mx-auto" style="background-color: white;">
         <p id="message"></p>
         <h2>ここは管理者のページです</h2>
 <?php 
@@ -164,6 +168,7 @@ if (isset($_SESSION['uid']) && isset($_SESSION['nick']) && isset($_SESSION['tm']
         </ul>
                 <br><br>
     </div>
+    </div>
 
     
 
@@ -175,5 +180,7 @@ if (isset($_SESSION['uid']) && isset($_SESSION['nick']) && isset($_SESSION['tm']
             <A HREF='gz_logon.php'>ログオン</A></P>";
 }
 ?>
+    <script type="text/javascript" src="js/jquery-3.3.1.js"></script>
+    <script type="text/javascript" src="js/bootstrap.bundle.js"></script>
 </body>
 </html>

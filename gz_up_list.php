@@ -24,49 +24,49 @@ require_once("search_set.php");
     
 <body style='background-color:beige'>
     <header class="sticky-top">
-        <div class="p-3 mb-2 bg-success text-white" >
-            
+        <div class="p-3 mb-2 bg-success text-white">
             <div class ="row">
                 <div calss="col-sm" id='toppage'><br>
-            <form method="post" name="form1" action="gz.php">
-                <input type="hidden" name="top" value="1">
-                <a class="white" href="javascript:form1.submit()"><h1>ソリューションシェア</h1></a>
-            </form> 
-        </div>
+                    <form method="post" name="form1" action="gz.php">
+                        <input type="hidden" name="top" value="1">
+                        <a class="white" href="javascript:form1.submit()"><h1>ソリューションシェア</h1></a>
+                    </form> 
+                </div>
                 
-                                <div class="col clearfix">
+                <div class="col clearfix">
                     <div class="col-sm">
-                <div class="float-right">
-                     <div class ="row">
+                        <div class="float-right">
+                            <div class ="row">
 
-                         <div id='logon' style='display:none;'><br><a href='gz_logon.php'><button type="button" class="btn btn-light">ログオン</button></a></div>
-                <div id='toppage'><br>
-            
-        </div>
-                         <div id='upload' style='display:none;'><br><a href='gz_up.php'><button type="button" class="btn btn-light">スレッド作成</button></a></div>
-                         <div id='mypage' style='display:none;'><br><a href='gz_mypage.php?uid=<?=$_SESSION['uid']?>'><button type="button" class="btn btn-light">マイページ</button></a></div>
-        <div id='admin' style='display:none;'><br>
-            <form method="post" name="form2" action="gz_admin.php">
-                <input type="hidden" name="top" value="1">
-                <a href="javascript:form2.submit()"><button type="button" class="btn btn-light">管理者ページ</button></a>
-            </form> 
-        </div>
-        <form method="post" id='logoff' style='display:none;'><br>
-            <button type="submit" class="btn btn-light" name="action" value="logoff" 
-                onclick="return confirm('ログオフします。よろしいですか?')">ログオフ</button>
-        </form>
+                                <div id='logon' style='display:none;'><br><a href='gz_logon.php'><button type="button" class="btn btn-light">ログオン</button></a></div>
+                                <div id='toppage'><br>
+                                    <form method="post" name="top_page" action="gz.php">
+                                        <input type="hidden" name="top" value="1">
+                                        <a class="white" href="javascript:top_page.submit()">
+                                            <button type="button" class="btn btn-light" style='margin-right:1em;'>トップ</button>
+                                        </a>
+                                    </form>
+                                </div>
 
-            </div>
-                        </div>
-                                    
+                                <div id='upload' style='display:none;'><br><a href='gz_up.php'><button type="button" class="btn btn-light">スレッド作成</button></a></div>
+                                <div id='mypage' style='display:none;'><br><a href='gz_mypage.php?uid=<?=$_SESSION['uid']?>'><button type="button" class="btn btn-light">マイページ</button></a></div>
+                                <div id='admin' style='display:none;'><br>
+                                    <form method="post" name="form2" action="gz_admin.php">
+                                        <input type="hidden" name="top" value="1">
+                                        <a href="javascript:form2.submit()"><button type="button" class="btn btn-light">管理者ページ</button></a>
+                                    </form> 
+                                </div>
+                                <form method="post" id='logoff' style='display:none;'><br>
+                                    <button type="submit" class="btn btn-light" name="action" value="logoff" 
+                                        onclick="return confirm('ログオフします。よろしいですか?')">ログオフ</button>
+                                </form>
+                            </div>
+                        </div>                  
+                    </div>
                 </div>
             </div>
         </div>
-            </div>
     </header>
-   
-
-    
 
     <div id="main" class="container-fluid">
         <p id="message"></p>
@@ -130,19 +130,31 @@ require_once("search_set.php");
                                 // 投稿者本人または管理者
                                 if ($get_uid == $_SESSION['uid'] || $_SESSION['uid'] == 'fkisRnWQAXfzG8cVY0M8k1a91dD2') {
 ?>
-                                    <?php print $r['thread_number']?>
-                                    【投稿者:<a href='gz_mypage.php?uid=<?=$r['uid']?>'><?php print $thread_nick ?></a>】<?=$r['date'];?><br>
-                                    <p class='iine'>イイネ(<?=$coun_iine?>)</p><hr>
-                                    <a href='gz_thread.php?tran_b=<?=$tb?>' class='thread_title'><?= $r['title'] ?></a><br>
+                                    <div class="container-fluid">
+                                    <div class="card"  style="background-color: lightblue; margin: 1em; padding: 1em">
+                                        <div class="card-header"><?php print $r['thread_number']?>
+                                        【投稿者:<a href='gz_mypage.php?uid=<?=$r['uid']?>'><?php print $thread_nick ?></a>】<?=$r['date'];?><br>
+                                        <p class='iine'>イイネ(<?=$coun_iine?>)</p><hr>
+                                        <div class="card-body"style="background-color: white;"><a href='gz_thread.php?tran_b=<?=$tb?>' class='thread_title'>
+                                            <?= $r['title'] ?></a><br>
+                                        </div>
+                                    </div>
+                                    </div>
 <?php
                                 }
                             // 非公開でない
                             } else {
 ?>
-                                <?php print $r['thread_number']?>
-                                【投稿者:<a href='gz_mypage.php?uid=<?=$r['uid']?>'><?php print $thread_nick ?></a>】<?=$r['date'];?><br>
-                                <p class='iine'>イイネ(<?=$coun_iine?>)</p><hr>
-                                <a href='gz_thread.php?tran_b=<?=$tb?>' class='thread_title'><?= $r['title'] ?></a><br>
+                                <div class="container-fluid">
+                                <div class="card"  style="background-color: lightblue; margin: 1em; padding: 1em">                    
+                                    <div class="card-header"><?php print $r['thread_number']?>
+                                    【投稿者:<a href='gz_mypage.php?uid=<?=$r['uid']?>'><?php print $thread_nick ?></a>】<?=$r['date'];?><br>
+                                    <p class='iine'>イイネ(<?=$coun_iine?>)</p><hr>
+                                    <div class="card-body"style="background-color: white;"><a href='gz_thread.php?tran_b=<?=$tb?>' class='thread_title'>
+                                        <?= $r['title'] ?></a>
+                                    <br>
+                                </div>
+                                </div>
 <?php
                             }
 ?>

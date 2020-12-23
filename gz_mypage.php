@@ -9,6 +9,7 @@ if (isset($_POST["action"]) && $_POST["action"] == "logoff") {
 
 // ブロックボタンを押した
 if (isset($_POST["black_uid"])) {
+    $black_uid = htmlspecialchars($_POST['black_uid'], ENT_QUOTES, 'UTF-8');
     //データベース設定
     require_once("db_init.php");
 
@@ -26,12 +27,13 @@ if (isset($_POST["black_uid"])) {
 
 // ブロック解除ボタンを押した
 if (isset($_POST["white_uid"])) {
+    $white_uid = htmlspecialchars($_POST["white_uid"], ENT_QUOTES, 'UTF-8');
     //データベース設定
     require_once("db_init.php");
 
     $ps = $webdb->prepare("DELETE FROM `blacklists` WHERE `uid` = (:v_u) AND `black_uid` = (:v_bu)");
     $ps->bindParam(':v_u', $_SESSION['uid']);
-    $ps->bindParam(':v_bu', $_POST['white_uid']);
+    $ps->bindParam(':v_bu', $white_uid);
     $ps->execute();
 ?>
     <script>
@@ -78,47 +80,50 @@ if (isset($_GET['uid'])) {
     
 <BODY style="background-color:beige">
     <header class="sticky-top">
-        <div class="p-3 mb-2 bg-success text-white" >
-            
+        <div class="p-3 mb-2 bg-success text-white">
             <div class ="row">
                 <div calss="col-sm" id='toppage'><br>
-            <form method="post" name="form1" action="gz.php">
-                <input type="hidden" name="top" value="1">
-                <a class="white" href="javascript:form1.submit()"><h1>ソリューションシェア</h1></a>
-            </form> 
-        </div>
+                    <form method="post" name="form1" action="gz.php">
+                        <input type="hidden" name="top" value="1">
+                        <a class="white" href="javascript:form1.submit()"><h1>ソリューションシェア</h1></a>
+                    </form> 
+                </div>
                 
-                                <div class="col clearfix">
+                <div class="col clearfix">
                     <div class="col-sm">
-                <div class="float-right">
-                     <div class ="row">
+                        <div class="float-right">
+                            <div class ="row">
 
-                         <div id='logon' style='display:none;'><br><a href='gz_logon.php'><button type="button" class="btn btn-light">ログオン</button></a></div>
-                <div id='toppage'><br>
-            
-        </div>
-                         <div id='upload' style='display:none;'><br><a href='gz_up.php'><button type="button" class="btn btn-light">スレッド作成</button></a></div>
-                         <div id='mypage' style='display:none;'><br><a href='gz_mypage.php?uid=<?=$_SESSION['uid']?>'><button type="button" class="btn btn-light">マイページ</button></a></div>
-        <div id='admin' style='display:none;'><br>
-            <form method="post" name="form2" action="gz_admin.php">
-                <input type="hidden" name="top" value="1">
-                <a href="javascript:form2.submit()"><button type="button" class="btn btn-light">管理者ページ</button></a>
-            </form> 
-        </div>
-        <form method="post" id='logoff' style='display:none;'><br>
-            <button type="submit" class="btn btn-light" name="action" value="logoff" 
-                onclick="return confirm('ログオフします。よろしいですか?')">ログオフ</button>
-        </form>
+                                <div id='logon' style='display:none;'><br><a href='gz_logon.php'><button type="button" class="btn btn-light">ログオン</button></a></div>
+                                <div id='toppage'><br>
+                                    <form method="post" name="top_page" action="gz.php">
+                                        <input type="hidden" name="top" value="1">
+                                        <a class="white" href="javascript:top_page.submit()">
+                                            <button type="button" class="btn btn-light" style='margin-right:1em;'>トップ</button>
+                                        </a>
+                                    </form>
+                                </div>
 
-            </div>
-                        </div>
-                                    
+                                <div id='upload' style='display:none;'><br><a href='gz_up.php'><button type="button" class="btn btn-light">スレッド作成</button></a></div>
+                                <div id='mypage' style='display:none;'><br><a href='gz_mypage.php?uid=<?=$_SESSION['uid']?>'><button type="button" class="btn btn-light">マイページ</button></a></div>
+                                <div id='admin' style='display:none;'><br>
+                                    <form method="post" name="form2" action="gz_admin.php">
+                                        <input type="hidden" name="top" value="1">
+                                        <a href="javascript:form2.submit()"><button type="button" class="btn btn-light">管理者ページ</button></a>
+                                    </form> 
+                                </div>
+                                <form method="post" id='logoff' style='display:none;'><br>
+                                    <button type="submit" class="btn btn-light" name="action" value="logoff" 
+                                        onclick="return confirm('ログオフします。よろしいですか?')">ログオフ</button>
+                                </form>
+                            </div>
+                        </div>                  
+                    </div>
                 </div>
             </div>
         </div>
-            </div>
     </header>
-      <div class="container-fluid">
+    <div class="container-fluid">
         <div id="main" class="mx-auto" >
         <p id="message"></p>
 
@@ -152,39 +157,16 @@ if (isset($_GET['uid'])) {
                 onclick="return confirm('ブロックしたユーザの投稿、コメントは表示されなくなります。\nよろしいですか?')"><?=$get_nick?>さんをブロックする</a>
         </form>
         <!-- ブロック解除ボタン -->
-        <form method='post' name='form2' id='white' style='display:none;'>
+        <form method='post' name='form3' id='white' style='display:none;'>
             <br><br>
             <input type="hidden" name="white_uid" value="<?=$get_uid?>">
-            <a href="javascript:form2.submit()" style="background-color:blue; color:white;"
+            <a href="javascript:form3.submit()" style="background-color:blue; color:white;"
                 onclick="return confirm('ブロックを解除します。よろしいですか?')"><?=$get_nick?>さんのブロックを解除</a>
         </form>
             <br><br>
     </div>
     </div>
-   <!-- <div id='hidari'>
-        <div id='logon' style='display:none;'><br><a href='gz_logon.php'>ログオン</a></div>
 
-        <div id='toppage'><br>
-            <form method="post" name="form1" action="gz.php">
-                <input type="hidden" name="top" value="1">
-                <a href="javascript:form1.submit()">トップページ</a>
-            </form> 
-        </div>
-        <div id='upload' style='display:none;'><br><a href='gz_up.php'>アップロードはここ</a></div>
-        <div id='mypage' style='display:none;'><br><a href='gz_mypage.php?uid=<?=$_SESSION['uid']?>'>マイページ</a></div>
-        <div id='admin' style='display:none;'><br><br>
-            <form method="post" name="form2" action="gz_admin.php">
-                <input type="hidden" name="top" value="1">
-                <a href="javascript:form2.submit()">管理者ページ</a>
-            </form> 
-        </div>
-        <form method="post" id='logoff' style='display:none;'>
-            <br><br>
-            <button type="submit" name="action" value="logoff" 
-                onclick="return confirm('ログオフします。よろしいですか?')">ログオフ</button>
-        </form>
-    </div>
--->
 <?php
     //------------------------------
     //       hidari UI部分

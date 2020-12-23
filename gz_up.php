@@ -23,45 +23,48 @@ if (isset($_POST["action"]) && $_POST["action"] == "logoff") {
     
 <body style="background-color:beige">
     <header class="sticky-top">
-        <div class="p-3 mb-2 bg-success text-white" >
-            
+        <div class="p-3 mb-2 bg-success text-white">
             <div class ="row">
                 <div calss="col-sm" id='toppage'><br>
-            <form method="post" name="form1" action="gz.php">
-                <input type="hidden" name="top" value="1">
-                <a class="white" href="javascript:form1.submit()"><h1>ソリューションシェア</h1></a>
-            </form> 
-        </div>
+                    <form method="post" name="form1" action="gz.php">
+                        <input type="hidden" name="top" value="1">
+                        <a class="white" href="javascript:form1.submit()"><h1>ソリューションシェア</h1></a>
+                    </form> 
+                </div>
                 
-                                <div class="col clearfix">
+                <div class="col clearfix">
                     <div class="col-sm">
-                <div class="float-right">
-                     <div class ="row">
+                        <div class="float-right">
+                            <div class ="row">
 
-                         <div id='logon' style='display:none;'><br><a href='gz_logon.php'><button type="button" class="btn btn-light">ログオン</button></a></div>
-                <div id='toppage'><br>
-            
-        </div>
-                         <div id='upload' style='display:none;'><br><a href='gz_up.php'><button type="button" class="btn btn-light">スレッド作成</button></a></div>
-                         <div id='mypage' style='display:none;'><br><a href='gz_mypage.php?uid=<?=$_SESSION['uid']?>'><button type="button" class="btn btn-light">マイページ</button></a></div>
-        <div id='admin' style='display:none;'><br>
-            <form method="post" name="form2" action="gz_admin.php">
-                <input type="hidden" name="top" value="1">
-                <a href="javascript:form2.submit()"><button type="button" class="btn btn-light">管理者ページ</button></a>
-            </form> 
-        </div>
-        <form method="post" id='logoff' style='display:none;'><br>
-            <button type="submit" class="btn btn-light" name="action" value="logoff" 
-                onclick="return confirm('ログオフします。よろしいですか?')">ログオフ</button>
-        </form>
+                                <div id='logon' style='display:none;'><br><a href='gz_logon.php'><button type="button" class="btn btn-light">ログオン</button></a></div>
+                                <div id='toppage'><br>
+                                    <form method="post" name="top_page" action="gz.php">
+                                        <input type="hidden" name="top" value="1">
+                                        <a class="white" href="javascript:top_page.submit()">
+                                            <button type="button" class="btn btn-light" style='margin-right:1em;'>トップ</button>
+                                        </a>
+                                    </form>
+                                </div>
 
-            </div>
-                        </div>
-                                    
+                                <div id='upload' style='display:none;'><br><a href='gz_up.php'><button type="button" class="btn btn-light">スレッド作成</button></a></div>
+                                <div id='mypage' style='display:none;'><br><a href='gz_mypage.php?uid=<?=$_SESSION['uid']?>'><button type="button" class="btn btn-light">マイページ</button></a></div>
+                                <div id='admin' style='display:none;'><br>
+                                    <form method="post" name="form2" action="gz_admin.php">
+                                        <input type="hidden" name="top" value="1">
+                                        <a href="javascript:form2.submit()"><button type="button" class="btn btn-light">管理者ページ</button></a>
+                                    </form> 
+                                </div>
+                                <form method="post" id='logoff' style='display:none;'><br>
+                                    <button type="submit" class="btn btn-light" name="action" value="logoff" 
+                                        onclick="return confirm('ログオフします。よろしいですか?')">ログオフ</button>
+                                </form>
+                            </div>
+                        </div>                  
+                    </div>
                 </div>
             </div>
         </div>
-            </div>
     </header>
 
    
