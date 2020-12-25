@@ -7,6 +7,14 @@ session_start();
 <head>
     <meta charset="utf-8">
     <title>ログオン画面</title>
+    <link rel="manifest" href="./manifest.json">
+    <script>
+        if('serviceWorker' in navigator){
+            navigator.serviceWorker.register('./service-worker.js').then(function(){
+                console.log("Service Worker is registered!!");
+            });
+        }
+    </script>
 </head>
 <body style="background-color:lightblue;">
     <form action="gz.php" method="post" id="nickname" style="display:none;">

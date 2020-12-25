@@ -24,25 +24,31 @@ if (isset($_SESSION['uid']) && isset($_SESSION['nick']) && isset($_SESSION['tm']
     <meta http-equiv='Content-Type' content='text/html;charset=UTF-8'>
     <title>ソリューションシェア　管理画面</title>
     <link rel='stylesheet' href='css/bootstrap.css' type='text/css'>
+    <link rel="manifest" href="./manifest.json">
+    <script>
+        if('serviceWorker' in navigator){
+            navigator.serviceWorker.register('./service-worker.js').then(function(){
+                console.log("Service Worker is registered!!");
+            });
+        }
+    </script>
 </head>
 <body style="background-color:beige">
     <header class="sticky-top">
         <div class="p-3 mb-2 bg-success text-white">
             <div class ="row">
-                <div calss="col-sm" id='toppage'><br>
+                <div calss="col-sm" id='toppage'>
                     <form method="post" name="form1" action="gz.php">
                         <input type="hidden" name="top" value="1">
                         <a class="white" href="javascript:form1.submit()"><h1>ソリューションシェア</h1></a>
                     </form> 
                 </div>
-                
                 <div class="col clearfix">
                     <div class="col-sm">
                         <div class="float-right">
                             <div class ="row">
-
-                                <div id='logon' style='display:none;'><br><a href='gz_logon.php'><button type="button" class="btn btn-light">ログオン</button></a></div>
-                                <div id='toppage'><br>
+                                
+                                <div id='toppage'>
                                     <form method="post" name="top_page" action="gz.php">
                                         <input type="hidden" name="top" value="1">
                                         <a class="white" href="javascript:top_page.submit()">
@@ -51,15 +57,15 @@ if (isset($_SESSION['uid']) && isset($_SESSION['nick']) && isset($_SESSION['tm']
                                     </form>
                                 </div>
 
-                                <div id='upload'><br><a href='gz_up.php'><button type="button" class="btn btn-light">スレッド作成</button></a></div>
-                                <div id='mypage'><br><a href='gz_mypage.php?uid=<?=$_SESSION['uid']?>'><button type="button" class="btn btn-light">マイページ</button></a></div>
-                                <div id='admin'><br>
+                                <div id='upload'><a href='gz_up.php'><button type="button" class="btn btn-light">スレッド作成</button></a></div>
+                                <div id='mypage'><a href='gz_mypage.php?uid=<?=$_SESSION['uid']?>'><button type="button" class="btn btn-light">マイページ</button></a></div>
+                                <div id='admin'>
                                     <form method="post" name="form2" action="gz_admin.php">
                                         <input type="hidden" name="top" value="1">
                                         <a href="javascript:form2.submit()"><button type="button" class="btn btn-light">管理者ページ</button></a>
                                     </form> 
                                 </div>
-                                <form method="post" id='logoff'><br>
+                                <form method="post" id='logoff'>
                                     <button type="submit" class="btn btn-light" name="action" value="logoff" 
                                         onclick="return confirm('ログオフします。よろしいですか?')">ログオフ</button>
                                 </form>

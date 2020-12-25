@@ -11,6 +11,14 @@ session_start();
     <title>ログオン画面</title>
     <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.css" />
     <style>h1{text-align: center;}</style>
+    <link rel="manifest" href="./manifest.json">
+    <script>
+        if('serviceWorker' in navigator){
+            navigator.serviceWorker.register('./service-worker.js').then(function(){
+                console.log("Service Worker is registered!!");
+            });
+        }
+    </script>
 </head>
 <body style="background-color:lightblue;">
     <h1>ログオン画面</h1>
