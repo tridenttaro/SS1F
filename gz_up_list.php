@@ -74,7 +74,7 @@ require_once("search_set.php");
             </div>
         </div>
     </header>
-
+    <div class="container-fluid">
     <div id="main" class="container-fluid">
         <p id="message"></p>
 <?php
@@ -143,7 +143,7 @@ require_once("search_set.php");
                                         【投稿者:<a href='gz_mypage.php?uid=<?=$r['uid']?>'><?php print $thread_nick ?></a>】<?=$r['date'];?><br>
                                         <p class='iine'>イイネ(<?=$coun_iine?>)</p><hr>
                                         <div class="card-body"style="background-color: white;"><a href='gz_thread.php?tran_b=<?=$tb?>' class='thread_title'>
-                                            <?= $r['title'] ?></a><br>
+                                            <?= $r['title'] ?></a>
                                         </div>
                                     </div>
                                     </div>
@@ -212,6 +212,7 @@ require_once("search_set.php");
         }
 
 ?>
+    </div>    
     </div>
 <!---------------------------->
 <!-- hidariの表示非表示設定 -->
