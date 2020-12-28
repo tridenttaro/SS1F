@@ -89,7 +89,7 @@ require_once("search_set.php");
                 require_once("search_form.php");
 ?>
                 <script>
-                    message.innerHTML = 'イイネしたスレッド一覧';
+                    message.innerHTML = 'あなたのイイネしたスレッド一覧';
                     // ログオフボタンを表示
                     logoff.style.display = "block";
                     // アップロードボタンを表示
@@ -180,7 +180,7 @@ require_once("search_set.php");
                         }
 ?>
                         <div class="container-fluid">
-            <div class="card"  style="background-color: lightblue; margin: 1em; padding: 1em">
+                            <div class="card"  style="background-color: lightblue; margin: 1em; padding: 1em">
 <?php
                             // ブロックしていないアカウント
                             if ($flag_bk == 0) {
@@ -235,7 +235,7 @@ require_once("search_set.php");
                         <li><?php echo '<a href="' . "gz_iine_list.php" . '?page=' . ($page + 1) . '&uid=' . $get_uid . '">次へ</a>'; ?></li><?php } else { ?>
                         <?php } ?> 
                     </ul>
-        <br><br>
+                    <br><br>
 <?php
                 // 本人のアカウントではない
                 } else {

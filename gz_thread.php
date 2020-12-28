@@ -26,7 +26,7 @@ if (isset($_POST['myc']) && isset($_POST['myb'])) {
 ?>
     <script>
         // 再読み込み
-        location.href = "./gz_thread.php?uid=<?=$get_num?>'";
+        location.href = "./gz_thread.php?tran_b=<?=$_SESSION['tb']?>";
     </script>
 <?php
     // header("Location: {$_SERVER['PHP_SELF']}");
@@ -57,7 +57,7 @@ if (isset($_POST['iibtn_act'])) {
 ?>
     <script>
         // 再読み込み
-        location.href = "./gz_thread.php?uid=<?=$get_num?>'";
+        location.href = "./gz_thread.php?tran_b=<?=$_SESSION['tb']?>";
     </script>
 <?php
 }
@@ -256,7 +256,8 @@ if (isset($_GET['tran_b'])) {
 ?>
                                     <div class="container-fluid">
                                     <div class="card"   margin: 1em; padding: 1em>
-                                        <p class='com'>●投稿コメント<?=$coun?><br>【<?php print $com_nick?>さんのメッセージ】
+                                        <p class='com'>●投稿コメント<?=$coun?><br>
+                                        【<a href='gz_mypage.php?uid=<?=$r_com['uid']?>'><?php print $com_nick?></a>さんのメッセージ】
                                                             <?=$r_com['date']?><br><?=nl2br($r_com['text'])?></p></div></div>
 <?php   
                                 }

@@ -168,9 +168,17 @@ require_once("search_set.php");
                     </div>
 <?php  
             }
+            // 該当ユーザのニックネームが確認できていない
+            if (!(isset($thread_nick))) {
+                $ps_nick = $webdb->query("SELECT * FROM `users` WHERE `uid` = '" . $get_uid . "'");
+                while ($r_nick = $ps_nick->fetch()) {
+                    $thread_nick = $r_nick['nick'];
+                }
+            }
 ?>
             <script>
-                message.innerHTML = '<?=$thread_nick?> さんのアップロードしたスレッド一覧';
+                let nick = <?php echo json_encode($thread_nick); ?>;
+                message.innerHTML = nick + 'さんのアップロードしたスレッド一覧';
             </script>
             <br><br>
             <!-- ページ遷移 -->
@@ -228,6 +236,15 @@ require_once("search_set.php");
             <script>
                 // 管理者ページボタンを表示
                 admin.style.display = "block";
+            </script>
+<?php
+        }
+
+        // 自分のアップロードリストの時
+        if ($_SESSION['uid'] == $get_uid) {
+?>
+            <script>
+                message.innerHTML = 'あなたのコメントしたスレッド一覧';
             </script>
 <?php
         }

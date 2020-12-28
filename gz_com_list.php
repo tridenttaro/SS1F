@@ -7,7 +7,7 @@ if (isset($_POST["action"]) && $_POST["action"] == "logoff") {
 }
 
 if (isset($_GET['uid'])) {
-    $get_uid = $_GET['uid'];
+    $get_uid = htmlspecialchars($_GET['uid'], ENT_QUOTES, 'UTF-8');
 }
 
 // 検索機能php部分の読み込み
@@ -156,35 +156,44 @@ require_once("search_set.php");
                     }
                 }
 ?>
-         <div class="container-fluid">
-                <div id='box' class="card" style="background-color: lightblue; margin: 1em; padding: 1em">
+                <div class="container-fluid">
+                    <div id='box' class="card" style="background-color: lightblue; margin: 1em; padding: 1em">
 <?php
-                    // ブロックしていないアカウント
-                    if ($flag_bk == 0) {
-                    
-                        // 非公開になっている
-                        if ($r['ope'] == 0) {
-                            // print $r['thread_number'] . "【投稿者:****】****-**-**-** **:**:**";
-                            print "<p style='color: red;'>管理者により非公開に設定されています</p>";
-                        }
-                        // 公開または、非公開だが投稿者本人または管理者
-                        if (((isset($_SESSION['uid']) && isset($_SESSION['nick']) && isset($_SESSION['tm'])) && (
-                            ($th_uid == $_SESSION['uid']) || ($_SESSION['uid'] == 'fkisRnWQAXfzG8cVY0M8k1a91dD2'))) || $r['ope'] == 1) {
+                        // ブロックしていないアカウント
+                        if ($flag_bk == 0) {
+                        
+                            // 非公開になっている
+                            if ($r['ope'] == 0) {
+                                // print $r['thread_number'] . "【投稿者:****】****-**-**-** **:**:**";
+                                print "<p style='color: red;'>管理者により非公開に設定されています</p>";
+                            }
+                            // 公開または、非公開だが投稿者本人または管理者
+                            if (((isset($_SESSION['uid']) && isset($_SESSION['nick']) && isset($_SESSION['tm'])) && (
+                                ($th_uid == $_SESSION['uid']) || ($_SESSION['uid'] == 'fkisRnWQAXfzG8cVY0M8k1a91dD2'))) || $r['ope'] == 1) {
 ?>
-                            <div class="card-header"><?php print $r['thread_number']?>
-                            【投稿者:<a href='gz_mypage.php?uid=<?=$r['uid']?>'><?php print $thread_nick ?></a>】<?=$r['date'];?><br>
-                                <p class='iine'>イイネ(<?=$coun_iine?>)</p></div>
-                    <div class="card-body"style="background-color: white;"><a href='gz_thread.php?tran_b=<?=$tb?>' class='thread_title'><?= $r['title'] ?></a><br></div>
+                                <div class="card-header"><?php print $r['thread_number']?>
+                                【投稿者:<a href='gz_mypage.php?uid=<?=$r['uid']?>'><?php print $thread_nick ?></a>】<?=$r['date'];?><br>
+                                    <p class='iine'>イイネ(<?=$coun_iine?>)</p></div>
+                                <div class="card-body"style="background-color: white;">
+                                    <a href='gz_thread.php?tran_b=<?=$tb?>' class='thread_title'><?= $r['title'] ?></a><br>
+                                </div>
 <?php
+                            }
+                        // ブロックしているアカウント
+                        } else {
+                            print"<p style='color:red;'>非公開</p>";
                         }
-                    // ブロックしているアカウント
-                    } else {
-                        print"<p style='color:red;'>非公開</p>";
-                    }
 ?>
-             </div>
+                    </div>
                 </div>
 <?php                              
+            }
+            // 該当ユーザのニックネームが確認できていない
+            if (!(isset($thread_nick))) {
+                $ps_nick = $webdb->query("SELECT * FROM `users` WHERE `uid` = '" . $get_uid . "'");
+                while ($r_nick = $ps_nick->fetch()) {
+                    $thread_nick = $r_nick['nick'];
+                }
             }
 ?>
             <br><br>
@@ -207,7 +216,8 @@ require_once("search_set.php");
         <br>    
         
             <script>
-                message.innerHTML = 'コメントしたスレッド一覧';
+                let nick = <?php echo json_encode($thread_nick); ?>;
+                message.innerHTML = nick + 'さんのコメントしたスレッド一覧';
             </script>
 <?php
             // かつ、ログインしている
@@ -229,6 +239,15 @@ require_once("search_set.php");
                     <script>
                         // 管理者ページボタンを表示
                         admin.style.display = "block";
+                    </script>
+<?php
+                }
+
+                // 自分のコメントリストの時
+                if ($_SESSION['uid'] == $get_uid) {
+?>
+                    <script>
+                        message.innerHTML = 'あなたのコメントしたスレッド一覧';
                     </script>
 <?php
                 }
