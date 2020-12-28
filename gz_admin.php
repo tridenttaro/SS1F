@@ -7,7 +7,7 @@ if (isset($_POST["action"]) && $_POST["action"] == "logoff") {
 ?>
     <script> 
         // 自動的に画面遷移
-        location.href = "./gz.php";
+        location.href = "./index.php";
     </script>
 <?php
 }
@@ -39,7 +39,7 @@ if (isset($_SESSION['uid']) && isset($_SESSION['nick']) && isset($_SESSION['tm']
         <div class="p-3 mb-2 bg-success text-white">
             <div class ="row">
                 <div calss="col-sm" id='toppage'>
-                    <form method="post" name="form1" action="gz.php">
+                    <form method="post" name="form1" action="index.php">
                         <input type="hidden" name="top" value="1">
                         <a class="white" href="javascript:form1.submit()"><h1>ソリューションシェア</h1></a>
                     </form> 
@@ -50,7 +50,7 @@ if (isset($_SESSION['uid']) && isset($_SESSION['nick']) && isset($_SESSION['tm']
                             <div class ="row">
                                 
                                 <div id='toppage'>
-                                    <form method="post" name="top_page" action="gz.php">
+                                    <form method="post" name="top_page" action="index.php">
                                         <input type="hidden" name="top" value="1">
                                         <a class="white" href="javascript:top_page.submit()">
                                             <button type="button" class="btn btn-light" style='margin-right:1em;'>トップ</button>
@@ -183,7 +183,7 @@ if (isset($_SESSION['uid']) && isset($_SESSION['nick']) && isset($_SESSION['tm']
 } else {
     session_destroy();
     print "<P>エラー：アクセス権限がありません。<BR>
-            <A HREF='gz.php'>トップページ</A><BR><BR>
+            <A HREF='index.php'>トップページ</A><BR><BR>
             <A HREF='gz_logon.php'>ログオン</A></P>";
 }
 ?>

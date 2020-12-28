@@ -35,7 +35,7 @@ require_once("search_set.php");
         <div class="p-3 mb-2 bg-success text-white">
             <div class ="row">
                 <div calss="col-sm" id='toppage'>
-                    <form method="post" name="form1" action="gz.php">
+                    <form method="post" name="form1" action="index.php">
                         <input type="hidden" name="top" value="1">
                         <a class="white" href="javascript:form1.submit()"><h1>ソリューションシェア</h1></a>
                     </form> 
@@ -47,7 +47,7 @@ require_once("search_set.php");
                                 
                                 <div id='logon' style='display:none;'><a href='gz_logon.php'><button type="button" class="btn btn-light">ログオン</button></a></div>
                                 <div id='toppage'>
-                                    <form method="post" name="top_page" action="gz.php">
+                                    <form method="post" name="top_page" action="index.php">
                                         <input type="hidden" name="top" value="1">
                                         <a class="white" href="javascript:top_page.submit()">
                                             <button type="button" class="btn btn-light" style='margin-right:1em;'>トップ</button>

@@ -2,7 +2,7 @@
     "name"              : "ソリューションシェア",
     "short_name"        : "Sシェア",
     "description"       : "問題→解決に特化した掲示板",
-    "start_url"         : "./gz.php",
+    "start_url"         : "./index.php",
     "display"           : "standalone",
     "background_color"  : "#000000",
     "theme_color"       : "#000000",

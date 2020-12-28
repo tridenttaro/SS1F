@@ -17,7 +17,7 @@ session_start();
     </script>
 </head>
 <body style="background-color:lightblue;">
-    <form action="gz.php" method="post" id="nickname" style="display:none;">
+    <form action="index.php" method="post" id="nickname" style="display:none;">
         <p>ニックネームを設定してください</p>
         <input type="text" name="nick" maxlength='16' pattern="\S|\S.*?\S" required><br>
         <input type="submit" value="決定">
@@ -58,7 +58,7 @@ session_start();
                 // ニックネーム項目非表示
                 nickname.style.display = "none";
                 // 自動的に画面遷移
-                location.href = "./gz.php";
+                location.href = "./index.php";
             </script>
 <?php
         } else {
