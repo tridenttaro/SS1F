@@ -1,5 +1,0 @@
-RewriteEngine On
-
-# index.php無しのURLに統一
-RewriteCond %{THE_REQUEST} ^.*/index.php
-RewriteRule ^(.*)index.php$ http://tridentziro.oops.jp/$1 [R=301,L]
