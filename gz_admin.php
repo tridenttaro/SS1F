@@ -109,7 +109,7 @@ if (isset($_SESSION['uid']) && isset($_SESSION['nick']) && isset($_SESSION['tm']
     
             // 何項目ずつ表示するか
             if (isset($_GET["page"]) && !(isset($_POST["search"])) ) {
-                $page = $_GET["page"];    
+                $page = htmlspecialchars($_GET["page"], ENT_QUOTES, 'UTF-8');    
             } else {
                 $page = 1;
             }

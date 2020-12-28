@@ -107,7 +107,7 @@ require_once("search_set.php");
 
             // 何項目ずつ表示するか
             if (isset($_GET["page"]) && !(isset($_POST["search"])) ) {
-                $page = $_GET["page"];    
+                $page = htmlspecialchars($_GET["page"], ENT_QUOTES, 'UTF-8');    
             } else {
                 $page = 1;
             }

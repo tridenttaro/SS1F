@@ -7,7 +7,7 @@ if (isset($_POST["action"]) && $_POST["action"] == "logoff") {
 }
 
 if (isset($_GET['uid'])) {
-    $get_uid = $_GET['uid'];
+    $get_uid = htmlspecialchars($_GET['uid'], ENT_QUOTES, 'UTF-8');
 }
 
 // 検索機能php部分の読み込み
@@ -101,7 +101,7 @@ require_once("search_set.php");
             print "<p>検索結果は" . $coun_th . "件でした<br>";
             // 何項目ずつ表示するか
             if (isset($_GET["page"]) && !(isset($_POST["search"])) ) {
-                $page = $_GET["page"];    
+                $page = htmlspecialchars($_GET["page"], ENT_QUOTES, 'UTF-8');    
             } else {
                 $page = 1;
             }
