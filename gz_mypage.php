@@ -101,7 +101,9 @@ if (isset($_GET['uid'])) {
                         <div class="float-right">
                             <div class ="row">
                                 
-                                <div id='logon' style='display:none;'><a href='gz_logon.php'><button type="button" class="btn btn-light">ログオン</button></a></div>
+                                <div id='logon' style='display:none;'>
+                                    <a href='gz_logon.php'><button type="button" class="btn btn-light"  style='margin-right:1em;'>ログオン</button></a>
+                                </div>
                                 <div id='toppage'>
                                     <form method="post" name="top_page" action="gz.php">
                                         <input type="hidden" name="top" value="1">

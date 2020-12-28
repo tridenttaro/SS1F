@@ -183,9 +183,9 @@ if (isset($_POST["action"]) && $_POST["action"] == "logoff") {
             }
 ?>
             <br><br>
-            <form method="post" name="form1" action="gz.php">
+            <form method="post" name="form3" action="gz.php">
                 <input type="hidden" name="top" value="1">
-                <a href="javascript:form1.submit()">トップページ</a>
+                <a href="javascript:form3.submit()">トップページ</a>
             </form>
             <div id='upload'>
                 <br>

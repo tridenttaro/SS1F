@@ -104,7 +104,7 @@ session_start();
                 // メアド未確認
                 //------------------------------------  
                 actionCodeSettings = {
-                    url: `http://localhost/SS1F/gz_logon2.php`
+                    url: `http://tridentziro.oops.jp/SS1F/gz_logon2.php`
                 };
 
                 user.sendEmailVerification(actionCodeSettings)

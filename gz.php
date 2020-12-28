@@ -1,4 +1,5 @@
 <?php
+session_cache_limiter('private_no_expire');
 session_start();
 // ログオフボタン押下
 if (isset($_POST["action"]) && $_POST["action"] == "logoff") {
@@ -44,7 +45,9 @@ require_once("search_set.php");
                         <div class="float-right">
                             <div class ="row">
                                 
-                                <div id='logon' style='display:none;'><a href='gz_logon.php'><button type="button" class="btn btn-light">ログオン</button></a></div>
+                                <div id='logon' style='display:none;'><a href='gz_logon.php'>
+                                    <button type="button" class="btn btn-light" style='margin-right:1em;'>ログオン</button></a>
+                                </div>
                                 <div id='toppage'>
                                     <form method="post" name="top_page" action="gz.php">
                                         <input type="hidden" name="top" value="1">
@@ -223,7 +226,7 @@ require_once("search_set.php");
     }
 ?> 
     
-    <script type="text/javascript" src="js/jquery-3.3.1.js"></script>
+    <script type="text/javascript" src="js/jquery-3.5.1.js"></script>
     <script type="text/javascript" src="js/bootstrap.bundle.js"></script>
 </body>
 
