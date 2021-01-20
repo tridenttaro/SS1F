@@ -1,3 +1,5 @@
+<!-- ニックネーム変更ページ2 -->
+
 <?php
 session_start();
 
@@ -29,7 +31,8 @@ if (isset($_POST["action"]) && $_POST["action"] == "logoff") {
     </script>
 </head>
 <body style="background-color:beige">
-<header class="sticky-top">
+    <!-- ヘッダー部分 -->
+    <header class="sticky-top">
         <div class="p-3 mb-2 bg-success text-white">
             <div class ="row">
                 <div calss="col-sm" id='toppage'>
@@ -42,7 +45,6 @@ if (isset($_POST["action"]) && $_POST["action"] == "logoff") {
                     <div class="col-sm">
                         <div class="float-right">
                             <div class ="row">
-                                
                                 <div id='logon' style='display:none;'><a href='gz_logon.php'><button type="button" class="btn btn-light">ログオン</button></a></div>
                                 <div id='toppage'>
                                     <form method="post" name="top_page" action="index.php">
@@ -52,7 +54,6 @@ if (isset($_POST["action"]) && $_POST["action"] == "logoff") {
                                         </a>
                                     </form>
                                 </div>
-
                                 <div id='upload' style='display:none;'><a href='gz_up.php'><button type="button" class="btn btn-light">スレッド作成</button></a></div>
                                 <div id='mypage' style='display:none;'><a href='gz_mypage.php?uid=<?=$_SESSION['uid']?>'><button type="button" class="btn btn-light">マイページ</button></a></div>
                                 <div id='admin' style='display:none;'>
@@ -72,12 +73,10 @@ if (isset($_POST["action"]) && $_POST["action"] == "logoff") {
             </div>
         </div>
     </header>
-
+    <!-- メイン表示部分 -->
     <div class="container-fluid">
         <div id="main" class="mx-auto" style="background-color: white;">
         <p id="message"></p>
-
-
 <?php
         if (isset($_SESSION['uid']) && isset($_SESSION['nick']) && isset($_SESSION['tm'])) {
             $_SESSION['tm'] = time();

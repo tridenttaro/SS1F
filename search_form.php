@@ -1,3 +1,5 @@
+<!-- 検索機能のHTML部分 -->
+
 <!-- 検索機能。 -->
 <form method="post" action="">
     <div class="container-fluid">

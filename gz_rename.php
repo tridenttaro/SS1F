@@ -1,3 +1,5 @@
+<!-- ニックネーム変更ページ1 -->
+
 <?php
 session_start();
 
@@ -30,7 +32,8 @@ if (isset($_POST["action"]) && $_POST["action"] == "logoff") {
 </head>
     
 <body style="background-color:beige">
-<header class="sticky-top">
+    <!-- ヘッダー部分 -->
+    <header class="sticky-top">
         <div class="p-3 mb-2 bg-success text-white">
             <div class ="row">
                 <div calss="col-sm" id='toppage'>
@@ -73,7 +76,8 @@ if (isset($_POST["action"]) && $_POST["action"] == "logoff") {
             </div>
         </div>
     </header>
-
+    
+    <!-- メイン表示部分 -->
     <div id='main'>
         <p id="message"></p>
 <?php
@@ -124,7 +128,5 @@ if (isset($_POST["action"]) && $_POST["action"] == "logoff") {
 ?>       
         <br><br>
     </div>
- 
-    
 </body>
 </html>

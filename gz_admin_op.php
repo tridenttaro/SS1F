@@ -1,3 +1,5 @@
+<!-- 管理者ページから非公開設定を行った場合に遷移するぺージ -->
+
 <?php
 error_reporting ("E_ALL & -E_NOTICE");
 session_start();
@@ -34,6 +36,7 @@ if (isset($_SESSION['uid']) && isset($_SESSION['nick']) && isset($_SESSION['tm']
     </script>
 </head>
 <body style="background-color:beige">
+    <!-- ヘッダー部分 -->
     <header class="sticky-top">
         <div class="p-3 mb-2 bg-success text-white">
             <div class ="row">
@@ -47,7 +50,6 @@ if (isset($_SESSION['uid']) && isset($_SESSION['nick']) && isset($_SESSION['tm']
                     <div class="col-sm">
                         <div class="float-right">
                             <div class ="row">
-                                
                                 <div id='toppage'>
                                     <form method="post" name="top_page" action="index.php">
                                         <input type="hidden" name="top" value="1">
@@ -56,7 +58,6 @@ if (isset($_SESSION['uid']) && isset($_SESSION['nick']) && isset($_SESSION['tm']
                                         </a>
                                     </form>
                                 </div>
-
                                 <div id='upload'><a href='gz_up.php'><button type="button" class="btn btn-light">スレッド作成</button></a></div>
                                 <div id='mypage'><a href='gz_mypage.php?uid=<?=$_SESSION['uid']?>'><button type="button" class="btn btn-light">マイページ</button></a></div>
                                 <div id='admin'>
@@ -76,7 +77,7 @@ if (isset($_SESSION['uid']) && isset($_SESSION['nick']) && isset($_SESSION['tm']
             </div>
         </div>
     </header>
-
+    <!-- メイン表示部分 -->
     <div class="container-fluid">
         <div id="main" class="mx-auto" style="background-color: white;">
         <p id="message"></p>

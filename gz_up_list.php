@@ -1,6 +1,9 @@
+<!-- ユーザのアップロードしたスレッド一覧ページ -->
+
 <?php
 session_start();
 
+// ログオフボタン押下
 if (isset($_POST["action"]) && $_POST["action"] == "logoff") {
     $_SESSION = array();
     session_destroy();
@@ -31,7 +34,8 @@ require_once("search_set.php");
 </head>
     
 <body style='background-color:beige'>
-<header class="sticky-top">
+    <!-- ヘッダ部分 -->
+    <header class="sticky-top">
         <div class="p-3 mb-2 bg-success text-white">
             <div class ="row">
                 <div calss="col-sm" id='toppage'>
@@ -75,61 +79,61 @@ require_once("search_set.php");
         </div>
     </header>
     <div class="container-fluid">
-    <div id="main" class="container-fluid">
-        <p id="message"></p>
+        <div id="main" class="container-fluid">
+            <p id="message"></p>
 <?php
-        // URLが正しい
-        if (isset($get_uid)) {
-            $ph_text = "アップロードリスト内の検索";
-            // 検索機能のHTML部分読み込み
-            require_once("search_form.php");
-            // データベース設定
-            require_once("db_init.php");
-            $ps_thcoun = $webdb->prepare("SELECT `thread_number` FROM `threads` WHERE `".$table_cat."` 
-                                        LIKE (:v_k) and `uid` = '" . $get_uid . "'");
-            // エスケープ
-            $key = '%'.$key.'%';
-            $key = htmlspecialchars($key, ENT_QUOTES, 'UTF-8');
-            $ps_thcoun->bindParam(':v_k', $key, PDO::PARAM_STR);
-            $ps_thcoun->execute();
+            // URLが正しい
+            if (isset($get_uid)) {
+                $ph_text = "アップロードリスト内の検索";
+                // 検索機能のHTML部分読み込み
+                require_once("search_form.php");
+                // データベース設定
+                require_once("db_init.php");
+                $ps_thcoun = $webdb->prepare("SELECT `thread_number` FROM `threads` WHERE `".$table_cat."` 
+                                            LIKE (:v_k) and `uid` = '" . $get_uid . "'");
+                // エスケープ
+                $key = '%'.$key.'%';
+                $key = htmlspecialchars($key, ENT_QUOTES, 'UTF-8');
+                $ps_thcoun->bindParam(':v_k', $key, PDO::PARAM_STR);
+                $ps_thcoun->execute();
 
-            $coun_th = 0;
-            // 検索結果件数
-            while ($r_thcoun = $ps_thcoun->fetch()) {
-                $coun_th++;
-            }
-            print "<p>検索結果は" . $coun_th . "件でした<br>";
-            // 何項目ずつ表示するか
-            if (isset($_GET["page"]) && !(isset($_POST["search"])) ) {
-                $page = htmlspecialchars($_GET["page"], ENT_QUOTES, 'UTF-8');    
-            } else {
-                $page = 1;
-            }
-            $this_page = ($page - 1) * $page_num;
+                $coun_th = 0;
+                // 検索結果件数
+                while ($r_thcoun = $ps_thcoun->fetch()) {
+                    $coun_th++;
+                }
+                print "<p>検索結果は" . $coun_th . "件でした<br>";
+                // 何項目ずつ表示するか
+                if (isset($_GET["page"]) && !(isset($_POST["search"])) ) {
+                    $page = htmlspecialchars($_GET["page"], ENT_QUOTES, 'UTF-8');    
+                } else {
+                    $page = 1;
+                }
+                $this_page = ($page - 1) * $page_num;
 
-            // 検索結果の表示
-            $ps = $webdb->prepare("SELECT * FROM `threads` WHERE `".$table_cat."` LIKE (:v_k) and `uid` = '" . $get_uid . "' 
-                                    ORDER BY `date` " .$date_sort." LIMIT ".$this_page."," .$page_num);
-            // エスケープ
-            $ps->bindParam(':v_k', $key, PDO::PARAM_STR);
-            $ps->execute();
+                // 検索結果の表示
+                $ps = $webdb->prepare("SELECT * FROM `threads` WHERE `".$table_cat."` LIKE (:v_k) and `uid` = '" . $get_uid . "' 
+                                        ORDER BY `date` " .$date_sort." LIMIT ".$this_page."," .$page_num);
+                // エスケープ
+                $ps->bindParam(':v_k', $key, PDO::PARAM_STR);
+                $ps->execute();
 
-            while ($r = $ps->fetch()) {
-                    $tb = $r['thread_number'];
-                    $th_uid = $r['uid'];
-                    // ニックネームの取得
-                    $ps_nick = $webdb->query("SELECT * FROM `users` WHERE `uid` = '" . $th_uid . "'");
-                    while ($r_nick = $ps_nick->fetch()) {
-                        $thread_nick = $r_nick['nick'];
-                    }
-                    // イイネの表示
-                    $ps_ii = $webdb->query("SELECT DISTINCT * FROM `favorites` WHERE `thread_number` = $tb");
-                    $coun_iine = 0;
-                    while ($r_ii = $ps_ii->fetch()) {
-                        $coun_iine++;
-                    }
+                while ($r = $ps->fetch()) {
+                        $tb = $r['thread_number'];
+                        $th_uid = $r['uid'];
+                        // ニックネームの取得
+                        $ps_nick = $webdb->query("SELECT * FROM `users` WHERE `uid` = '" . $th_uid . "'");
+                        while ($r_nick = $ps_nick->fetch()) {
+                            $thread_nick = $r_nick['nick'];
+                        }
+                        // イイネの表示
+                        $ps_ii = $webdb->query("SELECT DISTINCT * FROM `favorites` WHERE `thread_number` = $tb");
+                        $coun_iine = 0;
+                        while ($r_ii = $ps_ii->fetch()) {
+                            $coun_iine++;
+                        }
 ?>
-                    <div id='box'>                  
+                        <div id='box'>                  
 <?php
                             // 非公開になっている
                             if ($r['ope'] == 0) {
@@ -138,14 +142,14 @@ require_once("search_set.php");
                                 if ($get_uid == $_SESSION['uid'] || $_SESSION['uid'] == 'fkisRnWQAXfzG8cVY0M8k1a91dD2') {
 ?>
                                     <div class="container-fluid">
-                                    <div class="card"  style="background-color: lightblue; margin: 1em; padding: 1em">
-                                        <div class="card-header"><?php print $r['thread_number']?>
-                                        【投稿者:<a href='gz_mypage.php?uid=<?=$r['uid']?>'><?php print $thread_nick ?></a>】<?=$r['date'];?><br>
-                                        <p class='iine'>イイネ(<?=$coun_iine?>)</p><hr>
-                                        <div class="card-body"style="background-color: white;"><a href='gz_thread.php?tran_b=<?=$tb?>' class='thread_title'>
-                                            <?= $r['title'] ?></a>
+                                        <div class="card"  style="background-color: lightblue; margin: 1em; padding: 1em">
+                                            <div class="card-header"><?php print $r['thread_number']?>
+                                            【投稿者:<a href='gz_mypage.php?uid=<?=$r['uid']?>'><?php print $thread_nick ?></a>】<?=$r['date'];?><br>
+                                            <p class='iine'>イイネ(<?=$coun_iine?>)</p><hr>
+                                            <div class="card-body"style="background-color: white;"><a href='gz_thread.php?tran_b=<?=$tb?>' class='thread_title'>
+                                                <?= $r['title'] ?></a>
+                                            </div>
                                         </div>
-                                    </div>
                                     </div>
 <?php
                                 }
@@ -153,66 +157,65 @@ require_once("search_set.php");
                             } else {
 ?>
                                 <div class="container-fluid">
-                                <div class="card"  style="background-color: lightblue; margin: 1em; padding: 1em">                    
-                                    <div class="card-header"><?php print $r['thread_number']?>
-                                    【投稿者:<a href='gz_mypage.php?uid=<?=$r['uid']?>'><?php print $thread_nick ?></a>】<?=$r['date'];?><br>
-                                    <p class='iine'>イイネ(<?=$coun_iine?>)</p><hr>
-                                    <div class="card-body"style="background-color: white;"><a href='gz_thread.php?tran_b=<?=$tb?>' class='thread_title'>
-                                        <?= $r['title'] ?></a>
-                                    <br>
-                                </div>
+                                    <div class="card"  style="background-color: lightblue; margin: 1em; padding: 1em">                    
+                                        <div class="card-header"><?php print $r['thread_number']?>
+                                        【投稿者:<a href='gz_mypage.php?uid=<?=$r['uid']?>'><?php print $thread_nick ?></a>】<?=$r['date'];?><br>
+                                        <p class='iine'>イイネ(<?=$coun_iine?>)</p><hr>
+                                        <div class="card-body"style="background-color: white;"><a href='gz_thread.php?tran_b=<?=$tb?>' class='thread_title'>
+                                            <?= $r['title'] ?></a>
+                                        <br>
+                                    </div>
                                 </div>
 <?php
                             }
 ?>
-                    </div>
+                        </div>
 <?php  
-            }
-            // 該当ユーザのニックネームが確認できていない
-            if (!(isset($thread_nick))) {
-                $ps_nick = $webdb->query("SELECT * FROM `users` WHERE `uid` = '" . $get_uid . "'");
-                while ($r_nick = $ps_nick->fetch()) {
-                    $thread_nick = $r_nick['nick'];
                 }
+                // 該当ユーザのニックネームが確認できていない
+                if (!(isset($thread_nick))) {
+                    $ps_nick = $webdb->query("SELECT * FROM `users` WHERE `uid` = '" . $get_uid . "'");
+                    while ($r_nick = $ps_nick->fetch()) {
+                        $thread_nick = $r_nick['nick'];
+                    }
+                }
+?>
+                <script>
+                    let nick = <?php echo json_encode($thread_nick); ?>;
+                    message.innerHTML = nick + 'さんのアップロードしたスレッド一覧';
+                </script>
+                <br><br>
+                <!-- ページ遷移 -->
+                <ul class="example">
+                    <?php if ($page != 1){?>
+                    <li><?php echo '<a href="' . "gz_up_list.php" . '?page=' . ($page - 1) . '&uid=' . $get_uid . '">前へ</a>'; ?></li><?php } else { ?>
+                    <?php } ?>
+                    <?php if ($page > 2){?>
+                    <li><?php echo '<a href="' . "gz_up_list.php" . '?page=' . ($page - 2) . '&uid=' . $get_uid . '">'. ($page - 2) .'</a>'; ?></li><?php } ?>
+                    <?php if ($page > 1){?>
+                    <li><?php echo '<a href="' . "gz_up_list.php" . '?page=' . ($page - 1) . '&uid=' . $get_uid . '">'. ($page - 1) .'</a>'; ?></li><?php } if($coun_th != 0){ ?>
+                    <li class="this"><?php echo $page.'</a>'; ?></li><?php } 
+                    if ($page < ceil($coun_th/$page_num )  ){?>
+                    <li><?php echo '<a href="' . "gz_up_list.php" . '?page=' . ($page + 1) . '&uid=' . $get_uid . '">'. ($page + 1) .'</a>'; ?></li><?php }
+                    if ($page < ceil($coun_th/$page_num ) - 1 ){ ?>
+                    <li><?php echo '<a href="' . "gz_up_list.php" . '?page=' . ($page + 2) . '&uid=' . $get_uid . '">'. ($page + 2) .'</a>'; ?></li><?php } 
+                    if (($page != ceil($coun_th/$page_num ))&&($coun_th != 0)) {?>
+                    <li><?php echo '<a href="' . "gz_up_list.php" . '?page=' . ($page + 1) . '&uid=' . $get_uid . '">次へ</a>'; ?></li><?php } else { ?>
+                    <?php } ?>   
+                </ul>
+                <br><br>
+<?php
+            // URLが正しくない
+            } else {
+?>
+                <script>
+                    message.innerHTML = '正しい画面から遷移して下さい';
+                </script>
+<?php
             }
-?>
-            <script>
-                let nick = <?php echo json_encode($thread_nick); ?>;
-                message.innerHTML = nick + 'さんのアップロードしたスレッド一覧';
-            </script>
-            <br><br>
-            <!-- ページ遷移 -->
-            <ul class="example">
-                <?php if ($page != 1){?>
-                <li><?php echo '<a href="' . "gz_up_list.php" . '?page=' . ($page - 1) . '&uid=' . $get_uid . '">前へ</a>'; ?></li><?php } else { ?>
-                <?php } ?>
-                <?php if ($page > 2){?>
-                <li><?php echo '<a href="' . "gz_up_list.php" . '?page=' . ($page - 2) . '&uid=' . $get_uid . '">'. ($page - 2) .'</a>'; ?></li><?php } ?>
-                <?php if ($page > 1){?>
-                <li><?php echo '<a href="' . "gz_up_list.php" . '?page=' . ($page - 1) . '&uid=' . $get_uid . '">'. ($page - 1) .'</a>'; ?></li><?php } if($coun_th != 0){ ?>
-                <li class="this"><?php echo $page.'</a>'; ?></li><?php } 
-                if ($page < ceil($coun_th/$page_num )  ){?>
-                <li><?php echo '<a href="' . "gz_up_list.php" . '?page=' . ($page + 1) . '&uid=' . $get_uid . '">'. ($page + 1) .'</a>'; ?></li><?php }
-                if ($page < ceil($coun_th/$page_num ) - 1 ){ ?>
-                <li><?php echo '<a href="' . "gz_up_list.php" . '?page=' . ($page + 2) . '&uid=' . $get_uid . '">'. ($page + 2) .'</a>'; ?></li><?php } 
-                if (($page != ceil($coun_th/$page_num ))&&($coun_th != 0)) {?>
-                <li><?php echo '<a href="' . "gz_up_list.php" . '?page=' . ($page + 1) . '&uid=' . $get_uid . '">次へ</a>'; ?></li><?php } else { ?>
-               <?php } ?>
-                
-            </ul>
-        <br><br>
-<?php
-        // URLが正しくない
-        } else {
-?>
-            <script>
-                message.innerHTML = '正しい画面から遷移して下さい';
-            </script>
-<?php
-        }
 
 ?>
-    </div>    
+        </div>    
     </div>
 <!---------------------------->
 <!-- hidariの表示非表示設定 -->

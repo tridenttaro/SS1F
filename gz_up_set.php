@@ -1,6 +1,9 @@
+<!-- スレッドアップロードページ2 -->
+
 <?php
 session_start();
 
+// ログオフボタン押下
 if (isset($_POST["action"]) && $_POST["action"] == "logoff") {
     $_SESSION = array();
     session_destroy();
@@ -30,6 +33,7 @@ if (isset($_POST["action"]) && $_POST["action"] == "logoff") {
 </head>
     
 <body style="background-color:beige">
+    <!-- ヘッダー部分 -->
     <header class="sticky-top">
         <div class="p-3 mb-2 bg-success text-white">
             <div class ="row">
@@ -74,7 +78,7 @@ if (isset($_POST["action"]) && $_POST["action"] == "logoff") {
         </div>
     </header>
     
-
+    <!-- メイン表示部分 -->
     <div id='main' class="container-fluid">
         <p id="message"></p>
 <?php
@@ -225,10 +229,8 @@ if (isset($_POST["action"]) && $_POST["action"] == "logoff") {
         }
 ?>       
     </div>
-    
-    
-          <script type="text/javascript" src="js/jquery-3.3.1.js"></script>
- 		 <script type="text/javascript" src="js/bootstrap.bundle.js"></script>
+    <script type="text/javascript" src="js/jquery-3.3.1.js"></script>
+    <script type="text/javascript" src="js/bootstrap.bundle.js"></script>
     
 </body>
 </html>

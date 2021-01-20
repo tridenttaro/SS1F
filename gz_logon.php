@@ -1,6 +1,5 @@
 <?php
 session_start();
-//$_SESSION = array();
 ?>
 
 
@@ -43,9 +42,9 @@ session_start();
             ],
 
 //            // 利用規約のURL(任意で設定)
-//            tosUrl: 'http://example.com/kiyaku/',
+//            tosUrl: '',
 //            // プライバシーポリシーのURL(任意で設定)
-//            privacyPolicyUrl: 'https://miku3.net/privacy.html'
+//            privacyPolicyUrl: ''
 
         };
 

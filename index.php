@@ -1,3 +1,5 @@
+<!-- トップページ(スレッド・検索) -->
+
 <?php
 session_cache_limiter('private_no_expire');
 session_start();
@@ -31,6 +33,7 @@ require_once("search_set.php");
     </script>
 </head>
 <body style="background-color:beige">
+    <!-- ヘッダー部分 -->
     <header class="sticky-top">
         <div class="p-3 mb-2 bg-success text-white">
             <div class ="row">
@@ -76,6 +79,7 @@ require_once("search_set.php");
             </div>
         </div>
     </header>
+    <!-- メイン表示部分 -->
     <div class="container-fluid">
         <div id="main" class="mx-auto" style="background-color: white;">
             <div id="message"><br><h2>トップページ</h2>
@@ -147,6 +151,7 @@ require_once("search_set.php");
                 }
                 
 ?>
+                <!-- スレッド -->
                 <div class="container-fluid">
                 <div class="card"  style="background-color: lightblue; margin: 1em; padding: 1em">
                     <div class="card-header"><?php print $r['thread_number']?>【投稿者:<a href='gz_mypage.php?uid=<?=$r['uid']?>'><?php print $thread_nick ?></a>】<?=$r['date'];?><br>
@@ -225,7 +230,6 @@ require_once("search_set.php");
 <?php
     }
 ?> 
-    
     <script type="text/javascript" src="js/jquery-3.5.1.js"></script>
     <script type="text/javascript" src="js/bootstrap.bundle.js"></script>
 </body>

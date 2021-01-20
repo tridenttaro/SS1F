@@ -1,3 +1,5 @@
+<!-- 管理者ページ -->
+
 <?php
 session_start();
 // ログオフボタン押下
@@ -35,6 +37,7 @@ if (isset($_SESSION['uid']) && isset($_SESSION['nick']) && isset($_SESSION['tm']
     </script>
 </head>
 <body style="background-color:beige">
+    <!-- ヘッダー部分 -->
     <header class="sticky-top">
         <div class="p-3 mb-2 bg-success text-white">
             <div class ="row">
@@ -48,7 +51,6 @@ if (isset($_SESSION['uid']) && isset($_SESSION['nick']) && isset($_SESSION['tm']
                     <div class="col-sm">
                         <div class="float-right">
                             <div class ="row">
-                                
                                 <div id='toppage'>
                                     <form method="post" name="top_page" action="index.php">
                                         <input type="hidden" name="top" value="1">
@@ -57,7 +59,6 @@ if (isset($_SESSION['uid']) && isset($_SESSION['nick']) && isset($_SESSION['tm']
                                         </a>
                                     </form>
                                 </div>
-
                                 <div id='upload'><a href='gz_up.php'><button type="button" class="btn btn-light">スレッド作成</button></a></div>
                                 <div id='mypage'><a href='gz_mypage.php?uid=<?=$_SESSION['uid']?>'><button type="button" class="btn btn-light">マイページ</button></a></div>
                                 <div id='admin'>
@@ -77,6 +78,7 @@ if (isset($_SESSION['uid']) && isset($_SESSION['nick']) && isset($_SESSION['tm']
             </div>
         </div>
     </header>
+    <!-- メイン表示部分(検索・スレッド等) -->
     <div class="container-fluid">
         <div id="main" class="mx-auto" style="background-color: white;">
         <p id="message"></p>
@@ -86,7 +88,7 @@ if (isset($_SESSION['uid']) && isset($_SESSION['nick']) && isset($_SESSION['tm']
         // 検索機能のHTML部分読み込み
         require_once("search_form.php");
 ?>        
-        <!-- 公開・非公開設定 -->
+        <!-- 公開・非公開設定(スレッド表示部分) -->
         <form action="gz_admin_op.php" method="post">
             <br>
             <INPUT TYPE = "submit" VALUE='公開・非公開の送信'>
@@ -139,19 +141,24 @@ if (isset($_SESSION['uid']) && isset($_SESSION['nick']) && isset($_SESSION['tm']
                     $coun_iine++;
                 }
 ?>
+                <!-- スレッド -->
                 <div class="container-fluid">
-                <div class="card"  style="background-color: lightblue; margin: 1em; padding: 1em" >
-                    <div class="card-header">非公開：<INPUT TYPE = checkbox NAME = check[] VALUE = <?=$tb?> <?php if ($to == 0) { print "CHECKED = checked";} ?> ></INPUT><br>
-                    <?=$r['thread_number']?>
-                    【投稿者:<a href='gz_mypage.php?uid=<?=$r['uid']?>'><?=$thread_nick;?></a>】<?=$r['date'];?><br>
-                        <p class='iine'>イイネ(<?=$coun_iine?>)</p><hr></div><div class="card-body"style="background-color: white;">
-                    <a href='gz_thread.php?tran_b=<?=$tb?>' class='thread_title'><?= $r['title'] ?></a><br></div>
-                </div>
+                    <div class="card"  style="background-color: lightblue; margin: 1em; padding: 1em" >
+                        <div class="card-header">
+                            非公開：<INPUT TYPE = checkbox NAME = check[] VALUE = <?=$tb?> <?php if ($to == 0) { print "CHECKED = checked";} ?> ></INPUT><br>
+                            <?=$r['thread_number']?>
+                            【投稿者:<a href='gz_mypage.php?uid=<?=$r['uid']?>'><?=$thread_nick;?></a>】<?=$r['date'];?><br>
+                            <p class='iine'>イイネ(<?=$coun_iine?>)</p><hr>
+                        </div>
+                        <div class="card-body"style="background-color: white;">
+                            <a href='gz_thread.php?tran_b=<?=$tb?>' class='thread_title'><?= $r['title'] ?></a><br>
+                        </div>
                     </div>
+                </div>
 <?php             
             }
 ?>
-                </form>
+        </form>
 
         <br><br>
         <!-- ページ遷移 -->

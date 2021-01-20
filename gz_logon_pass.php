@@ -1,3 +1,5 @@
+<!-- js変数データをphpへ渡すための処理 -->
+
 <?php
 session_start();
 

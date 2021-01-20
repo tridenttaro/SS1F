@@ -61,7 +61,7 @@ session_start();
                 let request = new XMLHttpRequest();
                 //確認
                 let uid = user.uid;
-//                let name = user.displayName;
+                
                 request.open('POST', `./gz_logon_pass.php`);
                 
                 // サーバに対して解析方法を指定する

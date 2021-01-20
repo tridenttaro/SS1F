@@ -1,11 +1,15 @@
+<!-- ユーザのコメントしたスレッド一覧の表示ページ -->
+
 <?php
 session_start();
 
+// ログオフボタン押下
 if (isset($_POST["action"]) && $_POST["action"] == "logoff") {
     $_SESSION = array();
     session_destroy();
 }
 
+// ユーザページから遷移
 if (isset($_GET['uid'])) {
     $get_uid = htmlspecialchars($_GET['uid'], ENT_QUOTES, 'UTF-8');
 }
@@ -31,7 +35,8 @@ require_once("search_set.php");
 </head>
     
 <body style='background-color:beige'>
-<header class="sticky-top">
+    <!-- ヘッダー部分 -->
+    <header class="sticky-top">
         <div class="p-3 mb-2 bg-success text-white">
             <div class ="row">
                 <div calss="col-sm" id='toppage'>
@@ -164,7 +169,6 @@ require_once("search_set.php");
                         
                             // 非公開になっている
                             if ($r['ope'] == 0) {
-                                // print $r['thread_number'] . "【投稿者:****】****-**-**-** **:**:**";
                                 print "<p style='color: red;'>管理者により非公開に設定されています</p>";
                             }
                             // 公開または、非公開だが投稿者本人または管理者

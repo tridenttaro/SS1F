@@ -1,6 +1,9 @@
+<!-- 自分がイイネしたスレッド一覧の表示ページ -->
+
 <?php
 session_start();
 
+// ログオフボタン押下
 if (isset($_POST["action"]) && $_POST["action"] == "logoff") {
     $_SESSION = array();
     session_destroy();
@@ -31,6 +34,7 @@ require_once("search_set.php");
 </head>
     
 <body style='background-color:beige'>
+    <!-- ヘッダー部分 -->
     <header class="sticky-top">
         <div class="p-3 mb-2 bg-success text-white">
             <div class ="row">
@@ -44,7 +48,6 @@ require_once("search_set.php");
                     <div class="col-sm">
                         <div class="float-right">
                             <div class ="row">
-                                
                                 <div id='logon' style='display:none;'><a href='gz_logon.php'><button type="button" class="btn btn-light">ログオン</button></a></div>
                                 <div id='toppage'>
                                     <form method="post" name="top_page" action="index.php">
@@ -54,7 +57,6 @@ require_once("search_set.php");
                                         </a>
                                     </form>
                                 </div>
-
                                 <div id='upload' style='display:none;'><a href='gz_up.php'><button type="button" class="btn btn-light">スレッド作成</button></a></div>
                                 <div id='mypage' style='display:none;'><a href='gz_mypage.php?uid=<?=$_SESSION['uid']?>'><button type="button" class="btn btn-light">マイページ</button></a></div>
                                 <div id='admin' style='display:none;'>
@@ -122,10 +124,7 @@ require_once("search_set.php");
                     $coun_th = 0;
                     // 検索結果件数
                     while ($r_thcoun = $ps_thcoun->fetch()) {
-                        // イイネしたスレッド
-                       
-                                $coun_th++;
-                        
+                        $coun_th++;
                     }
                     print "<p>検索結果は" . $coun_th . "件でした<br>";
 
@@ -148,7 +147,6 @@ require_once("search_set.php");
                     
                     while ($r = $ps->fetch()) {
                         // イイネしたスレッドを取得
-                       
                         $tb = $r['thread_number'];
                         $th_uid = $r['uid'];
                         // ニックネームの取得
@@ -182,37 +180,40 @@ require_once("search_set.php");
                         <div class="container-fluid">
                             <div class="card"  style="background-color: lightblue; margin: 1em; padding: 1em">
 <?php
-                            // ブロックしていないアカウント
-                            if ($flag_bk == 0) {
-                            
-                                // 非公開になっている
-                                if ($r['ope'] == 0) {
-                                    // print $r['thread_number'] . "【投稿者:****】****-**-**-** **:**:**";
-                                    print "<p style='color: red;'>管理者により非公開に設定されています</p>";
-                                    // 投稿者本人または管理者
-                                    if ($th_uid == $_SESSION['uid'] || $_SESSION['uid'] == 'fkisRnWQAXfzG8cVY0M8k1a91dD2') {
+                                // ブロックしていないアカウント
+                                if ($flag_bk == 0) {
+                                
+                                    // 非公開になっている
+                                    if ($r['ope'] == 0) {
+                                        // print $r['thread_number'] . "【投稿者:****】****-**-**-** **:**:**";
+                                        print "<p style='color: red;'>管理者により非公開に設定されています</p>";
+                                        // 投稿者本人または管理者
+                                        if ($th_uid == $_SESSION['uid'] || $_SESSION['uid'] == 'fkisRnWQAXfzG8cVY0M8k1a91dD2') {
 ?>
-                                        <?php print $r['thread_number']?>
-                                        【投稿者:<a href='gz_mypage.php?uid=<?=$r['uid']?>'><?php print $thread_nick ?></a>】<?=$r['date'];?><br>
-                                        <p class='iine'>イイネ(<?=$coun_iine?>)</p><hr>
-                                        <a href='gz_thread.php?tran_b=<?=$tb?>' class='thread_title'><?= $r['title'] ?></a><br>
+                                            <?php print $r['thread_number']?>
+                                            【投稿者:<a href='gz_mypage.php?uid=<?=$r['uid']?>'><?php print $thread_nick ?></a>】<?=$r['date'];?><br>
+                                            <p class='iine'>イイネ(<?=$coun_iine?>)</p><hr>
+                                            <a href='gz_thread.php?tran_b=<?=$tb?>' class='thread_title'><?= $r['title'] ?></a><br>
+<?php
+                                        }
+                                    // 非公開でない
+                                    } else {
+?>
+                                        <div class="card-header"><?php print $r['thread_number']?>
+                                            【投稿者:<a href='gz_mypage.php?uid=<?=$r['uid']?>'><?php print $thread_nick ?></a>】<?=$r['date'];?><br>
+                                            <p class='iine'>イイネ(<?=$coun_iine?>)</p>
+                                        </div>
+                                        <div class="card-body"style="background-color: white;">
+                                            <a href='gz_thread.php?tran_b=<?=$tb?>' class='thread_title'><?= $r['title'] ?></a><br>
+                                        </div>
 <?php
                                     }
-                                // 非公開でない
+                                // ブロックしているアカウント
                                 } else {
-?>
-                                     <div class="card-header"><?php print $r['thread_number']?>
-                                    【投稿者:<a href='gz_mypage.php?uid=<?=$r['uid']?>'><?php print $thread_nick ?></a>】<?=$r['date'];?><br>
-                                         <p class='iine'>イイネ(<?=$coun_iine?>)</p></div>
-                <div class="card-body"style="background-color: white;">
-                    <a href='gz_thread.php?tran_b=<?=$tb?>' class='thread_title'><?= $r['title'] ?></a><br></div>
-<?php
+                                    print"<p style='color:red;'>非公開</p>";
                                 }
-                            // ブロックしているアカウント
-                            } else {
-                                print"<p style='color:red;'>非公開</p>";
-                            }
-                ?></div>
+?>
+                            </div>
                         </div>
 <?php                  
                     }
@@ -256,7 +257,6 @@ require_once("search_set.php");
 <?php
             }
         } else {
-            // 正しく遷移していない
 ?>
             <script>
                 message.innerHTML = '正しい画面から遷移して下さい';

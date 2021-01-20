@@ -1,3 +1,5 @@
+<!-- スレッド詳細画面 -->
+
 <?php
 session_start();
 
@@ -87,7 +89,8 @@ if (isset($_GET['tran_b'])) {
     </script>
 </head>
 <body style="background-color:beige">
-<header class="sticky-top">
+    <!-- ヘッダー部分 -->
+    <header class="sticky-top">
         <div class="p-3 mb-2 bg-success text-white">
             <div class ="row">
                 <div calss="col-sm" id='toppage'>
@@ -133,6 +136,7 @@ if (isset($_GET['tran_b'])) {
         </div>
     </header>
     
+    <!-- メイン表示部分 -->
     <div id="main" class="container-fluid">
         <h3>スレッド詳細画面</h3>
         <p id="message"></p>
@@ -205,7 +209,7 @@ if (isset($_GET['tran_b'])) {
                                 <!-- スレッドタイトル -->
                                 <p class='thread_title'><?= $r['title'] ?></p>
                             </div>
-                                <!-- スレッド本文 -->
+                            <!-- スレッド本文 -->
                             <div class="card-body">
                                 <?=nl2br($r['text']);?><br>
 <?php
@@ -266,7 +270,7 @@ if (isset($_GET['tran_b'])) {
 ?>
                             <!-- コメント入力欄 -->
                             <form method="post" id="upcom" style="display:none;">
-                                コメント<BR>
+                                コメント<br>
                                 <textarea name = "myc" rows = "5" maxlength='250' 
                                     placeholder='最大２５０文字' style="width:80%;" required></textarea><br>
                                 <input type = "hidden" name = "myb" value = 1>
@@ -282,7 +286,6 @@ if (isset($_GET['tran_b'])) {
                 </div> 
 <?php
             }
-        
             if (isset($_SESSION['uid']) && isset($_SESSION['nick']) && isset($_SESSION['tm'])) {
                 $_SESSION['tm'] = time();
 ?>
@@ -340,7 +343,6 @@ if (isset($_GET['tran_b'])) {
                     </script>
 <?php
                 }
-
                 // 自分が投稿したスレッド
                 if ($th_uid == $_SESSION['uid']) {
 ?>
@@ -350,7 +352,6 @@ if (isset($_GET['tran_b'])) {
                     </script>
 <?php
                 }
-
                 // 管理者アカウントの場合
                 if ($_SESSION['uid'] == 'fkisRnWQAXfzG8cVY0M8k1a91dD2') {
 ?>
@@ -380,8 +381,8 @@ if (isset($_GET['tran_b'])) {
         }
 ?>
     </div>
-                 <script type="text/javascript" src="js/jquery-3.3.1.js"></script>
- 		 <script type="text/javascript" src="js/bootstrap.bundle.js"></script>
+    <script type="text/javascript" src="js/jquery-3.3.1.js"></script>
+    <script type="text/javascript" src="js/bootstrap.bundle.js"></script>
 </body>
 
 </html>
