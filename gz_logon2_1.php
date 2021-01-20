@@ -33,8 +33,7 @@ session_start();
         $count = $sth->rowCount();
 
         if ($count > 0) {
-            // ニックネーム登録済み 
-            print "<p>登録済み</p>";
+
 
             // sqlの結果を変数へ
             $r = $sth->fetch();

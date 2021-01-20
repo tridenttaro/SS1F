@@ -100,10 +100,10 @@ if (isset($_POST["action"]) && $_POST["action"] == "logoff") {
                         <input type='hidden' name='edit' value="1"><br>
                         タイトル<br>
                         <input type='text' name='myt' maxlength='30' pattern="\S|\S.*?\S"
-                            placeholder='タイトル：最大３０文字' value="<?php print $title; ?>" required><br>
+                            placeholder='タイトル：最大３０文字' value="<?php print $title; ?>" style="width:80%;" required><br>
                         本文<br>
-                        <textarea name='mym' rows='10' cols='70' maxlength='2040'
-                            placeholder='本文：最大２０４０文字' required><?php print $text; ?></textarea><br>
+                        <textarea name='mym' rows='10' maxlength='2040'
+                            placeholder='本文：最大２０４０文字' style="width:80%;" required><?php print $text; ?></textarea><br>
                         <input type = 'file' name='myf' accept='image/png, image/jpeg, image/gif'>
                         <p><b>※画像を新たに設定する場合、元の画像は消去されます！</b><br>
                         送信できるのは1mbまでのjpeg画像だけです！<br>
@@ -120,11 +120,11 @@ if (isset($_POST["action"]) && $_POST["action"] == "logoff") {
                     <div class="form-group">
                     タイトル<br>
                     <input type='text' name='myt' class="form-control form-control-lg" maxlength='30' pattern="\S|\S.*?\S"
-                           placeholder='タイトル：最大３０文字' required></div>
+                           placeholder='タイトル：最大３０文字' style="width:80%;" required></div>
                     <div class="form-group">
                     本文<br>
                     <textarea name='mym' rows='10' class="form-control form-control-lg" maxlength='2040'
-                              placeholder='本文：最大２０４０文字' required></textarea></div><br>
+                              placeholder='本文：最大２０４０文字' style="width:80%;" required></textarea></div><br>
                     <input type = 'file' name='myf' accept='image/png, image/jpeg, image/gif'>
                     <p>送信できるのは1mbまでのjpeg画像だけです！<br>
                     また展開後のメモリ消費が多い場合アップロードできません。<br>

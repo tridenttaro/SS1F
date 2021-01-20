@@ -236,9 +236,28 @@ if (isset($_GET['uid'])) {
                         bklist.style.display = "block";
                     </script>
 <?php
-            // ブラックリストに入っていない
+            
             } else {
-                if ($flag_bk == 0) {    
+                // 管理者である
+                if ($_SESSION['uid'] == 'fkisRnWQAXfzG8cVY0M8k1a91dD2') {
+?>
+                    <script>
+                        let nick = <?php echo json_encode($get_nick); ?>;
+                        message.innerHTML = nick + 'さんのユーザーページ';
+                        // 投稿したスレッド一覧ボタンを表示
+                        thlist.style.display = "block";
+                        // イイネしたスレッド一覧ボタンを表示
+                        iilist.style.display = "block";
+                        // コメントしたスレッド一覧ボタンを表示
+                        comlist.style.display = "block";
+                        // ニックネーム変更ボタンを表示
+                        chnick.style.display = "block";
+                        // ブラックリストボタンを表示
+                        bklist.style.display = "block";
+                    </script>
+<?php
+                // ブラックリストに入っていない
+                } else if ($flag_bk == 0) {    
 ?>
                     <script>
                         let nick = <?php echo json_encode($get_nick); ?>;

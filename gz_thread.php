@@ -267,8 +267,8 @@ if (isset($_GET['tran_b'])) {
                             <!-- コメント入力欄 -->
                             <form method="post" id="upcom" style="display:none;">
                                 コメント<BR>
-                                <textarea name = "myc" rows = "5" cols = "60" maxlength='250' 
-                                    placeholder='最大２５０文字' required></textarea><br>
+                                <textarea name = "myc" rows = "5" maxlength='250' 
+                                    placeholder='最大２５０文字' style="width:80%;" required></textarea><br>
                                 <input type = "hidden" name = "myb" value = 1>
                                 <button type="submit">送信</button>
                             </form>

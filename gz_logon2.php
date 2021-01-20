@@ -20,10 +20,7 @@ session_start();
     <h1>...Please wait</h1>
     <div id="info"></div>
     <div id="info2"></div>
-    <form>
-        <button type="button" id="logout" style="display:none;">ログオフ</button>
-    </form>
-    
+
     <script src="https://www.gstatic.com/firebasejs/8.1.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.1.1/firebase-auth.js"></script>
     <script src="./js/config.js"></script>
@@ -53,11 +50,6 @@ session_start();
             if(user === null){
                 showMessage('Not Login', 'ログオンが必要な画面です');
                 info2.innerHTML = "<a href='gz_logon.php'>ログオンはこちら</a>";
-                // ログオフボタンを非表示
-                logout.style.display = "none";
-                // ニックネーム項目非表示
-                nickname.style.display = "none";
-      
                 return(false);
             }
 
@@ -76,9 +68,6 @@ session_start();
                 request.setRequestHeader( 'Content-Type', 'application/x-www-form-urlencoded' );
                 
                 request.send(encodeFormData({name: uid}));
-                
-                // ログオフボタンを表示
-                logout.style.display = "block";
                 
                 // 自動的に画面遷移
                 location.href = "./gz_logon2_1.php";
